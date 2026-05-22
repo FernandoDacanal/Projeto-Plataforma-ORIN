@@ -52,6 +52,17 @@ void loadResourcesResourceManager( void ) {
         1
     );
 
+    rm.texturaHUD = carregarTexturaAlterandoCores(
+        "resources/imagens/hud/hud-final.png",
+        (Color[]){
+            {12, 112, 132, 255},
+        },
+        (Color[]){
+            BLANK,
+        },
+        1
+    );
+
     rm.texturaTerreno = LoadTexture( "resources/imagens/tiles/terreno.png" );
     rm.texturaFundo = LoadTexture( "resources/imagens/fundo/fundo.png" );
 

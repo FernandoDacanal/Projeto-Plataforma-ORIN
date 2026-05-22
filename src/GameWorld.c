@@ -87,6 +87,8 @@ void drawGameWorld( GameWorld *gw ) {
     desenharJogador( gw->jogador );
     EndMode2D();
 
+    //UI
+    
     DrawText( TextFormat( "Anéis: %d", gw->jogador->quantidadeAneis ), 10, 10, 20, ORANGE );
     DrawText( TextFormat( "Vidas: %d", gw->jogador->quantidadeVidas ), 10, 30, 20, ORANGE );
     DrawText( 
