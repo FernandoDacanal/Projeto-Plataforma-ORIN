@@ -67,6 +67,7 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
     novoJogador->quantidadePontos = 0;
     novoJogador->quantidadeAneis = 0;
     novoJogador->quantidadeVidas = 3;
+    novoJogador->quantidadeAneisParaVidas = 100;
 
     novoJogador->invulneravel = false;
     novoJogador->tempoInvulnerabilidade = 3.0f;
@@ -350,10 +351,18 @@ void entradaJogador( Jogador *j, float delta ) {
  * @brief Aplica física e resolve colisões do jogador com o mundo.
  */
 void atualizarJogador( Jogador *j, GameWorld *gw, float delta ) {
-
     if(j->quantidadeTempo <= 599){
         j->quantidadeTempo += delta;
     }
+    if(j->quantidadeAneis > 0 && j->quantidadeAneis > j->quantidadeAneisParaVidas - 1){
+    // if(j->quantidadeAneis > 0 && j->quantidadeAneis % j->quantidadeAneisParaVidas == 0){
+        j->quantidadeVidas++;
+        j->quantidadeAneisParaVidas += j->quantidadeAneisParaVidas;
+    }
+    if(j->quantidadeAneis >= 999){
+        j->quantidadeAneis = 999;
+    }
+
     
     if ( j->invulneravel ) {
 

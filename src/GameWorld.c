@@ -87,7 +87,7 @@ void drawGameWorld( GameWorld *gw ) {
     desenharMapa( gw->mapa );
     desenharJogador( gw->jogador );
     EndMode2D();
-
+    /*
     //Textura do texto rings, score e time
     DrawTexturePro(
         rm.texturaHUD, 
@@ -106,16 +106,17 @@ void drawGameWorld( GameWorld *gw ) {
         0.0f,
         WHITE
     );
+    */
 
     int segundos = ((int) gw->jogador->quantidadeTempo % 60);
     int minutos = ((int) gw->jogador->quantidadeTempo / 60);
 
-    DrawText(TextFormat("Segundos: %02d", segundos), 10, 90, 20, ORANGE);
-    DrawText(TextFormat("Minutos: %01d", minutos), 10, 110, 20, ORANGE);
+    //DrawText(TextFormat("Segundos: %02d", segundos), 10, 90, 20, ORANGE);
+    //DrawText(TextFormat("Minutos: %01d", minutos), 10, 110, 20, ORANGE);
     //ultimo digito da quantidade de pontos é 0 e o máximo de dígitos é 6
     //maximo digitos da quantidade de aneis é 3 (999)
     //maximo digitos vidas é 99
-    /*
+    
     DrawText( TextFormat( "Anéis: %d", gw->jogador->quantidadeAneis ), 10, 10, 20, ORANGE );
     DrawText( TextFormat( "Vidas: %d", gw->jogador->quantidadeVidas ), 10, 30, 20, ORANGE );
     DrawText( 
@@ -129,7 +130,7 @@ void drawGameWorld( GameWorld *gw ) {
     DrawFPS( 10, 70 );
     DrawText(TextFormat("Tempo: %.0f", gw->jogador->quantidadeTempo), 10, 90, 20, ORANGE);
     
-    */
+    
     EndDrawing();
 
 }

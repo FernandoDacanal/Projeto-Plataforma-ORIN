@@ -123,6 +123,7 @@ typedef struct Jogador {
     float quantidadeTempo;
     int quantidadeAneis;
     int quantidadeVidas;
+    int quantidadeAneisParaVidas;
 
     bool invulneravel;
     float tempoInvulnerabilidade;
