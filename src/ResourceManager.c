@@ -55,7 +55,7 @@ void loadResourcesResourceManager( void ) {
     rm.texturaHUD = carregarTexturaAlterandoCores(
         "resources/imagens/hud/hud-final.png",
         (Color[]){
-            {12, 112, 132, 255},
+            {16, 112, 132, 255},
         },
         (Color[]){
             BLANK,
@@ -74,6 +74,7 @@ void loadResourcesResourceManager( void ) {
     SetTextureFilter( rm.texturaItens, TEXTURE_FILTER_POINT );
     SetTextureFilter( rm.texturaTerreno, TEXTURE_FILTER_POINT );
     SetTextureFilter( rm.texturaFundo, TEXTURE_FILTER_POINT );
+    SetTextureFilter( rm.texturaHUD, TEXTURE_FILTER_POINT );
 
     rm.somAnel = LoadSound( "resources/sons/efeitos/anel.wav" );
     rm.somFrenagem = LoadSound( "resources/sons/efeitos/frenagem.wav" );
@@ -93,6 +94,7 @@ void unloadResourcesResourceManager( void ) {
     UnloadTexture( rm.texturaItens );
     UnloadTexture( rm.texturaTerreno );
     UnloadTexture( rm.texturaFundo );
+    UnloadTexture( rm.texturaHUD );
 
     UnloadSound( rm.somAnel );
     UnloadSound( rm.somFrenagem );

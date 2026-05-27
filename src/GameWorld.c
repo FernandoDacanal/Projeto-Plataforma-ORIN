@@ -16,6 +16,7 @@
 #include "include/Obstaculo.h"
 #include "include/Tipos.h"
 #include "include/ResourceManager.h"
+#include "include/Animacao.h"
 
 #include "include/raylib/raylib.h"
 //#include "raylib/raymath.h"
@@ -103,6 +104,12 @@ void drawGameWorld( GameWorld *gw ) {
 
     EndDrawing();
 
+}
+
+static void desenharHUD(GameWorld *gw){
+    DrawTexture(rm.texturaHUD, 50, 50, WHITE);
+    
+    
 }
 
 static void desenharFundo( GameWorld *gw ) {
