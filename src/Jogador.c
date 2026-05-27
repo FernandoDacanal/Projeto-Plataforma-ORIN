@@ -262,7 +262,7 @@ void entradaJogador( Jogador *j, float delta ) {
 
     EstadoJogador estadoAnterior = j->estado;
 
-    if ( IsKeyDown( KEY_RIGHT ) ) {
+    if ( IsKeyDown( KEY_RIGHT) || IsKeyDown(KEY_D) ) {
         if ( j->vel.x < 0 ) {
             j->vel.x += j->frenagem * delta;
             if ( !j->freando && j->estado == ESTADO_JOGADOR_CORRENDO ) {
@@ -280,7 +280,7 @@ void entradaJogador( Jogador *j, float delta ) {
             }
         }
         j->olhandoParaDireita = true;
-    } else if ( IsKeyDown( KEY_LEFT ) ) {
+    } else if ( IsKeyDown( KEY_LEFT) || IsKeyDown(KEY_A) ) {
         if ( j->vel.x > 0 ) {
             j->vel.x -= j->frenagem * delta;
             if ( !j->freando && j->estado == ESTADO_JOGADOR_CORRENDO ) {
