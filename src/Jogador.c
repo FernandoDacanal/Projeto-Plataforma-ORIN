@@ -664,7 +664,9 @@ static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
                 if ( j->estado >= ESTADO_JOGADOR_PULANDO && j->estado <= ESTADO_JOGADOR_PULANDO_CORRENDO ) {
                     j->vel.y = j->velPulo;
                     motobug->estado = ESTADO_INIMIGO_MOTOBUG_MORRENDO;
-                    j->quantidadePontos += 10;
+                    if(j->quantidadePontos <= 99999){
+                        j->quantidadePontos += 10;
+                    }
                     PlaySound( rm.somHitInimigo );
                 } else if ( !j->invulneravel ) {
                     if ( j->quantidadeAneis > 0 ) {
@@ -712,7 +714,9 @@ static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
                 if ( j->estado >= ESTADO_JOGADOR_PULANDO && j->estado <= ESTADO_JOGADOR_PULANDO_CORRENDO ) {
                     j->vel.y = j->velPulo;
                     spikes->estado = ESTADO_INIMIGO_SPIKES_MORRENDO;
-                    j->quantidadePontos += 10;
+                    if(j->quantidadePontos <= 99999){
+                        j->quantidadePontos += 10;
+                    }
                     PlaySound( rm.somHitInimigo );
                 } else if ( !j->invulneravel ) {
                     if ( j->quantidadeAneis > 0 ) {
