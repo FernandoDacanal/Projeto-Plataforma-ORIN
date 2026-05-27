@@ -66,7 +66,7 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
     novoJogador->quantidadeTempo = 0;
     novoJogador->quantidadePontos = 0;
     novoJogador->quantidadeAneis = 0;
-    novoJogador->quantidadeVidas = 97;
+    novoJogador->quantidadeVidas = 3;
     novoJogador->quantidadeAneisParaVidas = 100;
 
     novoJogador->invulneravel = false;

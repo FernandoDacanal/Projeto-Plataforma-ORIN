@@ -106,6 +106,14 @@ void drawGameWorld( GameWorld *gw ) {
         0.0f,
         WHITE
     );
+
+    // criarQuadrosAnimacao( &novoJogador->animacaoParado, novoJogador->animacaoParado.quantidadeQuadros );
+	DrawTexturePro(rm.texturaHUD,
+			(Rectangle){ gw->jogador->quantidadeVidas * 8, rm.texturaHUD.height - 8, 8, 8 },
+			(Rectangle){ 100, 100, 8 * 2, 8 * 2 },
+			(Vector2){ 0 },
+			0.f, WHITE);
+	printf("%d\n", gw->jogador->quantidadeVidas);	// TODO: Temp
     
 
     int segundos = ((int) gw->jogador->quantidadeTempo % 60);
