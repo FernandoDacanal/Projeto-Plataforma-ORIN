@@ -89,7 +89,7 @@ void drawGameWorld( GameWorld *gw ) {
     EndMode2D();
 
     //UI
-    
+    //DrawTexture(rm.texturaHUD, 50, 50, WHITE);
     DrawText( TextFormat( "Anéis: %d", gw->jogador->quantidadeAneis ), 10, 10, 20, ORANGE );
     DrawText( TextFormat( "Vidas: %d", gw->jogador->quantidadeVidas ), 10, 30, 20, ORANGE );
     DrawText( 
@@ -101,15 +101,11 @@ void drawGameWorld( GameWorld *gw ) {
         10, 50, 20, ORANGE
     );
     DrawFPS( 10, 70 );
+    DrawText(TextFormat("Tempo: %.0f", gw->jogador->quantidadeTempo), 10, 90, 20, ORANGE);
+    DrawText(TextFormat("Pontos: %d", gw->jogador->quantidadePontos), 10, 110, 20, ORANGE);
 
     EndDrawing();
 
-}
-
-static void desenharHUD(GameWorld *gw){
-    DrawTexture(rm.texturaHUD, 50, 50, WHITE);
-    
-    
 }
 
 static void desenharFundo( GameWorld *gw ) {

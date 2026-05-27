@@ -63,6 +63,8 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
     novoJogador->quantidadePulos = 0;
     novoJogador->quantidadeMaxPulos = 1;
 
+    novoJogador->quantidadeTempo = 0;
+    novoJogador->quantidadePontos = 0;
     novoJogador->quantidadeAneis = 0;
     novoJogador->quantidadeVidas = 3;
 
@@ -349,6 +351,10 @@ void entradaJogador( Jogador *j, float delta ) {
  */
 void atualizarJogador( Jogador *j, GameWorld *gw, float delta ) {
 
+    if(j->quantidadeTempo <= 599){
+        j->quantidadeTempo += delta;
+    }
+    
     if ( j->invulneravel ) {
 
         j->contadorTempoPiscaPisca += delta;
@@ -658,6 +664,7 @@ static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
                 if ( j->estado >= ESTADO_JOGADOR_PULANDO && j->estado <= ESTADO_JOGADOR_PULANDO_CORRENDO ) {
                     j->vel.y = j->velPulo;
                     motobug->estado = ESTADO_INIMIGO_MOTOBUG_MORRENDO;
+                    j->quantidadePontos += 100;
                     PlaySound( rm.somHitInimigo );
                 } else if ( !j->invulneravel ) {
                     if ( j->quantidadeAneis > 0 ) {
@@ -705,6 +712,7 @@ static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
                 if ( j->estado >= ESTADO_JOGADOR_PULANDO && j->estado <= ESTADO_JOGADOR_PULANDO_CORRENDO ) {
                     j->vel.y = j->velPulo;
                     spikes->estado = ESTADO_INIMIGO_SPIKES_MORRENDO;
+                    j->quantidadePontos += 100;
                     PlaySound( rm.somHitInimigo );
                 } else if ( !j->invulneravel ) {
                     if ( j->quantidadeAneis > 0 ) {
