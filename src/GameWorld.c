@@ -87,7 +87,7 @@ void drawGameWorld( GameWorld *gw ) {
     desenharMapa( gw->mapa );
     desenharJogador( gw->jogador );
     EndMode2D();
-    /*
+    
     //Textura do texto rings, score e time
     DrawTexturePro(
         rm.texturaHUD, 
@@ -106,7 +106,7 @@ void drawGameWorld( GameWorld *gw ) {
         0.0f,
         WHITE
     );
-    */
+    
 
     int segundos = ((int) gw->jogador->quantidadeTempo % 60);
     int minutos = ((int) gw->jogador->quantidadeTempo / 60);
