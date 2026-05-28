@@ -130,7 +130,6 @@ static void atualizarCamera( GameWorld *gw ) {
     Jogador *j = gw->jogador;
     Camera2D *c = &gw->camera;
 
-    c->zoom = 2;
     c->offset.x = GetScreenWidth() / 2;
     c->offset.y = GetScreenHeight() / 2;
 
