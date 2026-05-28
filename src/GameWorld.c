@@ -88,8 +88,6 @@ void drawGameWorld( GameWorld *gw ) {
     desenharJogador( gw->jogador );
     EndMode2D();
     
-<<<<<<< HEAD
-=======
 	static bool piscar_time = false;
 	static bool piscar_ring = false;
 	static float antigo = 0;
@@ -156,7 +154,6 @@ void drawGameWorld( GameWorld *gw ) {
 			(Rectangle){ 16 * 6 - 8 * 2, GetScreenHeight() - 32, 8 * 2, 8 * 2 }, (Vector2){ 0 }, 0.f, WHITE);
     
 
->>>>>>> piscar
     int segundos = ((int) gw->jogador->quantidadeTempo % 60);
     int minutos = ((int) gw->jogador->quantidadeTempo / 60);
 
