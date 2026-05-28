@@ -88,8 +88,6 @@ void drawGameWorld( GameWorld *gw ) {
     desenharJogador( gw->jogador );
     EndMode2D();
     
-<<<<<<< HEAD
-=======
 	static bool piscar_time = false;
 	static bool piscar_ring = false;
 	static float antigo = 0;
@@ -100,15 +98,6 @@ void drawGameWorld( GameWorld *gw ) {
 		piscar_ring = !piscar_ring;
 	}
 
-    //Textura do texto rings, score e time
-	// DrawTexturePro(	// Inteiro
-	//     rm.texturaHUD, 
-	//     (Rectangle){0, 0, 56, 48},
-	//     (Rectangle){16, 16, 56 * 2, 48 * 2},
-	//     (Vector2) {0},
-	//     0.0f,
-	//     WHITE
-	// );
     DrawTexturePro(
         rm.texturaHUD, 
         (Rectangle){0, 0, 8 * 7, 8 * 2},
@@ -156,11 +145,9 @@ void drawGameWorld( GameWorld *gw ) {
 			(Rectangle){ 16 * 6 - 8 * 2, GetScreenHeight() - 32, 8 * 2, 8 * 2 }, (Vector2){ 0 }, 0.f, WHITE);
     
 
->>>>>>> piscar
     int segundos = ((int) gw->jogador->quantidadeTempo % 60);
     int minutos = ((int) gw->jogador->quantidadeTempo / 60);
 
-    
     int escala = 2;
     int esp = 8 * escala;
     Vector2 posTextoScore = {112, 16};
@@ -168,15 +155,7 @@ void drawGameWorld( GameWorld *gw ) {
     Vector2 posTextoRings = {112, 80};
     Vector2 posTextoLives = {112, 128};
 
-    //rings score time (texto)
-    DrawTexturePro(
-        rm.texturaHUD, 
-        (Rectangle){0, 0, 56, 48},
-        (Rectangle){16, 16, 56 * escala, 48 * escala},
-        (Vector2) {0},
-        0.0f,
-        WHITE
-    );
+    
     //Inicio desenho HUD pontos
     //centena de milhar
     DrawTexturePro(
