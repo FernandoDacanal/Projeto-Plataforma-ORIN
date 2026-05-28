@@ -1,8 +1,9 @@
-#include <stdio.h>
-#include <stdlib.h>
+//#include <stdio.h>
+//#include <stdlib.h>
 #include "include/Tipos.h"
 #include "include/HUD.h"
 #include "include/ResourceManager.h"
+#include "include/Utils.h"
 
 #define pouco(var, val) (var != 0 && var < val ? 1 : 0)
 #define TEMPO_LIMITE 5
@@ -159,11 +160,16 @@ void desenharTime(GameWorld *gw){
 }
 
 void desenharRings(GameWorld *gw){
+
+	bool aneis_tremer = false;
+	if (gw->jogador->quantidadeAneis == 0)
+		aneis_tremer = true;
+
     //texto
     DrawTexturePro(
         rm.texturaHUD,
         (Rectangle){piscar_ring * TAMANHO_TILES * 7, TAMANHO_TILES * 4, TAMANHO_TILES * 7, TAMANHO_TILES * 2},
-        (Rectangle){HUDSuperior.x, HUDSuperior.y + (TAMANHO_TILES * 4), TAMANHO_TILES * 7, TAMANHO_TILES * 2},
+        (Rectangle){HUDSuperior.x + (aneis_tremer ? tremer(3) : 0), HUDSuperior.y + (TAMANHO_TILES * 4) + (aneis_tremer ? tremer(3) : 0), TAMANHO_TILES * 7, TAMANHO_TILES * 2},
         (Vector2) {0},
         0.0f,
         WHITE

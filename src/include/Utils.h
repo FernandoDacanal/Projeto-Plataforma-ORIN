@@ -13,3 +13,5 @@
  * @brief Carrega uma textura trocando cores.
  */
 Texture2D carregarTexturaAlterandoCores( const char *caminhoArquivo, Color *coresFonte, Color *coresAlvo, int quantidadeCores );
+
+int tremer(int limite);
