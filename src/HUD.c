@@ -6,7 +6,7 @@
 
 #define pouco(var, val) (var != 0 && var < val ? 1 : 0)
 #define TEMPO_LIMITE 5
-#define RES 16
+#define TAMANHO_TILES 8
 
 static bool piscar_time = false;
 static bool piscar_ring = false;
@@ -14,11 +14,15 @@ static bool piscar_ring = false;
 static float piscar_timeTempo = 0;
 static float piscar_ringTempo = 0;
 
-static Vector2 HUDSuperior = {RES, RES};
-static Vector2 HUDInferior = {RES, RES * 10};
+static Vector2 HUDSuperior = {TAMANHO_TILES, TAMANHO_TILES};
+static Vector2 HUDInferior = {TAMANHO_TILES, TAMANHO_TILES * 20};
 
 void desenharHUD(GameWorld *gw){
     piscarHUD(gw);
+    desenharScore(gw);
+    desenharTime(gw);
+    desenharRings(gw);
+    desenharLives(gw);
 }
 
 void piscarHUD(GameWorld *gw){
@@ -36,53 +40,21 @@ void piscarHUD(GameWorld *gw){
 		piscar_ring = false;
 }
 
-void desenharTextoHUD(GameWorld *gw){
-    //desenhar texto estatico da HUD
-    DrawTexturePro(
-        rm.texturaHUD, 
-        (Rectangle){0, 0, 8 * 7, 8 * 2},
-        (Rectangle){16, 16, 8 * 7 * 2, 8 * 2 * 2},
-        (Vector2) {0},
-        0.0f,
-        WHITE
-    );
-    //desenhar time piscando
-    DrawTexturePro(
-        rm.texturaHUD,
-        (Rectangle){piscar_time * 8 * 7, 16, 8 * 7, 8 * 2},
-        (Rectangle){16, 48, 8 * 7 * 2, 8 * 2 * 2},
-        (Vector2) {0},
-        0.0f,
-        WHITE
-    );
-    //desenhar ring piscando e tremer quando levar dano
-    DrawTexturePro(
-        rm.texturaHUD,
-        (Rectangle){piscar_ring * 8 * 7, 32, 8 * 7, 8 * 2},
-        (Rectangle){16 + pouco(gw->jogador->contadorTempoInvulnerabilidade, .3f) * rand() % 10,
-		80 + pouco(gw->jogador->contadorTempoInvulnerabilidade, .3f) * rand() % 5, 8 * 7 * 2, 8 * 2 * 2},
-        (Vector2) {0},
-        0.0f,
-        WHITE
-    );
-}
-
 void desenharScore(GameWorld *gw){
     DrawTexturePro(
         rm.texturaHUD, 
-        (Rectangle){0, 0, RES * 3, RES},
-        (Rectangle){HUDSuperior.x, HUDInferior.y, RES * 3, RES},
+        (Rectangle){0, 0, TAMANHO_TILES * 5, TAMANHO_TILES * 2},
+        (Rectangle){HUDSuperior.x, HUDSuperior.y, TAMANHO_TILES * 5, TAMANHO_TILES * 2},
         (Vector2) {0},
         0.0f,
         WHITE
     );
-    /*
     Vector2 posValorScore = {112, 16};
     //centena de milhar
     DrawTexturePro(
         rm.texturaHUD,
-		(Rectangle){ (gw->jogador->quantidadePontos / 10000) * 8, rm.texturaHUD.height - 24, 8, 16 },
-		(Rectangle){ posValorScore.x, posValorScore.y, 8 * 2, 16 * 2 },
+		(Rectangle){ (gw->jogador->quantidadePontos / 10000) * TAMANHO_TILES, rm.texturaHUD.height - TAMANHO_TILES * 3, TAMANHO_TILES, TAMANHO_TILES * 2 },
+		(Rectangle){ HUDSuperior.x + TAMANHO_TILES * 6, HUDSuperior.y, TAMANHO_TILES, TAMANHO_TILES * 2 },
 		(Vector2){ 0 },
 		0.f,
         WHITE
@@ -90,8 +62,8 @@ void desenharScore(GameWorld *gw){
     //dezena de milhar
     DrawTexturePro(
         rm.texturaHUD,
-		(Rectangle){ (gw->jogador->quantidadePontos % 10000) / 1000 * 8, rm.texturaHUD.height - 24, 8, 16 },
-		(Rectangle){ posValorScore.x + 16, posValorScore.y, 8 * 2, 16 * 2 },
+		(Rectangle){ (gw->jogador->quantidadePontos % 10000) / 1000 * TAMANHO_TILES, rm.texturaHUD.height - TAMANHO_TILES * 3, TAMANHO_TILES, TAMANHO_TILES * 2},
+		(Rectangle){ HUDSuperior.x + TAMANHO_TILES * 7, HUDSuperior.y, TAMANHO_TILES, TAMANHO_TILES * 2 },
 		(Vector2){ 0 },
 		0.f,
         WHITE
@@ -99,8 +71,8 @@ void desenharScore(GameWorld *gw){
     //milhar
     DrawTexturePro(
         rm.texturaHUD,
-		(Rectangle){ (gw->jogador->quantidadePontos % 1000) / 100 * 8, rm.texturaHUD.height - 24, 8, 16 },
-		(Rectangle){ posValorScore.x + (16 * 2), posValorScore.y, 8 * 2, 16 * 2 },
+		(Rectangle){ (gw->jogador->quantidadePontos % 1000) / 100 * TAMANHO_TILES, rm.texturaHUD.height - 24, TAMANHO_TILES, TAMANHO_TILES * 2 },
+		(Rectangle){ HUDSuperior.x + TAMANHO_TILES * 8, HUDSuperior.y, TAMANHO_TILES, TAMANHO_TILES * 2 },
 		(Vector2){ 0 },
 		0.f,
         WHITE
@@ -108,8 +80,8 @@ void desenharScore(GameWorld *gw){
     //centena
     DrawTexturePro(
         rm.texturaHUD,
-		(Rectangle){ (gw->jogador->quantidadePontos % 100) / 10 * 8, rm.texturaHUD.height - 24, 8, 16 },
-		(Rectangle){ posValorScore.x + (16 * 3), posValorScore.y, 8 * 2, 16 * 2 },
+		(Rectangle){ (gw->jogador->quantidadePontos % 100) / 10 * 8, rm.texturaHUD.height - TAMANHO_TILES * 3, TAMANHO_TILES, TAMANHO_TILES * 2 },
+		(Rectangle){ HUDSuperior.x + TAMANHO_TILES * 9, HUDSuperior.y, TAMANHO_TILES, TAMANHO_TILES * 2 },
 		(Vector2){ 0 },
 		0.f,
         WHITE
@@ -117,8 +89,8 @@ void desenharScore(GameWorld *gw){
     //dezena
     DrawTexturePro(
         rm.texturaHUD,
-		(Rectangle){ (gw->jogador->quantidadePontos % 10) * 8, rm.texturaHUD.height - 24, 8, 16 },
-		(Rectangle){ posValorScore.x + (16 * 4), posValorScore.y, 8 * 2, 16 * 2 },
+		(Rectangle){ (gw->jogador->quantidadePontos % 10) * 8, rm.texturaHUD.height - TAMANHO_TILES * 3, TAMANHO_TILES, TAMANHO_TILES * 2 },
+		(Rectangle){ HUDSuperior.x + TAMANHO_TILES * 10, HUDSuperior.y, TAMANHO_TILES, TAMANHO_TILES * 2 },
 		(Vector2){ 0 },
 		0.f,
         WHITE
@@ -126,14 +98,12 @@ void desenharScore(GameWorld *gw){
     //unidade (0)
     DrawTexturePro(
         rm.texturaHUD,
-		(Rectangle){ 0, rm.texturaHUD.height - 24, 8, 16 },
-		(Rectangle){ posValorScore.x + (16 * 5), posValorScore.y, 8 * 2, 16 * 2 },
+		(Rectangle){ 0, rm.texturaHUD.height - TAMANHO_TILES * 3, TAMANHO_TILES, TAMANHO_TILES * 2 },
+		(Rectangle){ HUDSuperior.x + TAMANHO_TILES * 11, HUDSuperior.y, TAMANHO_TILES, TAMANHO_TILES * 2 },
 		(Vector2){ 0 },
 		0.f,
         WHITE
     );
-    //Fim desenho pontos
-    */
 }
 
 void desenharTime(GameWorld *gw){
@@ -142,12 +112,20 @@ void desenharTime(GameWorld *gw){
 
     Vector2 posTextoTime = {96, 48};
 
-    //Inicio do desenho do HUD tempo
+    //texto
+    DrawTexturePro(
+        rm.texturaHUD,
+        (Rectangle){piscar_time * TAMANHO_TILES * 7, TAMANHO_TILES * 2, TAMANHO_TILES * 7, TAMANHO_TILES * 2},
+        (Rectangle){HUDSuperior.x, HUDSuperior.y + (TAMANHO_TILES * 2), TAMANHO_TILES * 7, TAMANHO_TILES * 2},
+        (Vector2) {0},
+        0.0f,
+        WHITE
+    );
     //minutos
     DrawTexturePro(
         rm.texturaHUD,
-		(Rectangle){ minutos * 8, rm.texturaHUD.height - 24, 8, 16 },
-		(Rectangle){ posTextoTime.x, posTextoTime.y, 8 * 2, 16 * 2 },
+		(Rectangle){ minutos * TAMANHO_TILES, rm.texturaHUD.height - TAMANHO_TILES * 3, TAMANHO_TILES, TAMANHO_TILES * 2 },
+		(Rectangle){HUDSuperior.x + TAMANHO_TILES * 5, HUDSuperior.y + (TAMANHO_TILES * 2), TAMANHO_TILES, TAMANHO_TILES * 2 },
 		(Vector2){ 0 },
 		0.f,
         WHITE
@@ -155,8 +133,8 @@ void desenharTime(GameWorld *gw){
     //dezenas de segundos
     DrawTexturePro(
         rm.texturaHUD,
-		(Rectangle){ segundos / 10 * 8, rm.texturaHUD.height - 24, 8, 16 },
-		(Rectangle){ posTextoTime.x + 16 * 2, posTextoTime.y, 8 * 2, 16 * 2 },
+		(Rectangle){ segundos / 10 * 8, rm.texturaHUD.height - TAMANHO_TILES * 3, TAMANHO_TILES, TAMANHO_TILES * 2 },
+		(Rectangle){HUDSuperior.x + TAMANHO_TILES * 7, HUDSuperior.y + (TAMANHO_TILES * 2), TAMANHO_TILES, TAMANHO_TILES * 2 },
 		(Vector2){ 0 },
 		0.f,
         WHITE
@@ -164,8 +142,8 @@ void desenharTime(GameWorld *gw){
     //unidades de segundos
     DrawTexturePro(
         rm.texturaHUD,
-		(Rectangle){ segundos % 10 * 8, rm.texturaHUD.height - 24, 8, 16 },
-		(Rectangle){ posTextoTime.x + 16 * 3, posTextoTime.y, 8 * 2, 16 * 2 },
+		(Rectangle){ segundos % 10 * 8, rm.texturaHUD.height - TAMANHO_TILES * 3, TAMANHO_TILES, TAMANHO_TILES * 2 },
+		(Rectangle){HUDSuperior.x + TAMANHO_TILES * 8, HUDSuperior.y + (TAMANHO_TILES * 2), TAMANHO_TILES, TAMANHO_TILES * 2 },
 		(Vector2){ 0 },
 		0.f,
         WHITE
@@ -174,6 +152,14 @@ void desenharTime(GameWorld *gw){
 
 void desenharRings(GameWorld *gw){
     Vector2 posTextoRings = {112, 80};
+    DrawTexturePro(
+        rm.texturaHUD,
+        (Rectangle){piscar_ring * TAMANHO_TILES * 7, TAMANHO_TILES * 4, TAMANHO_TILES * 7, TAMANHO_TILES * 2},
+        (Rectangle){HUDSuperior.x, HUDSuperior.y + (TAMANHO_TILES * 4), TAMANHO_TILES * 7, TAMANHO_TILES * 2},
+        (Vector2) {0},
+        0.0f,
+        WHITE
+    );
     //centena
     DrawTexturePro(
         rm.texturaHUD,

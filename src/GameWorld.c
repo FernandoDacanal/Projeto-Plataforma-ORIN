@@ -83,12 +83,15 @@ void drawGameWorld( GameWorld *gw ) {
     BeginDrawing();
     ClearBackground( (Color) { 36, 0, 180, 255 } );
 
+    //elementos alterados pela camera
     BeginMode2D( gw->camera );
     desenharFundo( gw );
     desenharMapa( gw->mapa );
     desenharJogador( gw->jogador );
-    desenharScore(gw);
     EndMode2D();
+    //
+
+    desenharHUD(gw);
     
     /*
 	// Função que a cada alguns segundos verifica e atualiza os `piscar_~`. Assim eles ficam sincronizados.
