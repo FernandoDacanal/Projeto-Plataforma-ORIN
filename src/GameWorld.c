@@ -27,7 +27,7 @@
 
 
 #define pouco(var, val) (var != 0 && var < val ? 1 : 0)
-#define TEMPO_LIMITE 10
+#define TEMPO_LIMITE 5
 
 static void desenharFundo( GameWorld *gw );
 static void atualizarCamera( GameWorld *gw );
@@ -108,6 +108,8 @@ void drawGameWorld( GameWorld *gw ) {
 		piscar_ringTempo = gw->jogador->quantidadeTempo;
 		piscar_ring = !piscar_ring;
 	}
+	else if (gw->jogador->quantidadeTempo - piscar_ringTempo > 0.5 && gw->jogador->quantidadeTempo > 1)
+		piscar_ring = false;
 
     DrawTexturePro(
         rm.texturaHUD, 
