@@ -7,8 +7,12 @@ No momento apenas possui um nível e 2 tipos de itens, porém haverá mais coisa
 - Luiz Bridi de Lima
 
 # TODOs
-- [ ] Texto tremer
-- [ ] Mais níveis
-- [ ] Mais itens?
+## Obrigado
+- [ ] Mais 2 fases
+- [ ] Mais 2 itens
+- [ ] Mais 2 inimigos
+
+## Opicionais
+- [x] Texto tremer
 - [ ] Pular na parede*
 - [ ] Multiplayer*
