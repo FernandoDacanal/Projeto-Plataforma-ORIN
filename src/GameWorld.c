@@ -6,17 +6,17 @@
  * @copyright Copyright (c) 2026
  */
 #include <math.h>
-#include <stdio.h>
+//#include <stdio.h>
 #include <stdlib.h>
 
 #include "include/GameWorld.h"
 #include "include/Jogador.h"
-#include "include/Macros.h"
+// #include "include/Macros.h"
 #include "include/Mapa.h"
-#include "include/Obstaculo.h"
+// #include "include/Obstaculo.h"
 #include "include/Tipos.h"
 #include "include/ResourceManager.h"
-#include "include/Animacao.h"
+// #include "include/Animacao.h"
 #include "include/HUD.h"
 
 #include "include/raylib/raylib.h"
@@ -30,6 +30,10 @@ static void atualizarCamera( GameWorld *gw );
 
 static void inicializar( GameWorld *gw );
 static void reiniciar( GameWorld *gw );
+
+RenderTexture2D alvoRenderizacao;
+
+
 
 /**
  * @brief Cria uma instância alocada dinamicamente da struct GameWorld.
@@ -80,34 +84,34 @@ void updateGameWorld( GameWorld *gw, float delta ) {
  */
 void drawGameWorld( GameWorld *gw ) {
     BeginDrawing();
-    ClearBackground( (Color) { 36, 0, 180, 255 } );
+	ClearBackground( (Color) { 36, 0, 180, 255 } );
 
     //elementos alterados pela camera
-    BeginMode2D( gw->camera );
-    desenharFundo( gw );
-    desenharMapa( gw->mapa );
-    desenharJogador( gw->jogador );
-    EndMode2D();
+	BeginMode2D( gw->camera );
+	desenharFundo( gw );
+	desenharMapa( gw->mapa );
+	desenharJogador( gw->jogador );
+	EndMode2D();
 
-    desenharHUD(gw);
+	desenharHUD(gw);
     
-    //DEBUG
-    /*
-    DrawText( TextFormat( "Anéis: %d", gw->jogador->quantidadeAneis ), 10, 10, 20, ORANGE );
-    DrawText( TextFormat( "Vidas: %d", gw->jogador->quantidadeVidas ), 10, 30, 20, ORANGE );
-    DrawText( 
-        TextFormat( 
-            "Invulnerável: %s%s", 
-            gw->jogador->invulneravel ? "sim" : "não",
-            gw->jogador->invulneravel ? TextFormat( " (%.2fs/%.2fs)", gw->jogador->contadorTempoInvulnerabilidade, gw->jogador->tempoInvulnerabilidade ) : ""
-        ), 
-        10, 50, 20, ORANGE
-    );
-    DrawFPS( 10, 70 );
-    DrawText(TextFormat("Tempo: %.0f", gw->jogador->quantidadeTempo), 10, 90, 20, ORANGE);
-    */
-    
-    EndDrawing();
+	//DEBUG
+	/*
+	DrawText( TextFormat( "Anéis: %d", gw->jogador->quantidadeAneis ), 10, 10, 20, ORANGE );
+	DrawText( TextFormat( "Vidas: %d", gw->jogador->quantidadeVidas ), 10, 30, 20, ORANGE );
+	DrawText( 
+	TextFormat( 
+	"Invulnerável: %s%s", 
+	gw->jogador->invulneravel ? "sim" : "não",
+	gw->jogador->invulneravel ? TextFormat( " (%.2fs/%.2fs)", gw->jogador->contadorTempoInvulnerabilidade, gw->jogador->tempoInvulnerabilidade ) : ""
+	), 
+	10, 50, 20, ORANGE
+	);
+	DrawFPS( 10, 70 );
+	DrawText(TextFormat("Tempo: %.0f", gw->jogador->quantidadeTempo), 10, 90, 20, ORANGE);
+	*/
+
+	EndDrawing();
 
 }
 
@@ -130,8 +134,8 @@ static void atualizarCamera( GameWorld *gw ) {
     Jogador *j = gw->jogador;
     Camera2D *c = &gw->camera;
 
-    c->offset.x = GetScreenWidth() / 2;
-    c->offset.y = GetScreenHeight() / 2;
+    c->offset.x = (int)(GetScreenWidth() / 2);
+    c->offset.y = (int)(GetScreenHeight() / 2);
 
     // O target é arredondado para o inteiro mais próximo para garantir que a
     // translação da câmera ocorra sempre em posições inteiras de pixel. Sem esse
@@ -157,10 +161,9 @@ static void atualizarCamera( GameWorld *gw ) {
 }
 
 static void inicializar( GameWorld *gw ) {
-
     //gw->mapa = carregarMapa( "resources/mapas/mapaTeste.txt" );
     gw->mapa = carregarMapa( "resources/mapas/mapa01.txt" );
-    gw->jogador = criarJogador( GetScreenWidth() / 2 + 144, calcularAlturaMapa( gw->mapa ) - 196, 48, 48 );
+    gw->jogador = criarJogador( (float)GetScreenWidth() / 2 + 144, calcularAlturaMapa( gw->mapa ) - 196, 48, 48 );
 
     gw->camera = (Camera2D) {
         .offset = { 0 },    // deslocamento relativo da câmera em relação ao alvo

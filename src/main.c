@@ -6,8 +6,8 @@
  *
  * @copyright Copyright (c) 2026
  */
-#include <stdio.h>
-#include <stdlib.h>
+//#include <stdio.h>
+//#include <stdlib.h>
 #include <stdbool.h>
 
 #include "include/GameWindow.h"

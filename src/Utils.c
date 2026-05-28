@@ -8,6 +8,7 @@
 #include "include/raylib/raylib.h"
 
 #include "include/Utils.h"
+#include "stdlib.h"
 
 /**
  * @brief Carrega uma textura trocando cores.
@@ -21,4 +22,10 @@ Texture2D carregarTexturaAlterandoCores( const char *caminhoArquivo, Color *core
     Texture2D textura = LoadTextureFromImage( imagem );
     UnloadImage( imagem );
     return textura;
+}
+
+int tremer(int limite)
+{
+	int retorno = rand() % (limite * 2);
+	return retorno > limite ? -retorno + limite : retorno;
 }
