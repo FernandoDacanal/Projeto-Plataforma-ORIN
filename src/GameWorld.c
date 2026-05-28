@@ -122,28 +122,8 @@ void drawGameWorld( GameWorld *gw ) {
         0.0f,
         WHITE
     );
-    //Textura do texto lives
-    DrawTexturePro(
-        rm.texturaHUD, 
-        (Rectangle){56, 0, 48, 16},
-        (Rectangle){16, GetScreenHeight() - 48, 48 * 2, 16 * 2},
-        (Vector2) {0},
-        0.0f,
-        WHITE
-    );
 
 	printf("%d\n", gw->jogador->quantidadeVidas);
-	int valor;
-	if (gw->jogador->quantidadeVidas % 10 * 8 < 0)
-		valor = 0;
-	else
-		valor = gw->jogador->quantidadeVidas % 10 * 8;
-	DrawTexturePro(rm.texturaHUD, (Rectangle){ valor, rm.texturaHUD.height - 8, 8, 8 },
-			(Rectangle){ 16 * 6, GetScreenHeight() - 32, 8 * 2, 8 * 2 }, (Vector2){ 0 }, 0.f, WHITE);
-
-	DrawTexturePro(rm.texturaHUD, (Rectangle){ gw->jogador->quantidadeVidas / 10 * 8, rm.texturaHUD.height - 8, 8, 8 },
-			(Rectangle){ 16 * 6 - 8 * 2, GetScreenHeight() - 32, 8 * 2, 8 * 2 }, (Vector2){ 0 }, 0.f, WHITE);
-    
 
     int segundos = ((int) gw->jogador->quantidadeTempo % 60);
     int minutos = ((int) gw->jogador->quantidadeTempo / 60);
@@ -273,7 +253,6 @@ void drawGameWorld( GameWorld *gw ) {
     );
 
     //Inicio desenhar vidas
-    //dezenas
     DrawTexturePro(
         rm.texturaHUD, 
         (Rectangle){56, 0, 48, 16},
@@ -282,17 +261,19 @@ void drawGameWorld( GameWorld *gw ) {
         0.0f,
         WHITE
     );
-    //unidades
-	DrawTexturePro(
-        rm.texturaHUD,
-		(Rectangle){ gw->jogador->quantidadeVidas * 8, rm.texturaHUD.height - 8, 8, 8 },
-		(Rectangle){ 100, 100, 8 * escala, 8 * escala },
-		(Vector2){ 0 },
-		0.f, 
-        WHITE
-    );
+	int valor;
+	if (gw->jogador->quantidadeVidas % 10 * 8 < 0)
+		valor = 0;
+	else
+		valor = gw->jogador->quantidadeVidas % 10 * 8;
+	DrawTexturePro(rm.texturaHUD, (Rectangle){ valor, rm.texturaHUD.height - 8, 8, 8 },
+			(Rectangle){ 16 * 6, GetScreenHeight() - 32, 8 * 2, 8 * 2 }, (Vector2){ 0 }, 0.f, WHITE);
+
+	DrawTexturePro(rm.texturaHUD, (Rectangle){ gw->jogador->quantidadeVidas / 10 * 8, rm.texturaHUD.height - 8, 8, 8 },
+			(Rectangle){ 16 * 6 - 8 * 2, GetScreenHeight() - 32, 8 * 2, 8 * 2 }, (Vector2){ 0 }, 0.f, WHITE);
     //Final desenhar vidas
     
+    //DEBUG
     /*
     DrawText( TextFormat( "Anéis: %d", gw->jogador->quantidadeAneis ), 10, 10, 20, ORANGE );
     DrawText( TextFormat( "Vidas: %d", gw->jogador->quantidadeVidas ), 10, 30, 20, ORANGE );
