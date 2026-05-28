@@ -5,7 +5,7 @@
 #include "include/ResourceManager.h"
 
 #define pouco(var, val) (var != 0 && var < val ? 1 : 0)
-#define TEMPO_LIMITE 5
+#define TEMPO_LIMITE 20
 #define TAMANHO_TILES 8
 
 static bool piscar_time = false;
@@ -18,6 +18,7 @@ static Vector2 HUDSuperior = {TAMANHO_TILES, TAMANHO_TILES};
 static Vector2 HUDInferior = {TAMANHO_TILES, TAMANHO_TILES * 20};
 
 void desenharHUD(GameWorld *gw){
+    Vector2 screenPos = GetWorldToScreen2D(gw->jogador->, gw->camera);
     piscarHUD(gw);
     desenharScore(gw);
     desenharTime(gw);
@@ -223,7 +224,6 @@ void desenharLives(GameWorld *gw){
             WHITE
         );
     }
-    
     //unidade
 	DrawTexturePro(
         rm.texturaHUD, 
