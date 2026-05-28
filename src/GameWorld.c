@@ -93,6 +93,7 @@ void drawGameWorld( GameWorld *gw ) {
     desenharJogador( gw->jogador );
     EndMode2D();
     
+	// Função que a cada alguns segundos verifica e atualiza os `piscar_~`. Assim eles ficam sincronizados.
 	static bool piscar_time = false;
 	static bool piscar_ring = false;
 
