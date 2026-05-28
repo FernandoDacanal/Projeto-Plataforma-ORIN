@@ -24,6 +24,11 @@
 //#include "raylib/raygui.h"       // other compilation units must only include
 //#undef RAYGUI_IMPLEMENTATION     // raygui.h
 
+
+
+#define pouco(var, val) (var != 0 && var < val ? 1 : 0)
+#define TEMPO_LIMITE 10
+
 static void desenharFundo( GameWorld *gw );
 static void atualizarCamera( GameWorld *gw );
 
@@ -90,11 +95,17 @@ void drawGameWorld( GameWorld *gw ) {
     
 	static bool piscar_time = false;
 	static bool piscar_ring = false;
-	static float antigo = 0;
-	if ((int)(gw->jogador->quantidadeTempo / .5f) != antigo)
+
+	static float piscar_timeTempo = 0;
+	static float piscar_ringTempo = 0;
+	if (gw->jogador->quantidadeTempo >= TEMPO_LIMITE && gw->jogador->quantidadeTempo - piscar_timeTempo > 0.5)
 	{
-		antigo = (int)(gw->jogador->quantidadeTempo / .5f);
+		piscar_timeTempo = gw->jogador->quantidadeTempo;
 		piscar_time = !piscar_time;
+	}
+	if (gw->jogador->quantidadeAneis == 0 && gw->jogador->quantidadeTempo - piscar_ringTempo > 0.5 && gw->jogador->quantidadeTempo > 1)
+	{
+		piscar_ringTempo = gw->jogador->quantidadeTempo;
 		piscar_ring = !piscar_ring;
 	}
 
@@ -106,8 +117,9 @@ void drawGameWorld( GameWorld *gw ) {
         0.0f,
         WHITE
     );
+
     DrawTexturePro(
-        rm.texturaHUD, 
+        rm.texturaHUD,
         (Rectangle){piscar_time * 8 * 7, 16, 8 * 7, 8 * 2},
         (Rectangle){16, 48, 8 * 7 * 2, 8 * 2 * 2},
         (Vector2) {0},
@@ -115,15 +127,14 @@ void drawGameWorld( GameWorld *gw ) {
         WHITE
     );
     DrawTexturePro(
-        rm.texturaHUD, 
+        rm.texturaHUD,
         (Rectangle){piscar_ring * 8 * 7, 32, 8 * 7, 8 * 2},
-        (Rectangle){16, 80, 8 * 7 * 2, 8 * 2 * 2},
+        (Rectangle){16 + pouco(gw->jogador->contadorTempoInvulnerabilidade, .3f) * rand() % 10,
+		80 + pouco(gw->jogador->contadorTempoInvulnerabilidade, .3f) * rand() % 5, 8 * 7 * 2, 8 * 2 * 2},
         (Vector2) {0},
         0.0f,
         WHITE
     );
-
-	printf("%d\n", gw->jogador->quantidadeVidas);
 
     int segundos = ((int) gw->jogador->quantidadeTempo % 60);
     int minutos = ((int) gw->jogador->quantidadeTempo / 60);
