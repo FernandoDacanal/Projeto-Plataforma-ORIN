@@ -100,7 +100,7 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
         4,               // separação
         false,           // de trás para frente
         (Rectangle) {    // retângulo de colisão padrão para cada quadro
-            32, 20, 42, 76
+            16, 10, 21, 38
             //18, 20, 54, 76
         }
     );
@@ -121,7 +121,7 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
         4,               // separação
         false,           // de trás para frente
         (Rectangle) {    // retângulo de colisão padrão para cada quadro
-            32, 20, 42, 76
+            16, 10, 21, 38
             //18, 20, 54, 76
         }
     );
@@ -142,7 +142,7 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
         4,               // separação
         false,           // de trás para frente
         (Rectangle) {    // retângulo de colisão padrão para cada quadro
-            32, 20, 42, 76
+            16, 10, 21, 38
             //18, 20, 54, 76
         }
     );
@@ -163,7 +163,7 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
         4,               // separação
         false,           // de trás para frente
         (Rectangle) {    // retângulo de colisão padrão para cada quadro
-            32, 20, 42, 76
+            16, 10, 21, 38
             //18, 20, 54, 76
         }
     );
@@ -184,7 +184,7 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
         4,               // separação
         false,           // de trás para frente
         (Rectangle) {    // retângulo de colisão padrão para cada quadro
-            32, 46, 42, 50
+            16, 23, 21, 25
             //18, 36, 60, 60
         }
     );
@@ -205,7 +205,7 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
         4,               // separação
         false,           // de trás para frente
         (Rectangle) {    // retângulo de colisão padrão para cada quadro
-            32, 46, 42, 50
+            16, 23, 21, 25
             //18, 36, 60, 60
         }
     );
@@ -226,7 +226,7 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
         4,               // separação
         false,           // de trás para frente
         (Rectangle) {    // retângulo de colisão padrão para cada quadro
-            32, 46, 42, 50
+            16, 23, 21, 25
             //18, 36, 60, 60
         }
     );
@@ -684,7 +684,7 @@ static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
                     if ( j->quantidadeAneis > 0 ) {
                         j->quantidadeAneis = 0;
                         PlaySound( rm.somHitComAnel );
-                    } else {
+                    } else if(j->quantidadeVidas > 0) {
                         j->quantidadeVidas--;
                         PlaySound( rm.somMorte );
                     }
@@ -732,7 +732,7 @@ static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
                     if ( j->quantidadeAneis > 0 ) {
                         j->quantidadeAneis = 0;
                         PlaySound( rm.somHitComAnel );
-                    } else {
+                    } else if (j->quantidadeVidas > 0) {
                         j->quantidadeVidas--;
                         PlaySound( rm.somMorte );
                     }

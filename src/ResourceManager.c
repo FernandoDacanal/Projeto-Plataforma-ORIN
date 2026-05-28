@@ -63,7 +63,7 @@ void loadResourcesResourceManager( void ) {
         1
     );
 
-    rm.texturaTerreno = LoadTexture( "resources/imagens/tiles/terreno.png" );
+    rm.texturaTerreno = LoadTexture( "resources/imagens/tiles/terreno32x.png" );
     rm.texturaFundo = LoadTexture( "resources/imagens/fundo/fundo.png" );
 
     // Filtro de textura nearest-neighbor (ponto) para todas as texturas do jogo.

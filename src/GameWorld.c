@@ -17,17 +17,13 @@
 #include "include/Tipos.h"
 #include "include/ResourceManager.h"
 #include "include/Animacao.h"
+#include "include/HUD.h"
 
 #include "include/raylib/raylib.h"
 //#include "raylib/raymath.h"
 //#define RAYGUI_IMPLEMENTATION    // to use raygui, comment these three lines.
 //#include "raylib/raygui.h"       // other compilation units must only include
 //#undef RAYGUI_IMPLEMENTATION     // raygui.h
-
-
-
-#define pouco(var, val) (var != 0 && var < val ? 1 : 0)
-#define TEMPO_LIMITE 5
 
 static void desenharFundo( GameWorld *gw );
 static void atualizarCamera( GameWorld *gw );
@@ -91,8 +87,10 @@ void drawGameWorld( GameWorld *gw ) {
     desenharFundo( gw );
     desenharMapa( gw->mapa );
     desenharJogador( gw->jogador );
+    desenharScore(gw);
     EndMode2D();
     
+    /*
 	// Função que a cada alguns segundos verifica e atualiza os `piscar_~`. Assim eles ficam sincronizados.
 	static bool piscar_time = false;
 	static bool piscar_ring = false;
@@ -112,6 +110,7 @@ void drawGameWorld( GameWorld *gw ) {
 	else if (gw->jogador->quantidadeTempo - piscar_ringTempo > 0.5 && gw->jogador->quantidadeTempo > 1)
 		piscar_ring = false;
 
+    //desenhar HUD completa
     DrawTexturePro(
         rm.texturaHUD, 
         (Rectangle){0, 0, 8 * 7, 8 * 2},
@@ -120,7 +119,7 @@ void drawGameWorld( GameWorld *gw ) {
         0.0f,
         WHITE
     );
-
+    //desenhar time piscando
     DrawTexturePro(
         rm.texturaHUD,
         (Rectangle){piscar_time * 8 * 7, 16, 8 * 7, 8 * 2},
@@ -129,6 +128,7 @@ void drawGameWorld( GameWorld *gw ) {
         0.0f,
         WHITE
     );
+    //desenhar ring piscando e tremer quando levar dano
     DrawTexturePro(
         rm.texturaHUD,
         (Rectangle){piscar_ring * 8 * 7, 32, 8 * 7, 8 * 2},
@@ -286,7 +286,7 @@ void drawGameWorld( GameWorld *gw ) {
 	DrawTexturePro(rm.texturaHUD, (Rectangle){ gw->jogador->quantidadeVidas / 10 * 8, rm.texturaHUD.height - 8, 8, 8 },
 			(Rectangle){ 16 * 6 - 8 * 2, GetScreenHeight() - 32, 8 * 2, 8 * 2 }, (Vector2){ 0 }, 0.f, WHITE);
     //Final desenhar vidas
-    
+    */
     //DEBUG
     /*
     DrawText( TextFormat( "Anéis: %d", gw->jogador->quantidadeAneis ), 10, 10, 20, ORANGE );
@@ -356,7 +356,7 @@ static void inicializar( GameWorld *gw ) {
 
     //gw->mapa = carregarMapa( "resources/mapas/mapaTeste.txt" );
     gw->mapa = carregarMapa( "resources/mapas/mapa01.txt" );
-    gw->jogador = criarJogador( GetScreenWidth() / 2 + 144, calcularAlturaMapa( gw->mapa ) - 196, 96, 96 );
+    gw->jogador = criarJogador( GetScreenWidth() / 2 + 144, calcularAlturaMapa( gw->mapa ) - 196, 48, 48 );
 
     gw->camera = (Camera2D) {
         .offset = { 0 },    // deslocamento relativo da câmera em relação ao alvo
