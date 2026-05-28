@@ -51,50 +51,60 @@ void desenharScore(GameWorld *gw){
     );
     Vector2 posValorScore = {112, 16};
     //centena de milhar
-    DrawTexturePro(
-        rm.texturaHUD,
-		(Rectangle){ (gw->jogador->quantidadePontos / 10000) * TAMANHO_TILES, rm.texturaHUD.height - TAMANHO_TILES * 3, TAMANHO_TILES, TAMANHO_TILES * 2 },
-		(Rectangle){ HUDSuperior.x + TAMANHO_TILES * 6, HUDSuperior.y, TAMANHO_TILES, TAMANHO_TILES * 2 },
-		(Vector2){ 0 },
-		0.f,
-        WHITE
-    );
+    if(gw->jogador->quantidadePontos > 9999){
+        DrawTexturePro(
+            rm.texturaHUD,
+            (Rectangle){ (gw->jogador->quantidadePontos / 10000) * TAMANHO_TILES, rm.texturaHUD.height - TAMANHO_TILES * 3, TAMANHO_TILES, TAMANHO_TILES * 2 },
+            (Rectangle){ HUDSuperior.x + TAMANHO_TILES * 6, HUDSuperior.y, TAMANHO_TILES, TAMANHO_TILES * 2 },
+            (Vector2){ 0 },
+            0.f,
+            WHITE
+        );
+    }
     //dezena de milhar
-    DrawTexturePro(
-        rm.texturaHUD,
-		(Rectangle){ (gw->jogador->quantidadePontos % 10000) / 1000 * TAMANHO_TILES, rm.texturaHUD.height - TAMANHO_TILES * 3, TAMANHO_TILES, TAMANHO_TILES * 2},
-		(Rectangle){ HUDSuperior.x + TAMANHO_TILES * 7, HUDSuperior.y, TAMANHO_TILES, TAMANHO_TILES * 2 },
-		(Vector2){ 0 },
-		0.f,
-        WHITE
-    );
+    if(gw->jogador->quantidadePontos > 999){
+        DrawTexturePro(
+            rm.texturaHUD,
+            (Rectangle){ (gw->jogador->quantidadePontos % 10000) / 1000 * TAMANHO_TILES, rm.texturaHUD.height - TAMANHO_TILES * 3, TAMANHO_TILES, TAMANHO_TILES * 2},
+            (Rectangle){ HUDSuperior.x + TAMANHO_TILES * 7, HUDSuperior.y, TAMANHO_TILES, TAMANHO_TILES * 2 },
+            (Vector2){ 0 },
+            0.f,
+            WHITE
+        );
+    }
     //milhar
-    DrawTexturePro(
-        rm.texturaHUD,
-		(Rectangle){ (gw->jogador->quantidadePontos % 1000) / 100 * TAMANHO_TILES, rm.texturaHUD.height - 24, TAMANHO_TILES, TAMANHO_TILES * 2 },
-		(Rectangle){ HUDSuperior.x + TAMANHO_TILES * 8, HUDSuperior.y, TAMANHO_TILES, TAMANHO_TILES * 2 },
-		(Vector2){ 0 },
-		0.f,
-        WHITE
-    );
+    if(gw->jogador->quantidadePontos > 99){
+        DrawTexturePro(
+            rm.texturaHUD,
+            (Rectangle){ (gw->jogador->quantidadePontos % 1000) / 100 * TAMANHO_TILES, rm.texturaHUD.height - 24, TAMANHO_TILES, TAMANHO_TILES * 2 },
+            (Rectangle){ HUDSuperior.x + TAMANHO_TILES * 8, HUDSuperior.y, TAMANHO_TILES, TAMANHO_TILES * 2 },
+            (Vector2){ 0 },
+            0.f,
+            WHITE
+        );
+    }
     //centena
-    DrawTexturePro(
-        rm.texturaHUD,
-		(Rectangle){ (gw->jogador->quantidadePontos % 100) / 10 * 8, rm.texturaHUD.height - TAMANHO_TILES * 3, TAMANHO_TILES, TAMANHO_TILES * 2 },
-		(Rectangle){ HUDSuperior.x + TAMANHO_TILES * 9, HUDSuperior.y, TAMANHO_TILES, TAMANHO_TILES * 2 },
-		(Vector2){ 0 },
-		0.f,
-        WHITE
-    );
+    if(gw->jogador->quantidadePontos > 9){
+        DrawTexturePro(
+            rm.texturaHUD,
+            (Rectangle){ (gw->jogador->quantidadePontos % 100) / 10 * 8, rm.texturaHUD.height - TAMANHO_TILES * 3, TAMANHO_TILES, TAMANHO_TILES * 2 },
+            (Rectangle){ HUDSuperior.x + TAMANHO_TILES * 9, HUDSuperior.y, TAMANHO_TILES, TAMANHO_TILES * 2 },
+            (Vector2){ 0 },
+            0.f,
+            WHITE
+        );
+    }
     //dezena
-    DrawTexturePro(
-        rm.texturaHUD,
-		(Rectangle){ (gw->jogador->quantidadePontos % 10) * 8, rm.texturaHUD.height - TAMANHO_TILES * 3, TAMANHO_TILES, TAMANHO_TILES * 2 },
-		(Rectangle){ HUDSuperior.x + TAMANHO_TILES * 10, HUDSuperior.y, TAMANHO_TILES, TAMANHO_TILES * 2 },
-		(Vector2){ 0 },
-		0.f,
-        WHITE
-    );
+    if(gw->jogador->quantidadePontos > 0){
+        DrawTexturePro(
+            rm.texturaHUD,
+            (Rectangle){ (gw->jogador->quantidadePontos % 10) * 8, rm.texturaHUD.height - TAMANHO_TILES * 3, TAMANHO_TILES, TAMANHO_TILES * 2 },
+            (Rectangle){ HUDSuperior.x + TAMANHO_TILES * 10, HUDSuperior.y, TAMANHO_TILES, TAMANHO_TILES * 2 },
+            (Vector2){ 0 },
+            0.f,
+            WHITE
+        );
+    }
     //unidade (0)
     DrawTexturePro(
         rm.texturaHUD,
@@ -109,8 +119,6 @@ void desenharScore(GameWorld *gw){
 void desenharTime(GameWorld *gw){
     int segundos = ((int) gw->jogador->quantidadeTempo % 60);
     int minutos = ((int) gw->jogador->quantidadeTempo / 60);
-
-    Vector2 posTextoTime = {96, 48};
 
     //texto
     DrawTexturePro(
@@ -151,7 +159,7 @@ void desenharTime(GameWorld *gw){
 }
 
 void desenharRings(GameWorld *gw){
-    Vector2 posTextoRings = {112, 80};
+    //texto
     DrawTexturePro(
         rm.texturaHUD,
         (Rectangle){piscar_ring * TAMANHO_TILES * 7, TAMANHO_TILES * 4, TAMANHO_TILES * 7, TAMANHO_TILES * 2},
@@ -161,23 +169,27 @@ void desenharRings(GameWorld *gw){
         WHITE
     );
     //centena
-    DrawTexturePro(
-        rm.texturaHUD,
-		(Rectangle){ (gw->jogador->quantidadeAneis / 100) * TAMANHO_TILES, rm.texturaHUD.height - TAMANHO_TILES * 3, TAMANHO_TILES, TAMANHO_TILES * 2 },
-		(Rectangle){ HUDSuperior.x + (TAMANHO_TILES * 6), HUDSuperior.y + (TAMANHO_TILES * 4), TAMANHO_TILES, TAMANHO_TILES * 2 },
-		(Vector2){ 0 },
-		0.f,
-        WHITE
-    );
+    if(gw->jogador->quantidadeAneis > 99){
+        DrawTexturePro(
+            rm.texturaHUD,
+            (Rectangle){ (gw->jogador->quantidadeAneis / 100) * TAMANHO_TILES, rm.texturaHUD.height - TAMANHO_TILES * 3, TAMANHO_TILES, TAMANHO_TILES * 2 },
+            (Rectangle){ HUDSuperior.x + (TAMANHO_TILES * 6), HUDSuperior.y + (TAMANHO_TILES * 4), TAMANHO_TILES, TAMANHO_TILES * 2 },
+            (Vector2){ 0 },
+            0.f,
+            WHITE
+        );
+    }
     //dezena
-    DrawTexturePro(
-        rm.texturaHUD,
-		(Rectangle){ (gw->jogador->quantidadeAneis % 100) / 10 * TAMANHO_TILES, rm.texturaHUD.height - TAMANHO_TILES * 3, TAMANHO_TILES, TAMANHO_TILES * 2 },
-		(Rectangle){ HUDSuperior.x + (TAMANHO_TILES * 7), HUDSuperior.y + (TAMANHO_TILES * 4), TAMANHO_TILES, TAMANHO_TILES * 2 },
-		(Vector2){ 0 },
-		0.f,
-        WHITE
-    );
+    if(gw->jogador->quantidadeAneis > 9){
+        DrawTexturePro(
+            rm.texturaHUD,
+            (Rectangle){ (gw->jogador->quantidadeAneis % 100) / 10 * TAMANHO_TILES, rm.texturaHUD.height - TAMANHO_TILES * 3, TAMANHO_TILES, TAMANHO_TILES * 2 },
+            (Rectangle){ HUDSuperior.x + (TAMANHO_TILES * 7), HUDSuperior.y + (TAMANHO_TILES * 4), TAMANHO_TILES, TAMANHO_TILES * 2 },
+            (Vector2){ 0 },
+            0.f,
+            WHITE
+        );
+    }
     //unidade
     DrawTexturePro(
         rm.texturaHUD,
@@ -201,13 +213,17 @@ void desenharLives(GameWorld *gw){
         WHITE
     );
     //dezena
-    DrawTexturePro(
-        rm.texturaHUD, 
-        (Rectangle){ gw->jogador->quantidadeVidas / 10 * TAMANHO_TILES, TAMANHO_TILES * 8, TAMANHO_TILES, TAMANHO_TILES },
-		(Rectangle){ HUDInferior.x + (TAMANHO_TILES * 4), HUDInferior.y + TAMANHO_TILES, TAMANHO_TILES, TAMANHO_TILES }, 
-        (Vector2){ 0 }, 
-        0.f, 
-        WHITE);
+    if(gw->jogador->quantidadeVidas > 9){
+        DrawTexturePro(
+            rm.texturaHUD, 
+            (Rectangle){ gw->jogador->quantidadeVidas / 10 * TAMANHO_TILES, TAMANHO_TILES * 8, TAMANHO_TILES, TAMANHO_TILES },
+            (Rectangle){ HUDInferior.x + (TAMANHO_TILES * 4), HUDInferior.y + TAMANHO_TILES, TAMANHO_TILES, TAMANHO_TILES }, 
+            (Vector2){ 0 }, 
+            0.f, 
+            WHITE
+        );
+    }
+    
     //unidade
 	DrawTexturePro(
         rm.texturaHUD, 
@@ -215,5 +231,6 @@ void desenharLives(GameWorld *gw){
 		(Rectangle){ HUDInferior.x + (TAMANHO_TILES * 5), HUDInferior.y + TAMANHO_TILES, TAMANHO_TILES, TAMANHO_TILES }, 
         (Vector2){ 0 },
         0.f,
-        WHITE);
+        WHITE
+    );
 }
