@@ -88,11 +88,45 @@ void drawGameWorld( GameWorld *gw ) {
     desenharJogador( gw->jogador );
     EndMode2D();
     
+	static bool piscar_time = false;
+	static bool piscar_ring = false;
+	static float antigo = 0;
+	if ((int)(gw->jogador->quantidadeTempo / .5f) != antigo)
+	{
+		antigo = (int)(gw->jogador->quantidadeTempo / .5f);
+		piscar_time = !piscar_time;
+		piscar_ring = !piscar_ring;
+	}
+
     //Textura do texto rings, score e time
+	// DrawTexturePro(	// Inteiro
+	//     rm.texturaHUD, 
+	//     (Rectangle){0, 0, 56, 48},
+	//     (Rectangle){16, 16, 56 * 2, 48 * 2},
+	//     (Vector2) {0},
+	//     0.0f,
+	//     WHITE
+	// );
     DrawTexturePro(
         rm.texturaHUD, 
-        (Rectangle){0, 0, 56, 48},
-        (Rectangle){16, 16, 56 * 2, 48 * 2},
+        (Rectangle){0, 0, 8 * 7, 8 * 2},
+        (Rectangle){16, 16, 8 * 7 * 2, 8 * 2 * 2},
+        (Vector2) {0},
+        0.0f,
+        WHITE
+    );
+    DrawTexturePro(
+        rm.texturaHUD, 
+        (Rectangle){piscar_time * 8 * 7, 16, 8 * 7, 8 * 2},
+        (Rectangle){16, 48, 8 * 7 * 2, 8 * 2 * 2},
+        (Vector2) {0},
+        0.0f,
+        WHITE
+    );
+    DrawTexturePro(
+        rm.texturaHUD, 
+        (Rectangle){piscar_ring * 8 * 7, 32, 8 * 7, 8 * 2},
+        (Rectangle){16, 80, 8 * 7 * 2, 8 * 2 * 2},
         (Vector2) {0},
         0.0f,
         WHITE
@@ -107,13 +141,17 @@ void drawGameWorld( GameWorld *gw ) {
         WHITE
     );
 
-    // criarQuadrosAnimacao( &novoJogador->animacaoParado, novoJogador->animacaoParado.quantidadeQuadros );
-	DrawTexturePro(rm.texturaHUD,
-			(Rectangle){ gw->jogador->quantidadeVidas * 8, rm.texturaHUD.height - 8, 8, 8 },
-			(Rectangle){ 100, 100, 8 * 2, 8 * 2 },
-			(Vector2){ 0 },
-			0.f, WHITE);
-	printf("%d\n", gw->jogador->quantidadeVidas);	// TODO: Temp
+	printf("%d\n", gw->jogador->quantidadeVidas);
+	int valor;
+	if (gw->jogador->quantidadeVidas % 10 * 8 < 0)
+		valor = 0;
+	else
+		valor = gw->jogador->quantidadeVidas % 10 * 8;
+	DrawTexturePro(rm.texturaHUD, (Rectangle){ valor, rm.texturaHUD.height - 8, 8, 8 },
+			(Rectangle){ 16 * 6, GetScreenHeight() - 32, 8 * 2, 8 * 2 }, (Vector2){ 0 }, 0.f, WHITE);
+
+	DrawTexturePro(rm.texturaHUD, (Rectangle){ gw->jogador->quantidadeVidas / 10 * 8, rm.texturaHUD.height - 8, 8, 8 },
+			(Rectangle){ 16 * 6 - 8 * 2, GetScreenHeight() - 32, 8 * 2, 8 * 2 }, (Vector2){ 0 }, 0.f, WHITE);
     
 
     int segundos = ((int) gw->jogador->quantidadeTempo % 60);
