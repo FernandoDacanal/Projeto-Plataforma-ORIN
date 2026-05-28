@@ -59,7 +59,7 @@ InimigoMotobug *criarInimigoMotobug( Rectangle ret, Color cor ) {
         1,               // separação
         false,           // de trás para frente
         (Rectangle) {    // retângulo de colisão padrão para cada quadro
-            2, 2, 68, 58
+            1, 1, 34, 29
         }
     );
 

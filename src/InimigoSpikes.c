@@ -59,7 +59,7 @@ InimigoSpikes *criarInimigoSpikes( Rectangle ret, Color cor ) {
         1,               // separação
         false,           // de trás para frente
         (Rectangle) {    // retângulo de colisão padrão para cada quadro
-            10, 20, 60, 40
+            5, 10, 30, 20
         }
     );
 
