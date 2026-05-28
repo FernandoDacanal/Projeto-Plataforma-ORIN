@@ -44,7 +44,7 @@ Mapa *carregarMapa( const char *caminhoArquivo ) {
     novoMapa->inimigos = NULL;
     novoMapa->quantidadeInimigos = 0;
 
-    novoMapa->dimensaoPadraoElementos = 48;
+    novoMapa->dimensaoPadraoElementos = 32;
     novoMapa->linhas = 0;
     novoMapa->colunas = 0;
     
@@ -117,8 +117,8 @@ Mapa *carregarMapa( const char *caminhoArquivo ) {
                                 (Rectangle) { 
                                     .x = novoMapa->dimensaoPadraoElementos * colunaAtual + 8, 
                                     .y = novoMapa->dimensaoPadraoElementos * linhaAtual + 5, 
-                                    .width = 32, 
-                                    .height = 32
+                                    .width = 16, 
+                                    .height = 16
                                 },
                                 YELLOW
                             );
@@ -136,8 +136,8 @@ Mapa *carregarMapa( const char *caminhoArquivo ) {
                                 (Rectangle) { 
                                     .x = novoMapa->dimensaoPadraoElementos * colunaAtual + 8, 
                                     .y = novoMapa->dimensaoPadraoElementos * linhaAtual + 5, 
-                                    .width = 32, 
-                                    .height = 32
+                                    .width = 16, 
+                                    .height = 16
                                 },
                                 RED
                             );
@@ -169,8 +169,8 @@ Mapa *carregarMapa( const char *caminhoArquivo ) {
                                 (Rectangle) { 
                                     .x = novoMapa->dimensaoPadraoElementos * colunaAtual, 
                                     .y = novoMapa->dimensaoPadraoElementos * linhaAtual - 12, 
-                                    .width = 80, 
-                                    .height = 60
+                                    .width = 40, 
+                                    .height = 30
                                 },
                                 YELLOW
                             );
@@ -186,8 +186,8 @@ Mapa *carregarMapa( const char *caminhoArquivo ) {
                                 (Rectangle) { 
                                     .x = novoMapa->dimensaoPadraoElementos * colunaAtual, 
                                     .y = novoMapa->dimensaoPadraoElementos * linhaAtual - 21, 
-                                    .width = 80, 
-                                    .height = 60
+                                    .width = 40, 
+                                    .height = 30
                                 },
                                 YELLOW
                             );
