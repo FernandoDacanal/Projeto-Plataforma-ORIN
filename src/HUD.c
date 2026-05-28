@@ -163,8 +163,8 @@ void desenharRings(GameWorld *gw){
     //centena
     DrawTexturePro(
         rm.texturaHUD,
-		(Rectangle){ (gw->jogador->quantidadeAneis / 100) * 8, rm.texturaHUD.height - 24, 8, 16 },
-		(Rectangle){ posTextoRings.x, posTextoRings.y, 8 * 2, 16 * 2 },
+		(Rectangle){ (gw->jogador->quantidadeAneis / 100) * TAMANHO_TILES, rm.texturaHUD.height - TAMANHO_TILES * 3, TAMANHO_TILES, TAMANHO_TILES * 2 },
+		(Rectangle){ HUDSuperior.x + (TAMANHO_TILES * 6), HUDSuperior.y + (TAMANHO_TILES * 4), TAMANHO_TILES, TAMANHO_TILES * 2 },
 		(Vector2){ 0 },
 		0.f,
         WHITE
@@ -172,8 +172,8 @@ void desenharRings(GameWorld *gw){
     //dezena
     DrawTexturePro(
         rm.texturaHUD,
-		(Rectangle){ (gw->jogador->quantidadeAneis % 100) / 10 * 8, rm.texturaHUD.height - 24, 8, 16 },
-		(Rectangle){ posTextoRings.x + 16, posTextoRings.y, 8 * 2, 16 * 2 },
+		(Rectangle){ (gw->jogador->quantidadeAneis % 100) / 10 * TAMANHO_TILES, rm.texturaHUD.height - TAMANHO_TILES * 3, TAMANHO_TILES, TAMANHO_TILES * 2 },
+		(Rectangle){ HUDSuperior.x + (TAMANHO_TILES * 7), HUDSuperior.y + (TAMANHO_TILES * 4), TAMANHO_TILES, TAMANHO_TILES * 2 },
 		(Vector2){ 0 },
 		0.f,
         WHITE
@@ -181,8 +181,8 @@ void desenharRings(GameWorld *gw){
     //unidade
     DrawTexturePro(
         rm.texturaHUD,
-		(Rectangle){ (gw->jogador->quantidadeAneis % 10) * 8, rm.texturaHUD.height - 24, 8, 16 },
-		(Rectangle){ posTextoRings.x + 16 * 2, posTextoRings.y, 8 * 2, 16 * 2 },
+		(Rectangle){ (gw->jogador->quantidadeAneis % 10) * TAMANHO_TILES, rm.texturaHUD.height - TAMANHO_TILES * 3, TAMANHO_TILES, TAMANHO_TILES * 2 },
+		(Rectangle){ HUDSuperior.x + (TAMANHO_TILES * 8), HUDSuperior.y + (TAMANHO_TILES * 4), TAMANHO_TILES, TAMANHO_TILES * 2 },
 		(Vector2){ 0 },
 		0.f,
         WHITE
@@ -190,11 +190,12 @@ void desenharRings(GameWorld *gw){
 }
 
 void desenharLives(GameWorld *gw){
+    HUDInferior.y = GetScreenHeight() - TAMANHO_TILES * 3;
     //texto
     DrawTexturePro(
-        rm.texturaHUD, 
-        (Rectangle){56, 0, 48, 16},
-        (Rectangle){16, GetScreenHeight() - 48, 48 * 2, 16 * 2},
+        rm.texturaHUD,
+        (Rectangle){56, 0, TAMANHO_TILES * 6, TAMANHO_TILES * 2},
+        (Rectangle){HUDInferior.x, HUDInferior.y, TAMANHO_TILES * 6, TAMANHO_TILES * 2},
         (Vector2) {0},
         0.0f,
         WHITE
@@ -202,16 +203,16 @@ void desenharLives(GameWorld *gw){
     //dezena
     DrawTexturePro(
         rm.texturaHUD, 
-        (Rectangle){ gw->jogador->quantidadeVidas / 10 * 8, rm.texturaHUD.height - 8, 8, 8 },
-		(Rectangle){ 16 * 6 - 8 * 2, GetScreenHeight() - 32, 8 * 2, 8 * 2 }, 
+        (Rectangle){ gw->jogador->quantidadeVidas / 10 * TAMANHO_TILES, TAMANHO_TILES * 8, TAMANHO_TILES, TAMANHO_TILES },
+		(Rectangle){ HUDInferior.x + (TAMANHO_TILES * 4), HUDInferior.y + TAMANHO_TILES, TAMANHO_TILES, TAMANHO_TILES }, 
         (Vector2){ 0 }, 
         0.f, 
         WHITE);
     //unidade
 	DrawTexturePro(
         rm.texturaHUD, 
-        (Rectangle){ gw->jogador->quantidadeVidas % 10 * 8, rm.texturaHUD.height - 8, 8, 8 },
-		(Rectangle){ 16 * 6, GetScreenHeight() - 32, 8 * 2, 8 * 2 }, 
+        (Rectangle){ gw->jogador->quantidadeVidas % 10 * TAMANHO_TILES, TAMANHO_TILES * 8, TAMANHO_TILES, TAMANHO_TILES },
+		(Rectangle){ HUDInferior.x + (TAMANHO_TILES * 5), HUDInferior.y + TAMANHO_TILES, TAMANHO_TILES, TAMANHO_TILES }, 
         (Vector2){ 0 },
         0.f,
         WHITE);

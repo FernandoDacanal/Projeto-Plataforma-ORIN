@@ -42,6 +42,7 @@ GameWindow *createGameWindow(
         int height, 
         const char *title, 
         int targetFPS,
+        int escala,
         bool antialiasing, 
         bool resizable, 
         bool fullScreen,

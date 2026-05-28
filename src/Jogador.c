@@ -53,7 +53,7 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
     novoJogador->velAndando = 200;
     novoJogador->velAndandoRapido = 400;
     novoJogador->velCorrendo = 800;
-    novoJogador->velPulo = -550;
+    novoJogador->velPulo = -450;
     novoJogador->velMaxQueda = 600;
 
     novoJogador->aceleracao = 200;
