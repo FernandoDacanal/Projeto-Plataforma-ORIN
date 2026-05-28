@@ -355,7 +355,6 @@ void atualizarJogador( Jogador *j, GameWorld *gw, float delta ) {
         j->quantidadeTempo += delta;
     }
     if(j->quantidadeAneis > 0 && j->quantidadeAneis > j->quantidadeAneisParaVidas - 1){
-    // if(j->quantidadeAneis > 0 && j->quantidadeAneis % j->quantidadeAneisParaVidas == 0){
         j->quantidadeVidas++;
         j->quantidadeAneisParaVidas += 100;
     }
@@ -364,6 +363,9 @@ void atualizarJogador( Jogador *j, GameWorld *gw, float delta ) {
     }
     if(j->quantidadeVidas >= 99){
         j->quantidadeVidas = 99;
+    }
+    if(j->quantidadePontos >= 99999){
+        j->quantidadePontos = 99999;
     }
 
     
@@ -609,9 +611,9 @@ static void resolverColisaoJogadorItensMapa( Jogador *j, Mapa *mapa ) {
             if ( CheckCollisionRecs( retColCalculado, retColItemCalculado ) ) {
                 itemAnelVerm->estado = ESTADO_ITEM_ANELVERM_COLETADO;
                 j->quantidadeAneis += 10;
+                j->quantidadePontos += 1000;
                 PlaySound( rm.somAnel );
             }
-
         }
 
         el = el->proximo;
@@ -676,9 +678,7 @@ static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
                 if ( j->estado >= ESTADO_JOGADOR_PULANDO && j->estado <= ESTADO_JOGADOR_PULANDO_CORRENDO ) {
                     j->vel.y = j->velPulo;
                     motobug->estado = ESTADO_INIMIGO_MOTOBUG_MORRENDO;
-                    if(j->quantidadePontos <= 99999){
-                        j->quantidadePontos += 10;
-                    }
+                    j->quantidadePontos += 10;
                     PlaySound( rm.somHitInimigo );
                 } else if ( !j->invulneravel ) {
                     if ( j->quantidadeAneis > 0 ) {
@@ -726,9 +726,7 @@ static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
                 if ( j->estado >= ESTADO_JOGADOR_PULANDO && j->estado <= ESTADO_JOGADOR_PULANDO_CORRENDO ) {
                     j->vel.y = j->velPulo;
                     spikes->estado = ESTADO_INIMIGO_SPIKES_MORRENDO;
-                    if(j->quantidadePontos <= 99999){
-                        j->quantidadePontos += 10;
-                    }
+                    j->quantidadePontos += 10;
                     PlaySound( rm.somHitInimigo );
                 } else if ( !j->invulneravel ) {
                     if ( j->quantidadeAneis > 0 ) {

@@ -88,40 +88,162 @@ void drawGameWorld( GameWorld *gw ) {
     desenharJogador( gw->jogador );
     EndMode2D();
     
-    //Textura do texto rings, score e time
-    DrawTexturePro(
-        rm.texturaHUD, 
-        (Rectangle){0, 0, 56, 48},
-        (Rectangle){16, 16, 56 * 2, 48 * 2},
-        (Vector2) {0},
-        0.0f,
-        WHITE
-    );
-    //Textura do texto lives
-    DrawTexturePro(
-        rm.texturaHUD, 
-        (Rectangle){56, 0, 48, 16},
-        (Rectangle){16, GetScreenHeight() - 48, 48 * 2, 16 * 2},
-        (Vector2) {0},
-        0.0f,
-        WHITE
-    );
-
-    // criarQuadrosAnimacao( &novoJogador->animacaoParado, novoJogador->animacaoParado.quantidadeQuadros );
-	DrawTexturePro(rm.texturaHUD,
-			(Rectangle){ gw->jogador->quantidadeVidas * 8, rm.texturaHUD.height - 8, 8, 8 },
-			(Rectangle){ 100, 100, 8 * 2, 8 * 2 },
-			(Vector2){ 0 },
-			0.f, WHITE);
-	printf("%d\n", gw->jogador->quantidadeVidas);	// TODO: Temp
-    
-
     int segundos = ((int) gw->jogador->quantidadeTempo % 60);
     int minutos = ((int) gw->jogador->quantidadeTempo / 60);
 
-    //ultimo digito da quantidade de pontos é 0 e o máximo de dígitos é 6
-    //maximo digitos da quantidade de aneis é 3 (999)
-    //maximo digitos vidas é 99
+    
+    int escala = 2;
+    int esp = 8 * escala;
+    Vector2 posTextoScore = {112, 16};
+    Vector2 posTextoTime = {96, 48};
+    Vector2 posTextoRings = {112, 80};
+    Vector2 posTextoLives = {112, 128};
+
+    //rings score time (texto)
+    DrawTexturePro(
+        rm.texturaHUD, 
+        (Rectangle){0, 0, 56, 48},
+        (Rectangle){16, 16, 56 * escala, 48 * escala},
+        (Vector2) {0},
+        0.0f,
+        WHITE
+    );
+    //Inicio desenho HUD pontos
+    //centena de milhar
+    DrawTexturePro(
+        rm.texturaHUD,
+		(Rectangle){ (gw->jogador->quantidadePontos / 10000) * 8, rm.texturaHUD.height - 24, 8, 16 },
+		(Rectangle){ posTextoScore.x, posTextoScore.y, 8 * escala, 16 * escala },
+		(Vector2){ 0 },
+		0.f,
+        WHITE
+    );
+    //dezena de milhar
+    DrawTexturePro(
+        rm.texturaHUD,
+		(Rectangle){ (gw->jogador->quantidadePontos % 10000) / 1000 * 8, rm.texturaHUD.height - 24, 8, 16 },
+		(Rectangle){ posTextoScore.x + esp, posTextoScore.y, 8 * escala, 16 * escala },
+		(Vector2){ 0 },
+		0.f,
+        WHITE
+    );
+    //milhar
+    DrawTexturePro(
+        rm.texturaHUD,
+		(Rectangle){ (gw->jogador->quantidadePontos % 1000) / 100 * 8, rm.texturaHUD.height - 24, 8, 16 },
+		(Rectangle){ posTextoScore.x + (esp * 2), posTextoScore.y, 8 * escala, 16 * escala },
+		(Vector2){ 0 },
+		0.f,
+        WHITE
+    );
+    //centena
+    DrawTexturePro(
+        rm.texturaHUD,
+		(Rectangle){ (gw->jogador->quantidadePontos % 100) / 10 * 8, rm.texturaHUD.height - 24, 8, 16 },
+		(Rectangle){ posTextoScore.x + (esp * 3), posTextoScore.y, 8 * escala, 16 * escala },
+		(Vector2){ 0 },
+		0.f,
+        WHITE
+    );
+    //dezena
+    DrawTexturePro(
+        rm.texturaHUD,
+		(Rectangle){ (gw->jogador->quantidadePontos % 10) * 8, rm.texturaHUD.height - 24, 8, 16 },
+		(Rectangle){ posTextoScore.x + (esp * 4), posTextoScore.y, 8 * 2, 16 * 2 },
+		(Vector2){ 0 },
+		0.f,
+        WHITE
+    );
+    //unidade (0)
+    DrawTexturePro(
+        rm.texturaHUD,
+		(Rectangle){ 0, rm.texturaHUD.height - 24, 8, 16 },
+		(Rectangle){ posTextoScore.x + (esp * 5), posTextoScore.y, 8 * 2, 16 * 2 },
+		(Vector2){ 0 },
+		0.f,
+        WHITE
+    );
+    //Fim desenho pontos
+
+    //Inicio do desenho do HUD tempo
+    //minutos
+    DrawTexturePro(
+        rm.texturaHUD,
+		(Rectangle){ minutos * 8, rm.texturaHUD.height - 24, 8, 16 },
+		(Rectangle){ posTextoTime.x, posTextoTime.y, 8 * escala, 16 * escala },
+		(Vector2){ 0 },
+		0.f,
+        WHITE
+    );
+    //dezenas de segundos
+    DrawTexturePro(
+        rm.texturaHUD,
+		(Rectangle){ segundos / 10 * 8, rm.texturaHUD.height - 24, 8, 16 },
+		(Rectangle){ posTextoTime.x + esp * 2, posTextoTime.y, 8 * escala, 16 * escala },
+		(Vector2){ 0 },
+		0.f,
+        WHITE
+    );
+    //unidades de segundos
+    DrawTexturePro(
+        rm.texturaHUD,
+		(Rectangle){ segundos % 10 * 8, rm.texturaHUD.height - 24, 8, 16 },
+		(Rectangle){ posTextoTime.x + esp * 3, posTextoTime.y, 8 * escala, 16 * escala },
+		(Vector2){ 0 },
+		0.f,
+        WHITE
+    );
+    //Fim desenho tempo
+    
+    //Inicio desenho HUD aneis
+    //centena
+    DrawTexturePro(
+        rm.texturaHUD,
+		(Rectangle){ (gw->jogador->quantidadeAneis / 100) * 8, rm.texturaHUD.height - 24, 8, 16 },
+		(Rectangle){ posTextoRings.x, posTextoRings.y, 8 * escala, 16 * escala },
+		(Vector2){ 0 },
+		0.f,
+        WHITE
+    );
+    //dezena
+    DrawTexturePro(
+        rm.texturaHUD,
+		(Rectangle){ (gw->jogador->quantidadeAneis % 100) / 10 * 8, rm.texturaHUD.height - 24, 8, 16 },
+		(Rectangle){ posTextoRings.x + esp, posTextoRings.y, 8 * escala, 16 * escala },
+		(Vector2){ 0 },
+		0.f,
+        WHITE
+    );
+    //unidade
+    DrawTexturePro(
+        rm.texturaHUD,
+		(Rectangle){ (gw->jogador->quantidadeAneis % 10) * 8, rm.texturaHUD.height - 24, 8, 16 },
+		(Rectangle){ posTextoRings.x + esp * 2, posTextoRings.y, 8 * escala, 16 * escala },
+		(Vector2){ 0 },
+		0.f,
+        WHITE
+    );
+
+    //Inicio desenhar vidas
+    //dezenas
+    DrawTexturePro(
+        rm.texturaHUD, 
+        (Rectangle){56, 0, 48, 16},
+        (Rectangle){16, GetScreenHeight() - 48, 48 * escala, 16 * escala},
+        (Vector2) {0},
+        0.0f,
+        WHITE
+    );
+    //unidades
+	DrawTexturePro(
+        rm.texturaHUD,
+		(Rectangle){ gw->jogador->quantidadeVidas * 8, rm.texturaHUD.height - 8, 8, 8 },
+		(Rectangle){ 100, 100, 8 * escala, 8 * escala },
+		(Vector2){ 0 },
+		0.f, 
+        WHITE
+    );
+    //Final desenhar vidas
     
     /*
     DrawText( TextFormat( "Anéis: %d", gw->jogador->quantidadeAneis ), 10, 10, 20, ORANGE );

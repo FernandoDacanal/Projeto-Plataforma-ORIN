@@ -119,7 +119,7 @@ typedef struct Jogador {
     int quantidadePulos;
     int quantidadeMaxPulos;
 
-    long int quantidadePontos;
+    int quantidadePontos;
     float quantidadeTempo;
     int quantidadeAneis;
     int quantidadeVidas;
