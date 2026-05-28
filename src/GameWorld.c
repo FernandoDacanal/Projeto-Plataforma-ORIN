@@ -364,7 +364,7 @@ static void inicializar( GameWorld *gw ) {
         .rotation = 0.0f,   // rotação da câmera em graus. o pivô é o alvo.
         .zoom = 1.0f        // zoom da câmera. 1.0f significa sem escala
     };
-
+//tese
     gw->gravidade = 900;
 
 }
