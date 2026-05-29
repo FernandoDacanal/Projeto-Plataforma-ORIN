@@ -33,7 +33,7 @@ static void resolverColisaoJogadorObstaculosMapaY( Jogador *j, Mapa *mapa );
 static void resolverColisaoJogadorItensMapa( Jogador *j, Mapa *mapa );
 static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa );
 
-static const bool MOSTRAR_RETANGULOS = false;
+static const bool MOSTRAR_RETANGULOS = true;
 
 /**
  * @brief Cria uma instância alocada dinamicamente da struct Jogador.
@@ -95,12 +95,12 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
         novoJogador->animacaoParado.quadros,
         novoJogador->animacaoParado.quantidadeQuadros,
         1000,            // duração padrão para todos os quadros
-        24, 251,         // início
-        48, 48,          // dimensões
-        4,               // separação
+        246, 3,         // início
+        24, 32,          // dimensões
+        3,               // separação
         false,           // de trás para frente
         (Rectangle) {    // retângulo de colisão padrão para cada quadro
-            16, 10, 21, 38
+            0, 0, 24, 32
             //18, 20, 54, 76
         }
     );
@@ -118,7 +118,7 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
         80,              // duração padrão para cada quadro
         664, 324,        // início
         48, 48,          // dimensões
-        4,               // separação
+        3,               // separação
         false,           // de trás para frente
         (Rectangle) {    // retângulo de colisão padrão para cada quadro
             16, 10, 21, 38

@@ -18,10 +18,10 @@ ResourceManager rm = { 0 };
 void loadResourcesResourceManager( void ) {
 
     rm.texturaJogador = carregarTexturaAlterandoCores( 
-        "resources/imagens/sprites/sonic.png",
+        "resources/imagens/sprites/sonic32x.png",
         (Color[]) {
-            { 37, 102, 26, 255 },
-            { 13, 72, 7, 255 },
+            { 255, 170, 255, 255 },
+            { 0, 72, 0, 255 },
         },
         (Color[]) {
             BLANK,

@@ -12,7 +12,12 @@ No momento apenas possui um nível e 2 tipos de itens, porém haverá mais coisa
 - [ ] Mais 2 itens
 - [ ] Mais 2 inimigos
 
-## Opicionais
-- [x] Texto tremer
-- [ ] Pular na parede*
+## Ideias
+**Opções de Movimentação/Combate**
+- [ ] Pular na parede
+- [ ] Soco, chute e mergulhar
+- [ ] Pulo triplo
+- [ ] Ground Pound
+- [ ] Botão de correr
+
 - [ ] Multiplayer*
