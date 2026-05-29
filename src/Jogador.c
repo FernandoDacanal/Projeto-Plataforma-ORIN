@@ -358,15 +358,15 @@ void atualizarJogador( Jogador *j, GameWorld *gw, float delta ) {
         j->quantidadeVidas++;
         j->quantidadeAneisParaVidas += 100;
     }
-    if(j->quantidadeAneis >= 999){
-        j->quantidadeAneis = 999;
-    }
+    // if(j->quantidadeAneis >= 999){
+    //     j->quantidadeAneis = 999;
+    // }
     if(j->quantidadeVidas >= 99){
         j->quantidadeVidas = 99;
     }
-    if(j->quantidadePontos >= 99999){
-        j->quantidadePontos = 99999;
-    }
+    // if(j->quantidadePontos >= 99999){
+    //     j->quantidadePontos = 99999;
+    // }
 
     
     if ( j->invulneravel ) {

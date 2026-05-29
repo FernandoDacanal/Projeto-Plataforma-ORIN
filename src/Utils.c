@@ -26,6 +26,15 @@ Texture2D carregarTexturaAlterandoCores( const char *caminhoArquivo, Color *core
 
 int tremer(int limite)
 {
-	int retorno = rand() % (limite * 2);
-	return retorno > limite ? -retorno + limite : retorno;
+	// int retorno = rand() % (limite * 2);
+	int retorno = rand() % limite;
+	//retorno = retorno > limite ? -retorno + limite : retorno;
+	int negativo = rand() % 2;
+	if (negativo != 0)
+		retorno = -retorno;
+	TraceLog(5, "%i", retorno);
+	//static int somatorio = 0;
+	//somatorio += retorno;
+	//TraceLog(5, "%i", somatorio);
+	return retorno;
 }

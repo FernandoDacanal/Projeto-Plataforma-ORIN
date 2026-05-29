@@ -32,6 +32,9 @@ void desenharScore( GameWorld *gw ) {
         HUD_SCORE_SRC,
         HUDSuperior
     );
+    if(gw->jogador->quantidadePontos >= 99999){
+        gw->jogador->quantidadePontos = 99999;
+    }
     desenharNumero(
         gw->jogador->quantidadePontos * 10,
         (Vector2){
@@ -81,16 +84,22 @@ void desenharTime( GameWorld *gw ) {
 
 void desenharRings( GameWorld *gw ) {
 
-    int tremor = 0;
+    int tremor1 = 0;
+    int tremor2 = 0;
 
     if ( gw->jogador->quantidadeAneis == 0 ) {
-        tremor = tremer( 3 );
+        tremor1 = tremer( 200 );
+        tremor2 = tremer( 200 );
     }
 
     Vector2 pos = {
-        HUDSuperior.x + tremor,
-        HUDSuperior.y + TAMANHO_TILES * 4 + tremor
+        HUDSuperior.x + tremor1,
+        HUDSuperior.y + TAMANHO_TILES * 4 + tremor2
     };
+
+    if(gw->jogador->quantidadeAneis >= 999){
+        gw->jogador->quantidadeAneis = 999;
+    }
 
     desenharSpriteHUD(
         piscar_ring? HUD_RING_FLASH_SRC : HUD_RING_SRC,
