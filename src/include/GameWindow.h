@@ -11,8 +11,8 @@
 
 #include "GameWorld.h"
 
-#define LARGURA_VIRTUAL 480
-#define ALTURA_VIRTUAL 270
+#define LARGURA_VIRTUAL 320
+#define ALTURA_VIRTUAL 180
 
 typedef struct GameWindow {
 
