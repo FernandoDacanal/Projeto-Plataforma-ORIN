@@ -10,6 +10,7 @@
 #include <stdlib.h>
 
 #include "include/GameWorld.h"
+#include "include/GameWindow.h"
 #include "include/Jogador.h"
 // #include "include/Macros.h"
 #include "include/Mapa.h"
@@ -83,7 +84,6 @@ void updateGameWorld( GameWorld *gw, float delta ) {
  * @brief Desenha o estado do jogo.
  */
 void drawGameWorld( GameWorld *gw ) {
-    BeginDrawing();
 	ClearBackground( (Color) { 36, 0, 180, 255 } );
 
     //elementos alterados pela camera
@@ -111,8 +111,6 @@ void drawGameWorld( GameWorld *gw ) {
 	DrawText(TextFormat("Tempo: %.0f", gw->jogador->quantidadeTempo), 10, 90, 20, ORANGE);
 	*/
 
-	EndDrawing();
-
 }
 
 static void desenharFundo( GameWorld *gw ) {
@@ -134,8 +132,8 @@ static void atualizarCamera( GameWorld *gw ) {
     Jogador *j = gw->jogador;
     Camera2D *c = &gw->camera;
 
-    c->offset.x = (int)(GetScreenWidth() / 2);
-    c->offset.y = (int)(GetScreenHeight() / 2);
+    c->offset.x = (int)(LARGURA_VIRTUAL / 2);
+    c->offset.y = (int)(ALTURA_VIRTUAL / 2);
 
     // O target é arredondado para o inteiro mais próximo para garantir que a
     // translação da câmera ocorra sempre em posições inteiras de pixel. Sem esse
@@ -144,9 +142,9 @@ static void atualizarCamera( GameWorld *gw ) {
     c->target.x = roundf( j->ret.x + j->ret.width / 2.0f );
     c->target.y = roundf( j->ret.y + j->ret.height / 2.0f );
 
-    int minX = GetScreenWidth() / 2;
-    int maxX = calcularLarguraMapa( gw->mapa ) - GetScreenWidth() / 2;
-    int maxY = calcularAlturaMapa( gw->mapa ) - GetScreenHeight() / 2;
+    int minX = LARGURA_VIRTUAL / 2;
+    int maxX = calcularLarguraMapa( gw->mapa ) - LARGURA_VIRTUAL / 2;
+    int maxY = calcularAlturaMapa( gw->mapa ) - ALTURA_VIRTUAL / 2;
 
     if ( c->target.x < minX ) {
         c->target.x = minX;

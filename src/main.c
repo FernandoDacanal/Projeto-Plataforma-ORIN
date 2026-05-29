@@ -15,8 +15,8 @@
 int main( void ) {
 
     GameWindow *gameWindow = createGameWindow(
-        320,             // width
-        180,             // height
+        640,             // width
+        360,             // height
         "Jogo de Sonic", // title
         60,              // target FPS
         false,           // antialiasing

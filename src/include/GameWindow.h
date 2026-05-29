@@ -11,6 +11,9 @@
 
 #include "GameWorld.h"
 
+#define LARGURA_VIRTUAL 320
+#define ALTURA_VIRTUAL 180
+
 typedef struct GameWindow {
 
     int width;
@@ -27,6 +30,8 @@ typedef struct GameWindow {
     bool alwaysRun;
     bool loadResources;
     bool initAudio;
+
+    RenderTexture2D renderTarget;
 
     GameWorld *gw;
 

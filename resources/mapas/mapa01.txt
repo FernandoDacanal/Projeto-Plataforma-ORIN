@@ -14,4 +14,3 @@ C               M                                      bbbbbbbbbbbbbbbbbbbbbbbbb
 C                                                      bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbE
 C   1     M            M   0    0                      bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbE
 FBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBG
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA

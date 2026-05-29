@@ -7,6 +7,8 @@
  */
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include <math.h>
 
 #include "include/GameWindow.h"
 #include "include/GameWorld.h"
@@ -93,6 +95,16 @@ void initGameWindow( GameWindow *gameWindow ) {
 
         InitWindow( gameWindow->width, gameWindow->height, gameWindow->title );
 
+        gameWindow->renderTarget = LoadRenderTexture(
+            LARGURA_VIRTUAL,
+            ALTURA_VIRTUAL
+        );
+
+        SetTextureFilter(
+            gameWindow->renderTarget.texture,
+            TEXTURE_FILTER_POINT
+        );
+
         if ( gameWindow->initAudio ) {
             InitAudioDevice();
         }
@@ -107,7 +119,6 @@ void initGameWindow( GameWindow *gameWindow ) {
 
         // game loop
         while ( !WindowShouldClose() ) {
-
             // O delta time é limitado a 1/30s para evitar que frames muito
             // longos (ex.: lentidão na inicialização) causem deslocamentos
             // grandes demais, fazendo personagens atravessarem obstáculos
@@ -118,7 +129,37 @@ void initGameWindow( GameWindow *gameWindow ) {
             }
 
             updateGameWorld( gameWindow->gw, delta );
+
+            BeginTextureMode( gameWindow->renderTarget );
             drawGameWorld( gameWindow->gw );
+            EndTextureMode();
+
+            BeginDrawing();
+            ClearBackground( BLACK );
+            int escala = (int)fminf(
+                (float)GetScreenWidth() / LARGURA_VIRTUAL,
+                (float)GetScreenHeight() / ALTURA_VIRTUAL
+            );
+            if (escala < 1) escala = 1;
+            int larguraFinal = LARGURA_VIRTUAL * escala;
+            int alturaFinal = ALTURA_VIRTUAL * escala;
+            int offsetX = (GetScreenWidth() - larguraFinal) / 2;
+            int offsetY = (GetScreenHeight() - alturaFinal) / 2;
+
+            DrawTexturePro(
+                gameWindow->renderTarget.texture,
+                (Rectangle){0, 0, LARGURA_VIRTUAL, -ALTURA_VIRTUAL},
+                (Rectangle){offsetX, offsetY, larguraFinal, alturaFinal},
+                (Vector2){0,0},
+                0,
+                WHITE
+            );
+            if(IsKeyPressed(KEY_F11)){
+                ToggleFullscreen();
+            }
+            
+
+            EndDrawing();
         }
 
         if ( gameWindow->loadResources ) {
