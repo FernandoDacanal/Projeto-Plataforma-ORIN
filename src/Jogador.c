@@ -105,7 +105,7 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
         }
     );
 
-    novoJogador->animacaoAndando.quantidadeQuadros = 8;
+    novoJogador->animacaoAndando.quantidadeQuadros = 6;
     novoJogador->animacaoAndando.quadroAtual = 0;
     novoJogador->animacaoAndando.contadorTempoQuadro = 0.0f;
     novoJogador->animacaoAndando.pararNoUltimoQuadro = false;
@@ -116,17 +116,17 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
         novoJogador->animacaoAndando.quadros,
         novoJogador->animacaoAndando.quantidadeQuadros,
         80,              // duração padrão para cada quadro
-        664, 324,        // início
-        48, 48,          // dimensões
+        3, 3,        // início
+        24, 32,          // dimensões
         3,               // separação
         false,           // de trás para frente
         (Rectangle) {    // retângulo de colisão padrão para cada quadro
-            16, 10, 21, 38
+            0, 0, 24, 32
             //18, 20, 54, 76
         }
     );
 
-    novoJogador->animacaoAndandoRapido.quantidadeQuadros = 8;
+    novoJogador->animacaoAndandoRapido.quantidadeQuadros = 6;
     novoJogador->animacaoAndandoRapido.quadroAtual = 0;
     novoJogador->animacaoAndandoRapido.contadorTempoQuadro = 0.0f;
     novoJogador->animacaoAndandoRapido.pararNoUltimoQuadro = false;
@@ -137,12 +137,12 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
         novoJogador->animacaoAndandoRapido.quadros,
         novoJogador->animacaoAndandoRapido.quantidadeQuadros,
         40,              // duração padrão para cada quadro
-        664, 324,        // início
-        48, 48,          // dimensões
-        4,               // separação
+        3, 3,        // início
+        24, 32,          // dimensões
+        3,               // separação
         false,           // de trás para frente
         (Rectangle) {    // retângulo de colisão padrão para cada quadro
-            16, 10, 21, 38
+            0, 0, 24, 32
             //18, 20, 54, 76
         }
     );
@@ -158,12 +158,12 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
         novoJogador->animacaoCorrendo.quadros,
         novoJogador->animacaoCorrendo.quantidadeQuadros,
         20,              // duração padrão para cada quadro
-        24, 397,         // início
-        48, 48,          // dimensões
-        4,               // separação
+        300, 2,         // início
+        24, 32,          // dimensões
+        3,               // separação
         false,           // de trás para frente
         (Rectangle) {    // retângulo de colisão padrão para cada quadro
-            16, 10, 21, 38
+            0, 0, 24, 32
             //18, 20, 54, 76
         }
     );
@@ -179,13 +179,12 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
         novoJogador->animacaoPulando.quadros,
         novoJogador->animacaoPulando.quantidadeQuadros,
         40,              // duração padrão para cada quadro
-        248, 397,        // início
-        48, 48,          // dimensões
-        4,               // separação
+        3, 46,        // início
+        24, 24,          // dimensões
+        3,               // separação
         false,           // de trás para frente
         (Rectangle) {    // retângulo de colisão padrão para cada quadro
-            16, 23, 21, 25
-            //18, 36, 60, 60
+            0, 8, 24, 24
         }
     );
 
@@ -201,11 +200,11 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
         novoJogador->animacaoPulandoRapido.quantidadeQuadros,
         25,              // duração padrão para cada quadro
         248, 397,        // início
-        48, 48,          // dimensões
+        24, 24,          // dimensões
         4,               // separação
         false,           // de trás para frente
         (Rectangle) {    // retângulo de colisão padrão para cada quadro
-            16, 23, 21, 25
+            0, 8, 24, 24
             //18, 36, 60, 60
         }
     );
@@ -222,11 +221,11 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
         novoJogador->animacaoPulandoCorrendo.quantidadeQuadros,
         15,              // duração padrão para cada quadro
         248, 397,        // início
-        48, 48,          // dimensões
+        24, 24,          // dimensões
         4,               // separação
         false,           // de trás para frente
         (Rectangle) {    // retângulo de colisão padrão para cada quadro
-            16, 23, 21, 25
+            0, 8, 24, 24
             //18, 36, 60, 60
         }
     );
