@@ -32,7 +32,7 @@ int tremer(int limite)
 	int negativo = rand() % 2;
 	if (negativo != 0)
 		retorno = -retorno;
-	TraceLog(5, "%i", retorno);
+	// TraceLog(5, "%i", retorno);
 	//static int somatorio = 0;
 	//somatorio += retorno;
 	//TraceLog(5, "%i", somatorio);

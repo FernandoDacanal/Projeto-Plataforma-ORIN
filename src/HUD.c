@@ -88,8 +88,8 @@ void desenharRings( GameWorld *gw ) {
     int tremor2 = 0;
 
     if ( gw->jogador->quantidadeAneis == 0 ) {
-        tremor1 = tremer( 200 );
-        tremor2 = tremer( 200 );
+        tremor1 = tremer( 2 );
+        tremor2 = tremer( 2 );
     }
 
     Vector2 pos = {
