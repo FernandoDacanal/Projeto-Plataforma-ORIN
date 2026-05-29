@@ -44,7 +44,7 @@ Mapa *carregarMapa( const char *caminhoArquivo ) {
     novoMapa->inimigos = NULL;
     novoMapa->quantidadeInimigos = 0;
 
-    novoMapa->dimensaoPadraoElementos = 32;
+    novoMapa->dimensaoPadraoElementos = 16;
     novoMapa->linhas = 0;
     novoMapa->colunas = 0;
     
