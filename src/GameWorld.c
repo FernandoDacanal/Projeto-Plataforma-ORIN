@@ -144,7 +144,7 @@ static void atualizarCamera( GameWorld *gw ) {
 
     int minX = LARGURA_VIRTUAL / 2;
     int maxX = calcularLarguraMapa( gw->mapa ) - LARGURA_VIRTUAL / 2;
-    int maxY = calcularAlturaMapa( gw->mapa ) - ALTURA_VIRTUAL / 2;
+    int maxY = calcularAlturaMapa( gw->mapa ) - ALTURA_VIRTUAL / 2 - 16;
 
     if ( c->target.x < minX ) {
         c->target.x = minX;
