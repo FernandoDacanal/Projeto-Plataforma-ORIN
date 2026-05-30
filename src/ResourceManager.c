@@ -5,8 +5,6 @@
  * 
  * @copyright Copyright (c) 2026
  */
-#include <stdio.h>
-#include <stdlib.h>
 
 #include "include/raylib/raylib.h"
 
@@ -69,7 +67,7 @@ void loadResourcesResourceManager( void ) {
         1
     );
 
-    rm.texturaFonte = LoadTexture( "resources/imagens/tiles/fonte.png" );
+    rm.texturaFonte = LoadTexture( "resources/imagens/hud/fonte.png" );
 
     rm.texturaTerreno = LoadTexture( "resources/imagens/tiles/terreno1.png" );
     rm.texturaFundo = LoadTexture( "resources/imagens/fundo/fundo.png" );

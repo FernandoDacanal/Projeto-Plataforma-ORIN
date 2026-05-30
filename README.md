@@ -14,10 +14,12 @@ No momento apenas possui um nível e 2 tipos de itens, porém haverá mais coisa
 - [ ] Mais 2 inimigos
 
 # Implementar
- - [ ] Sprites novos dos inimigos
- - [ ] Sistema de texto
+ - [x] Sprites novos dos inimigos
+ - [x] Sistema de texto*
  - [ ] Fundo com paralaxe bom
  - [ ] Plataformas no background
+ - [ ] Resolver "pulo no ar"
+ - [ ] Segurar espaço faz pular mais alto
 
 ## Ideias
 **Opções de Movimentação/Combate**

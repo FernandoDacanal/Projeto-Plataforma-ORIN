@@ -175,9 +175,7 @@ void initGameWindow( GameWindow *gameWindow ) {
         }
 
         CloseWindow();
-
     }
-
 }
 
 /**

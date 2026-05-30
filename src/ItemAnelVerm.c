@@ -5,14 +5,12 @@
  *
  * @copyright Copyright (c) 2026
  */
-#include <stdio.h>
 #include <stdlib.h>
 
 #include "include/raylib/raylib.h"
 
 #include "include/Animacao.h"
 #include "include/ItemAnelVerm.h"
-#include "include/Macros.h"
 #include "include/ResourceManager.h"
 #include "include/Tipos.h"
 
