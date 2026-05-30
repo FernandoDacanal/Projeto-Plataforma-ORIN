@@ -51,7 +51,7 @@ ItemAnelVerm *criarItemAnelVerm( Rectangle ret, Color cor ) {
         1,               // separação
         false,           // de trás para frente
         (Rectangle) {    // retângulo de colisão padrão para cada quadro
-            0, 0, 32, 32
+            0, 0, 16, 16
         }
     );
 

@@ -7,10 +7,17 @@ No momento apenas possui um nível e 2 tipos de itens, porém haverá mais coisa
 - Luiz Bridi de Lima
 
 # TODOs
+
 ## Obrigado
 - [ ] Mais 2 fases
 - [ ] Mais 2 itens
 - [ ] Mais 2 inimigos
+
+# Implementar
+ - [ ] Sprites novos dos inimigos
+ - [ ] Sistema de texto
+ - [ ] Fundo com paralaxe bom
+ - [ ] Plataformas no background
 
 ## Ideias
 **Opções de Movimentação/Combate**

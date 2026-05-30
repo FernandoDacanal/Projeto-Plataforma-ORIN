@@ -18,16 +18,18 @@ ResourceManager rm = { 0 };
 void loadResourcesResourceManager( void ) {
 
     rm.texturaJogador = carregarTexturaAlterandoCores( 
-        "resources/imagens/sprites/sonic32x.png",
+        "resources/imagens/sprites/jogador.png",
         (Color[]) {
-            { 255, 170, 255, 255 },
-            { 0, 72, 0, 255 },
+            { 255, 0, 0, 255 },
+            { 0, 255, 0, 255 },
+            { 0, 0, 255, 255 }
         },
         (Color[]) {
             BLANK,
             BLANK,
+            BLANK
         },
-        2
+        3
     );
 
     rm.texturaBadniks = carregarTexturaAlterandoCores( 
@@ -63,7 +65,7 @@ void loadResourcesResourceManager( void ) {
         1
     );
 
-    rm.texturaTerreno = LoadTexture( "resources/imagens/tiles/terreno16x.png" );
+    rm.texturaTerreno = LoadTexture( "resources/imagens/tiles/terreno1.png" );
     rm.texturaFundo = LoadTexture( "resources/imagens/fundo/fundo.png" );
 
     // Filtro de textura nearest-neighbor (ponto) para todas as texturas do jogo.

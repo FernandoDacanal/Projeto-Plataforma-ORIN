@@ -115,8 +115,8 @@ Mapa *carregarMapa( const char *caminhoArquivo ) {
 
                             item->objeto = criarItemAnel( 
                                 (Rectangle) { 
-                                    .x = novoMapa->dimensaoPadraoElementos * colunaAtual + 8, 
-                                    .y = novoMapa->dimensaoPadraoElementos * linhaAtual + 5, 
+                                    .x = novoMapa->dimensaoPadraoElementos * colunaAtual, 
+                                    .y = novoMapa->dimensaoPadraoElementos * linhaAtual, 
                                     .width = 16, 
                                     .height = 16
                                 },
@@ -134,8 +134,8 @@ Mapa *carregarMapa( const char *caminhoArquivo ) {
 
                             item->objeto = criarItemAnelVerm( 
                                 (Rectangle) { 
-                                    .x = novoMapa->dimensaoPadraoElementos * colunaAtual + 8, 
-                                    .y = novoMapa->dimensaoPadraoElementos * linhaAtual + 5, 
+                                    .x = novoMapa->dimensaoPadraoElementos * colunaAtual, 
+                                    .y = novoMapa->dimensaoPadraoElementos * linhaAtual, 
                                     .width = 16, 
                                     .height = 16
                                 },
