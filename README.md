@@ -15,7 +15,7 @@ No momento apenas possui um nível e 2 tipos de itens, porém haverá mais coisa
 
 # Implementar
  - [x] Sprites novos dos inimigos
- - [x] Sistema de texto*
+ - [-] Sistema de texto
  - [ ] Fundo com paralaxe bom
  - [ ] Plataformas no background
  - [ ] Resolver "pulo no ar"
