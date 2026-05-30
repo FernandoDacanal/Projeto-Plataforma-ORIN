@@ -31,3 +31,5 @@ No momento apenas possui um nível, 2 tipos de itens e 2 tipos de inimigos, por�
 
 ### Outros
 - [   ] Multiplayer*
+
+função para definir tamanho da caixa de testo e se o texto passar do tamanho ir para a proxima linha

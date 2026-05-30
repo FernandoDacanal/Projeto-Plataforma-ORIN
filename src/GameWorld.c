@@ -133,7 +133,7 @@ static void atualizarCamera( GameWorld *gw ) {
     Camera2D *c = &gw->camera;
 
     c->offset.x = (int)(LARGURA_VIRTUAL / 2);
-    c->offset.y = (int)(ALTURA_VIRTUAL / 2);
+    c->offset.y = (int)(ALTURA_VIRTUAL / 2 - 2);
 
     // O target é arredondado para o inteiro mais próximo para garantir que a
     // translação da câmera ocorra sempre em posições inteiras de pixel. Sem esse

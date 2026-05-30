@@ -3,6 +3,7 @@
 
 #define TEMPO_LIMITE 20
 #define TAMANHO_FONTE 8
+#define BORDA 2
 
 //retangulo sprites hud
 
