@@ -84,11 +84,11 @@ void updateGameWorld( GameWorld *gw, float delta ) {
  * @brief Desenha o estado do jogo.
  */
 void drawGameWorld( GameWorld *gw ) {
-	ClearBackground( (Color) { 36, 0, 180, 255 } );
+	ClearBackground( (Color) { 65, 166, 246, 255 } );
 
     //elementos alterados pela camera
 	BeginMode2D( gw->camera );
-	desenharFundo( gw );
+	//desenharFundo( gw );
 	desenharMapa( gw->mapa );
 	desenharJogador( gw->jogador );
 	EndMode2D();
@@ -161,7 +161,7 @@ static void atualizarCamera( GameWorld *gw ) {
 static void inicializar( GameWorld *gw ) {
     //gw->mapa = carregarMapa( "resources/mapas/mapaTeste.txt" );
     gw->mapa = carregarMapa( "resources/mapas/mapa01.txt" );
-    gw->jogador = criarJogador( (float)GetScreenWidth() / 2 + 144, calcularAlturaMapa( gw->mapa ) - 196, 48, 48 );
+    gw->jogador = criarJogador( (float)GetScreenWidth() / 2 + 144, calcularAlturaMapa( gw->mapa ) - 196, 32, 32 );
 
     gw->camera = (Camera2D) {
         .offset = { 0 },    // deslocamento relativo da câmera em relação ao alvo

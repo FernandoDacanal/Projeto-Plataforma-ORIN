@@ -18,27 +18,33 @@ ResourceManager rm = { 0 };
 void loadResourcesResourceManager( void ) {
 
     rm.texturaJogador = carregarTexturaAlterandoCores( 
-        "resources/imagens/sprites/sonic.png",
+        "resources/imagens/sprites/jogador.png",
         (Color[]) {
-            { 37, 102, 26, 255 },
-            { 13, 72, 7, 255 },
+            { 255, 0, 0, 255 },
+            { 0, 255, 0, 255 },
+            { 0, 0, 255, 255 }
         },
         (Color[]) {
             BLANK,
             BLANK,
+            BLANK
         },
-        2
+        3
     );
 
     rm.texturaBadniks = carregarTexturaAlterandoCores( 
-        "resources/imagens/sprites/badniks.png",
+        "resources/imagens/sprites/inimigos.png",
         (Color[]) {
-            { 13, 72, 7, 255 },
+            { 255, 0, 0, 255 },
+            { 0, 255, 0, 255 },
+            { 0, 0, 255, 255 },
         },
         (Color[]) {
             BLANK,
+            BLANK,
+            BLANK
         },
-        1
+        3
     );
 
     rm.texturaItens = carregarTexturaAlterandoCores( 
@@ -63,7 +69,9 @@ void loadResourcesResourceManager( void ) {
         1
     );
 
-    rm.texturaTerreno = LoadTexture( "resources/imagens/tiles/terreno32x.png" );
+    rm.texturaFonte = LoadTexture( "resources/imagens/tiles/fonte.png" );
+
+    rm.texturaTerreno = LoadTexture( "resources/imagens/tiles/terreno1.png" );
     rm.texturaFundo = LoadTexture( "resources/imagens/fundo/fundo.png" );
 
     // Filtro de textura nearest-neighbor (ponto) para todas as texturas do jogo.
@@ -75,6 +83,7 @@ void loadResourcesResourceManager( void ) {
     SetTextureFilter( rm.texturaTerreno, TEXTURE_FILTER_POINT );
     SetTextureFilter( rm.texturaFundo, TEXTURE_FILTER_POINT );
     SetTextureFilter( rm.texturaHUD, TEXTURE_FILTER_POINT );
+    SetTextureFilter( rm.texturaFonte, TEXTURE_FILTER_POINT );
 
     rm.somAnel = LoadSound( "resources/sons/efeitos/anel.wav" );
     rm.somFrenagem = LoadSound( "resources/sons/efeitos/frenagem.wav" );
@@ -95,6 +104,7 @@ void unloadResourcesResourceManager( void ) {
     UnloadTexture( rm.texturaTerreno );
     UnloadTexture( rm.texturaFundo );
     UnloadTexture( rm.texturaHUD );
+    UnloadTexture( rm.texturaFonte );
 
     UnloadSound( rm.somAnel );
     UnloadSound( rm.somFrenagem );

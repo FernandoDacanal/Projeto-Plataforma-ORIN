@@ -95,17 +95,14 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
         novoJogador->animacaoParado.quadros,
         novoJogador->animacaoParado.quantidadeQuadros,
         1000,            // duração padrão para todos os quadros
-        24, 251,         // início
-        48, 48,          // dimensões
-        4,               // separação
+        1, 1,         // início
+        32, 32,          // dimensões
+        1,               // separação
         false,           // de trás para frente
-        (Rectangle) {    // retângulo de colisão padrão para cada quadro
-            16, 10, 21, 38
-            //18, 20, 54, 76
-        }
+        (Rectangle) {10, 0, 12, 32}    // retângulo de colisão padrão para cada quadro
     );
 
-    novoJogador->animacaoAndando.quantidadeQuadros = 8;
+    novoJogador->animacaoAndando.quantidadeQuadros = 6;
     novoJogador->animacaoAndando.quadroAtual = 0;
     novoJogador->animacaoAndando.contadorTempoQuadro = 0.0f;
     novoJogador->animacaoAndando.pararNoUltimoQuadro = false;
@@ -116,17 +113,14 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
         novoJogador->animacaoAndando.quadros,
         novoJogador->animacaoAndando.quantidadeQuadros,
         80,              // duração padrão para cada quadro
-        664, 324,        // início
-        48, 48,          // dimensões
-        4,               // separação
+        1, 34,        // início
+        32, 32,          // dimensões
+        1,               // separação
         false,           // de trás para frente
-        (Rectangle) {    // retângulo de colisão padrão para cada quadro
-            16, 10, 21, 38
-            //18, 20, 54, 76
-        }
+        (Rectangle) {10, 0, 12, 32}     // retângulo de colisão padrão para cada quadro (2 * x + largura = tamanho sprite)
     );
 
-    novoJogador->animacaoAndandoRapido.quantidadeQuadros = 8;
+    novoJogador->animacaoAndandoRapido.quantidadeQuadros = 6;
     novoJogador->animacaoAndandoRapido.quadroAtual = 0;
     novoJogador->animacaoAndandoRapido.contadorTempoQuadro = 0.0f;
     novoJogador->animacaoAndandoRapido.pararNoUltimoQuadro = false;
@@ -137,14 +131,11 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
         novoJogador->animacaoAndandoRapido.quadros,
         novoJogador->animacaoAndandoRapido.quantidadeQuadros,
         40,              // duração padrão para cada quadro
-        664, 324,        // início
-        48, 48,          // dimensões
-        4,               // separação
+        1, 34,        // início
+        32, 32,          // dimensões
+        1,               // separação
         false,           // de trás para frente
-        (Rectangle) {    // retângulo de colisão padrão para cada quadro
-            16, 10, 21, 38
-            //18, 20, 54, 76
-        }
+        (Rectangle) {10, 0, 12, 32}    // retângulo de colisão padrão para cada quadro
     );
 
     novoJogador->animacaoCorrendo.quantidadeQuadros = 4;
@@ -158,14 +149,11 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
         novoJogador->animacaoCorrendo.quadros,
         novoJogador->animacaoCorrendo.quantidadeQuadros,
         20,              // duração padrão para cada quadro
-        24, 397,         // início
-        48, 48,          // dimensões
-        4,               // separação
+        1, 67,         // início
+        32, 32,          // dimensões
+        1,               // separação
         false,           // de trás para frente
-        (Rectangle) {    // retângulo de colisão padrão para cada quadro
-            16, 10, 21, 38
-            //18, 20, 54, 76
-        }
+        (Rectangle) {10, 0, 12, 32}    // retângulo de colisão padrão para cada quadro
     );
 
     novoJogador->animacaoPulando.quantidadeQuadros = 4;
@@ -179,14 +167,11 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
         novoJogador->animacaoPulando.quadros,
         novoJogador->animacaoPulando.quantidadeQuadros,
         40,              // duração padrão para cada quadro
-        248, 397,        // início
-        48, 48,          // dimensões
-        4,               // separação
+        1, 100,        // início
+        32, 32,          // dimensões
+        1,               // separação
         false,           // de trás para frente
-        (Rectangle) {    // retângulo de colisão padrão para cada quadro
-            16, 23, 21, 25
-            //18, 36, 60, 60
-        }
+        (Rectangle) {10, 12, 12, 20}     // retângulo de colisão padrão para cada quadro
     );
 
     novoJogador->animacaoPulandoRapido.quantidadeQuadros = 4;
@@ -200,14 +185,11 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
         novoJogador->animacaoPulandoRapido.quadros,
         novoJogador->animacaoPulandoRapido.quantidadeQuadros,
         25,              // duração padrão para cada quadro
-        248, 397,        // início
-        48, 48,          // dimensões
-        4,               // separação
+        1, 100,        // início
+        32, 32,          // dimensões
+        1,               // separação
         false,           // de trás para frente
-        (Rectangle) {    // retângulo de colisão padrão para cada quadro
-            16, 23, 21, 25
-            //18, 36, 60, 60
-        }
+        (Rectangle) {10, 12, 12, 20}     // retângulo de colisão padrão para cada quadro
     );
 
     novoJogador->animacaoPulandoCorrendo.quantidadeQuadros = 4;
@@ -221,14 +203,12 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
         novoJogador->animacaoPulandoCorrendo.quadros,
         novoJogador->animacaoPulandoCorrendo.quantidadeQuadros,
         15,              // duração padrão para cada quadro
-        248, 397,        // início
-        48, 48,          // dimensões
-        4,               // separação
+        1, 100,        // início
+        32, 32,          // dimensões
+        1,               // separação
         false,           // de trás para frente
-        (Rectangle) {    // retângulo de colisão padrão para cada quadro
-            16, 23, 21, 25
-            //18, 36, 60, 60
-        }
+        (Rectangle) {10, 12, 12, 20}     // retângulo de colisão padrão para cada quadro
+            
     );
 
     novoJogador->animacoes[ESTADO_JOGADOR_PARADO] = &novoJogador->animacaoParado; quantidadeAnimacoes++;

@@ -43,7 +43,7 @@ InimigoMotobug *criarInimigoMotobug( Rectangle ret, Color cor ) {
 
     int quantidadeAnimacoes = 0;
 
-    novoInimigo->animacaoAndando.quantidadeQuadros = 4;
+    novoInimigo->animacaoAndando.quantidadeQuadros = 3;
     novoInimigo->animacaoAndando.quadroAtual = 0;
     novoInimigo->animacaoAndando.contadorTempoQuadro = 0.0f;
     novoInimigo->animacaoAndando.pararNoUltimoQuadro = false;
@@ -55,15 +55,15 @@ InimigoMotobug *criarInimigoMotobug( Rectangle ret, Color cor ) {
         novoInimigo->animacaoAndando.quantidadeQuadros,
         250,             // duração padrão para todos os quadros
         1, 1,            // início
-        40, 30,          // dimensões
+        32, 32,          // dimensões
         1,               // separação
         false,           // de trás para frente
         (Rectangle) {    // retângulo de colisão padrão para cada quadro
-            1, 1, 34, 29
+            4, 16, 24, 16
         }
     );
 
-    novoInimigo->animacaoMorrendo.quantidadeQuadros = 4;
+    novoInimigo->animacaoMorrendo.quantidadeQuadros = 3;
     novoInimigo->animacaoMorrendo.quadroAtual = 0;
     novoInimigo->animacaoMorrendo.contadorTempoQuadro = 0.0f;
     novoInimigo->animacaoMorrendo.pararNoUltimoQuadro = false;
@@ -74,7 +74,7 @@ InimigoMotobug *criarInimigoMotobug( Rectangle ret, Color cor ) {
         novoInimigo->animacaoMorrendo.quadros,
         novoInimigo->animacaoMorrendo.quantidadeQuadros,
         100,              // duração padrão para todos os quadros
-        169, 1,           // início
+        1, 67,           // início
         32, 32,           // dimensões
         1,                // separação
         false,            // de trás para frente
@@ -162,7 +162,7 @@ void desenharInimigoMotobug( InimigoMotobug *inimigo ) {
             QuadroAnimacao *qa = getQuadroAnimacaoAtualInimigoMotobug( inimigo );
             desenharQuadroAnimacaoInimigoMotobug( inimigo, qa, WHITE );
         } else if ( inimigo->estado == ESTADO_INIMIGO_MOTOBUG_MORRENDO ) {
-            desenharQuadroAnimacaoInimigoMotobugMorrendo( inimigo, getQuadroAtualAnimacao( &inimigo->animacaoMorrendo ), 2.0f, WHITE );
+            desenharQuadroAnimacaoInimigoMotobugMorrendo( inimigo, getQuadroAtualAnimacao( &inimigo->animacaoMorrendo ), 1.0f, WHITE );
         }
 
         if ( MOSTRAR_RETANGULOS ) {

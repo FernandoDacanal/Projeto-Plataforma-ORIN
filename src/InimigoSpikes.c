@@ -43,7 +43,7 @@ InimigoSpikes *criarInimigoSpikes( Rectangle ret, Color cor ) {
 
     int quantidadeAnimacoes = 0;
 
-    novoInimigo->animacaoAndando.quantidadeQuadros = 3;
+    novoInimigo->animacaoAndando.quantidadeQuadros = 2;
     novoInimigo->animacaoAndando.quadroAtual = 0;
     novoInimigo->animacaoAndando.contadorTempoQuadro = 0.0f;
     novoInimigo->animacaoAndando.pararNoUltimoQuadro = false;
@@ -54,12 +54,12 @@ InimigoSpikes *criarInimigoSpikes( Rectangle ret, Color cor ) {
         novoInimigo->animacaoAndando.quadros,
         novoInimigo->animacaoAndando.quantidadeQuadros,
         250,             // duração padrão para todos os quadros
-        1, 32,            // início
-        40, 39,          // dimensões
+        1, 34,            // início
+        32, 32,          // dimensões
         1,               // separação
         false,           // de trás para frente
         (Rectangle) {    // retângulo de colisão padrão para cada quadro
-            5, 10, 30, 20
+            4, 0, 24, 32
         }
     );
 
@@ -74,7 +74,7 @@ InimigoSpikes *criarInimigoSpikes( Rectangle ret, Color cor ) {
         novoInimigo->animacaoMorrendo.quadros,
         novoInimigo->animacaoMorrendo.quantidadeQuadros,
         100,              // duração padrão para todos os quadros
-        169, 1,           // início
+        1, 67,           // início
         32, 32,           // dimensões
         1,                // separação
         false,            // de trás para frente
@@ -162,7 +162,7 @@ void desenharInimigoSpikes( InimigoSpikes *inimigo ) {
             QuadroAnimacao *qa = getQuadroAnimacaoAtualInimigoSpikes( inimigo );
             desenharQuadroAnimacaoInimigoSpikes( inimigo, qa, WHITE );
         } else if ( inimigo->estado == ESTADO_INIMIGO_SPIKES_MORRENDO ) {
-            desenharQuadroAnimacaoInimigoSpikesMorrendo( inimigo, getQuadroAtualAnimacao( &inimigo->animacaoMorrendo ), 2.0f, WHITE );
+            desenharQuadroAnimacaoInimigoSpikesMorrendo( inimigo, getQuadroAtualAnimacao( &inimigo->animacaoMorrendo ), 1.0f, WHITE );
         }
 
         if ( MOSTRAR_RETANGULOS ) {
