@@ -15,6 +15,9 @@ static bool piscar_ring = false;
 static float piscar_timeTempo = 0;
 static float piscar_ringTempo = 0;
 
+//fazer função tremer para elementos individuais do texto
+//implementar piscar com multiplas cores e usando tint
+
 static void desenharBorda(){
     for(int i = 0; i < LARGURA_VIRTUAL; i++){
         if(i % 2 == 0){
@@ -105,9 +108,6 @@ void desenharHUD( GameWorld *gw ) {
         (Rectangle) {0, 0, 8, 8}
     )
     */
-
-    
-
     piscarHUD( gw );
     desenharBorda();
     desenharScore( gw );
@@ -126,8 +126,8 @@ void desenharScore( GameWorld *gw ) {
     */
     desenharTexto(
         rm.texturaFonte,
-        "SCORE:",
-        (Rectangle){0, 0, TAMANHO_FONTE, TAMANHO_FONTE},
+        "SCORE",
+        HUD_FONTE,
         (Rectangle) {HUDSuperior.x, HUDSuperior.y, TAMANHO_FONTE, TAMANHO_FONTE}
     );
     if(gw->jogador->quantidadePontos >= 99999){
@@ -147,12 +147,23 @@ void desenharTime( GameWorld *gw ) {
     int dezenaSegundos = (int)gw->jogador->quantidadeTempo % 60 / 10;
     int unidadeSegundos = (int)gw->jogador->quantidadeTempo % 60 % 10;
 
-    desenharSpriteHUD(
-        piscar_time ? HUD_TIME_FLASH_SRC : HUD_TIME_SRC,
-        (Vector2){
-            HUDSuperior.x, 
-            HUDSuperior.y + TAMANHO_FONTE * 2
-        }
+    int tremor1 = 0;
+    int tremor2 = 0;
+
+    if ( gw->jogador->quantidadeAneis == 0 ) {
+        tremor1 = tremer( 2 );
+        tremor2 = tremer( 2 );
+    }
+    Vector2 pos = {
+        HUDSuperior.x + tremor1,
+        HUDSuperior.y + TAMANHO_FONTE + tremor2
+    };
+
+    desenharTexto(
+        rm.texturaFonte,
+        "TIME",
+        HUD_FONTE,
+        (Rectangle) {pos.x, pos.y, TAMANHO_FONTE, TAMANHO_FONTE}
     );
 
     desenharNumero(
@@ -192,16 +203,24 @@ void desenharRings( GameWorld *gw ) {
 
     Vector2 pos = {
         HUDSuperior.x + tremor1,
-        HUDSuperior.y + TAMANHO_FONTE * 4 + tremor2
+        HUDSuperior.y + TAMANHO_FONTE * 2 + tremor2
     };
 
     if(gw->jogador->quantidadeAneis >= 999){
         gw->jogador->quantidadeAneis = 999;
     }
-
+    /*
     desenharSpriteHUD(
         piscar_ring? HUD_RING_FLASH_SRC : HUD_RING_SRC,
         pos
+    );
+    */
+
+    desenharTexto(
+        rm.texturaFonte,
+        "RINGS",
+        HUD_FONTE,
+        (Rectangle) {pos.x, pos.y, TAMANHO_FONTE, TAMANHO_FONTE}
     );
 
     desenharNumero(
@@ -213,18 +232,11 @@ void desenharRings( GameWorld *gw ) {
     );
 
 }
-
-// ============================================================================
-// LIVES
-// ============================================================================
-
 void desenharLives( GameWorld *gw ) {
-
     desenharSpriteHUD(
         HUD_LIVES_SRC,
         HUDInferior
     );
-
     desenharNumero(
         gw->jogador->quantidadeVidas,
         (Vector2){

@@ -3,9 +3,9 @@
 
 #define TEMPO_LIMITE 20
 #define TAMANHO_FONTE 8
-#define BORDA 2
+#define BORDA 3
 
-//retangulo sprites hud
+#define HUD_FONTE (Rectangle){0, 0, 8, 8}
 
 #define HUD_SCORE_SRC      (Rectangle){ 0, 0, 40, 16 }
 #define HUD_TIME_SRC       (Rectangle){ 0, 16, 56, 16 }
