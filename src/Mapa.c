@@ -45,6 +45,7 @@ Mapa *carregarMapa( const char *caminhoArquivo ) {
     novoMapa->quantidadeInimigos = 0;
 
     novoMapa->dimensaoPadraoElementos = 16;
+    
     novoMapa->linhas = 0;
     novoMapa->colunas = 0;
     
@@ -168,9 +169,9 @@ Mapa *carregarMapa( const char *caminhoArquivo ) {
                             inimigo->objeto = criarInimigoMotobug( 
                                 (Rectangle) { 
                                     .x = novoMapa->dimensaoPadraoElementos * colunaAtual, 
-                                    .y = novoMapa->dimensaoPadraoElementos * linhaAtual - 12, 
-                                    .width = 40, 
-                                    .height = 30
+                                    .y = novoMapa->dimensaoPadraoElementos * linhaAtual - 16, 
+                                    .width = 32, 
+                                    .height = 32
                                 },
                                 YELLOW
                             );
@@ -185,9 +186,9 @@ Mapa *carregarMapa( const char *caminhoArquivo ) {
                             inimigo->objeto = criarInimigoSpikes( 
                                 (Rectangle) { 
                                     .x = novoMapa->dimensaoPadraoElementos * colunaAtual, 
-                                    .y = novoMapa->dimensaoPadraoElementos * linhaAtual - 21, 
-                                    .width = 40, 
-                                    .height = 30
+                                    .y = novoMapa->dimensaoPadraoElementos * linhaAtual - 16, 
+                                    .width = 32, 
+                                    .height = 32
                                 },
                                 YELLOW
                             );

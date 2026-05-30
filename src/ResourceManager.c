@@ -33,14 +33,18 @@ void loadResourcesResourceManager( void ) {
     );
 
     rm.texturaBadniks = carregarTexturaAlterandoCores( 
-        "resources/imagens/sprites/badniks.png",
+        "resources/imagens/sprites/inimigos.png",
         (Color[]) {
-            { 13, 72, 7, 255 },
+            { 255, 0, 0, 255 },
+            { 0, 255, 0, 255 },
+            { 0, 0, 255, 255 },
         },
         (Color[]) {
             BLANK,
+            BLANK,
+            BLANK
         },
-        1
+        3
     );
 
     rm.texturaItens = carregarTexturaAlterandoCores( 
