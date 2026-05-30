@@ -69,6 +69,8 @@ void loadResourcesResourceManager( void ) {
         1
     );
 
+    rm.texturaFonte = LoadTexture( "resources/imagens/tiles/fonte.png" );
+
     rm.texturaTerreno = LoadTexture( "resources/imagens/tiles/terreno1.png" );
     rm.texturaFundo = LoadTexture( "resources/imagens/fundo/fundo.png" );
 
@@ -81,6 +83,7 @@ void loadResourcesResourceManager( void ) {
     SetTextureFilter( rm.texturaTerreno, TEXTURE_FILTER_POINT );
     SetTextureFilter( rm.texturaFundo, TEXTURE_FILTER_POINT );
     SetTextureFilter( rm.texturaHUD, TEXTURE_FILTER_POINT );
+    SetTextureFilter( rm.texturaFonte, TEXTURE_FILTER_POINT );
 
     rm.somAnel = LoadSound( "resources/sons/efeitos/anel.wav" );
     rm.somFrenagem = LoadSound( "resources/sons/efeitos/frenagem.wav" );
@@ -101,6 +104,7 @@ void unloadResourcesResourceManager( void ) {
     UnloadTexture( rm.texturaTerreno );
     UnloadTexture( rm.texturaFundo );
     UnloadTexture( rm.texturaHUD );
+    UnloadTexture( rm.texturaFonte );
 
     UnloadSound( rm.somAnel );
     UnloadSound( rm.somFrenagem );
