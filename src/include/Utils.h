@@ -15,3 +15,4 @@
 Texture2D carregarTexturaAlterandoCores( const char *caminhoArquivo, Color *coresFonte, Color *coresAlvo, int quantidadeCores );
 
 int tremer(int limite);
+void TextoFormatado(char* texto, int posx, int posy, int escala);

@@ -26,6 +26,9 @@
 //#include "raylib/raygui.h"       // other compilation units must only include
 //#undef RAYGUI_IMPLEMENTATION     // raygui.h
 
+
+#include "include/Utils.h"
+
 static void desenharFundo( GameWorld *gw );
 static void atualizarCamera( GameWorld *gw );
 
@@ -111,6 +114,15 @@ void drawGameWorld( GameWorld *gw ) {
 	DrawText(TextFormat("Tempo: %.0f", gw->jogador->quantidadeTempo), 10, 90, 20, ORANGE);
 	*/
 
+	// NOTE: Temp
+	// TextoFormatado("[Ro][Gl][Ba]", 100, 100, 1);
+	// TextoFormatado("[Ro[Gl[Ba", 100, 100, 1);
+	TextoFormatado("[ROla].{T[G\nComo esta].\n[BSim].", 100, 100, 1);
+
+	// TextoFormatado("[BAaBbCcDdEeFfGgHhIiJjKkLl", 90, 100, 1);
+	// TextoFormatado("MmNnOoPpQqRrSsTtUuVvWwXxYyZz", 90, 109, 1);
+
+	// TextoFormatado("[Ro\\[Gl[Ba", 100, 100, 2);
 }
 
 static void desenharFundo( GameWorld *gw ) {
