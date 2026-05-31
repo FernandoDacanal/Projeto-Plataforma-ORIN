@@ -12,6 +12,8 @@
 
 #include "include/ResourceManager.h"
 
+#include <stdio.h>
+
 /**
  * @brief Carrega uma textura trocando cores.
  */
@@ -28,6 +30,8 @@ Texture2D carregarTexturaAlterandoCores( const char *caminhoArquivo, Color *core
 
 int tremer(int limite)
 {
+	if (limite < 2)
+		return 0;
 	// int retorno = rand() % (limite * 2);
 	int retorno = rand() % limite;
 	//retorno = retorno > limite ? -retorno + limite : retorno;
@@ -57,6 +61,8 @@ void TextoFormatado(char* texto, int posx, int posy, int escala)
 	int nova_linha = 0;
 	int tremidax = 0;
 	int tremiday = 0;
+
+	int tremida = 0;
 
 	// TODO: TEMP
 	int coluna = 0;
@@ -103,25 +109,27 @@ void TextoFormatado(char* texto, int posx, int posy, int escala)
 			++ignorar;
 			continue;
 		}
+
 		if (texto[i] == '{')
 		{
 			// Efeitos
-			if (texto[i] == 'T')
+			if (texto[i + 1] == 'T')
 			{
 				efeito = TREMER;
+				tremida = 2;
 				++i;
 				++ignorar;
 			}
 			else
 				efeito = SEM_EFEITO;
 
-			++i;
-			++ignorar;
+			// ++i;
+			// ++ignorar;
 			continue;
 		}
 		else if (texto[i] == '}')
 		{
-			if (texto[i] == 'T')
+			if (texto[i + 1] == 'T')
 			{
 				efeito = SEM_EFEITO;
 				tremidax = 0;
@@ -130,7 +138,6 @@ void TextoFormatado(char* texto, int posx, int posy, int escala)
 				++ignorar;
 			}
 			// Pode ter mais de 1 efeito ao mesmo tempo e precisa poder terminar só 1 ou mais
-			++i;
 			++ignorar;
 			continue;
 		}
@@ -157,15 +164,15 @@ void TextoFormatado(char* texto, int posx, int posy, int escala)
 
 		if (efeito == TREMER)
 		{
-			tremidax = tremer(2);
-			tremiday = tremer(2);
+			printf("X: %d\n", tremidax = tremer(2));
+			printf("Y: %d\n", tremiday = tremer(2));
 		}
 
 		DrawTexturePro(
 				rm.texturaFonte,
 				(Rectangle){(texto[i] % 32) * 8, y * 8, 8, 8},
 				(Rectangle){
-					posx + (coluna * 8) * escala + tremidax,
+					posx + (coluna * 8) * escala + tremidax, 
 					posy + (nova_linha * 8 * escala) + tremiday,
 					8 * escala,
 					8 * escala

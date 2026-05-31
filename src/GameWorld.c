@@ -118,7 +118,10 @@ void drawGameWorld( GameWorld *gw ) {
 	// NOTE: Temp
 	// TextoFormatado("[Ro][Gl][Ba]", 100, 100, 1);
 	// TextoFormatado("[Ro[Gl[Ba", 100, 100, 1);
-	TextoFormatado("[ROla].{T[G\nComo esta].\n[BSim].", 100, 100, 1);
+
+	// TODO: TEMP se quiser testar esse aqui v
+	// TextoFormatado("[ROla].{T[G\nComo esta].\n[BSim].", 100, 50, 1);
+	// desenharTexto(rm.texturaFonte, "ola", (Rectangle){8, 16, 8, 8}, (Rectangle){100, 100, 8, 8});
 
 	// TextoFormatado("[BAaBbCcDdEeFfGgHhIiJjKkLl", 90, 100, 1);
 	// TextoFormatado("MmNnOoPpQqRrSsTtUuVvWwXxYyZz", 90, 109, 1);
