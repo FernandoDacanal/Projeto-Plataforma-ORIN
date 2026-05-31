@@ -6,6 +6,7 @@
  * @copyright Copyright (c) 2026
  */
 
+
 #include "include/raylib/raylib.h"
 
 #include "include/ResourceManager.h"
@@ -17,11 +18,7 @@ void loadResourcesResourceManager( void ) {
 
     rm.texturaJogador = carregarTexturaAlterandoCores( 
         "resources/imagens/sprites/jogador.png",
-        (Color[]) {
-            { 255, 0, 0, 255 },
-            { 0, 255, 0, 255 },
-            { 0, 0, 255, 255 }
-        },
+        FUNDO,
         (Color[]) {
             BLANK,
             BLANK,
@@ -32,11 +29,7 @@ void loadResourcesResourceManager( void ) {
 
     rm.texturaBadniks = carregarTexturaAlterandoCores( 
         "resources/imagens/sprites/inimigos.png",
-        (Color[]) {
-            { 255, 0, 0, 255 },
-            { 0, 255, 0, 255 },
-            { 0, 0, 255, 255 },
-        },
+        FUNDO,
         (Color[]) {
             BLANK,
             BLANK,
@@ -47,27 +40,32 @@ void loadResourcesResourceManager( void ) {
 
     rm.texturaItens = carregarTexturaAlterandoCores( 
         "resources/imagens/itens/itens.png",
-        (Color[]) {
-            { 16, 112, 132, 255 },
-        },
+        FUNDO,
         (Color[]) {
             BLANK,
+            BLANK,
+            BLANK
         },
-        1
+        3
     );
 
     rm.texturaHUD = carregarTexturaAlterandoCores(
         "resources/imagens/hud/hud-final.png",
-        (Color[]){
-            {16, 112, 132, 255},
-        },
-        (Color[]){
+        FUNDO,
+        (Color[]) {
             BLANK,
+            BLANK,
+            BLANK
         },
-        1
+        3
     );
 
-    rm.texturaFonte = LoadTexture( "resources/imagens/hud/fonte.png" );
+    rm.texturaFonte = carregarTexturaAlterandoCores(
+        "resources/imagens/hud/fonte.png",
+        (Color[]) {0, 0, 0, 255},
+        (Color[]) {BLANK},
+        1
+    );
 
     rm.texturaTerreno = LoadTexture( "resources/imagens/tiles/terreno1.png" );
     rm.texturaFundo = LoadTexture( "resources/imagens/fundo/fundo.png" );

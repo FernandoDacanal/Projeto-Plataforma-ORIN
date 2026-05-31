@@ -6,7 +6,7 @@
 #include "include/Utils.h"
 #include "include/GameWindow.h"
 
-static Vector2 HUDSuperior = { BORDA, BORDA };
+static Vector2 HUDSuperior = { BORDA, ALTURA_VIRTUAL - TAMANHO_FONTE * 3 - BORDA};
 static Vector2 HUDInferior = { TAMANHO_FONTE * 2, ALTURA_VIRTUAL - TAMANHO_FONTE * 3 };
 
 static bool piscar_time = false;
@@ -21,34 +21,34 @@ static float piscar_ringTempo = 0;
 static void desenharBorda(){
     for(int i = 0; i < LARGURA_VIRTUAL; i++){
         if(i % 2 == 0){
-            DrawPixel(i, 0, BLUE);
-            DrawPixel(i, 1, DARKBLUE);
+            DrawPixel(i, 0, AZUL);
+            DrawPixel(i, 1, AZULESCURO);
 
-            DrawPixel(i, ALTURA_VIRTUAL - 2, BLUE);
-            DrawPixel(i, ALTURA_VIRTUAL - 1, DARKBLUE);
+            DrawPixel(i, ALTURA_VIRTUAL - 2, AZUL);
+            DrawPixel(i, ALTURA_VIRTUAL - 1, AZULESCURO);
         } 
         else{
-            DrawPixel(i, 0, DARKBLUE);
-            DrawPixel(i, 1, BLUE);
+            DrawPixel(i, 0, AZULESCURO);
+            DrawPixel(i, 1, AZUL);
 
-            DrawPixel(i, ALTURA_VIRTUAL - 2, DARKBLUE);
-            DrawPixel(i, ALTURA_VIRTUAL - 1, BLUE);
+            DrawPixel(i, ALTURA_VIRTUAL - 2, AZULESCURO);
+            DrawPixel(i, ALTURA_VIRTUAL - 1, AZUL);
         }  
     }
     for(int i = 0; i < ALTURA_VIRTUAL; i++){
         if(i % 2 == 0){
-            DrawPixel(0, i, BLUE);
-            DrawPixel(1, i, DARKBLUE);
+            DrawPixel(0, i, AZUL);
+            DrawPixel(1, i, AZULESCURO);
 
-            DrawPixel(LARGURA_VIRTUAL - 2,i,  BLUE);
-            DrawPixel(LARGURA_VIRTUAL - 1,i,  DARKBLUE);
+            DrawPixel(LARGURA_VIRTUAL - 2,i,  AZUL);
+            DrawPixel(LARGURA_VIRTUAL - 1,i,  AZULESCURO);
         } 
         else{
-            DrawPixel(0, i, DARKBLUE);
-            DrawPixel(1, i, BLUE);
+            DrawPixel(0, i, AZULESCURO);
+            DrawPixel(1, i, AZUL);
 
-            DrawPixel(LARGURA_VIRTUAL - 2,i,  DARKBLUE);
-            DrawPixel(LARGURA_VIRTUAL - 1,i,  BLUE);
+            DrawPixel(LARGURA_VIRTUAL - 2,i,  AZULESCURO);
+            DrawPixel(LARGURA_VIRTUAL - 1,i,  AZUL);
         }  
     }
 }
@@ -268,7 +268,7 @@ void piscarHUD( GameWorld *gw ) {
 
 void desenharSpriteHUD( Rectangle fonte, Vector2 pos ) {
     DrawTexturePro(
-        rm.texturaHUD,
+        rm.texturaFonte,
         fonte,
         (Rectangle){
             pos.x,
@@ -298,9 +298,9 @@ void desenharNumero(int valor, Vector2 pos) {
         int digito = ( valor / divisor ) % 10;
         Rectangle source = {
             digito * TAMANHO_FONTE,
-            rm.texturaHUD.height - TAMANHO_FONTE * 3,
             TAMANHO_FONTE,
-            TAMANHO_FONTE * 2
+            TAMANHO_FONTE,
+            TAMANHO_FONTE
         };
         desenharSpriteHUD(
             source,

@@ -19,6 +19,7 @@
 #include "include/ResourceManager.h"
 // #include "include/Animacao.h"
 #include "include/HUD.h"
+#include "include/Utils.h"
 
 #include "include/raylib/raylib.h"
 //#include "raylib/raymath.h"
@@ -87,7 +88,7 @@ void updateGameWorld( GameWorld *gw, float delta ) {
  * @brief Desenha o estado do jogo.
  */
 void drawGameWorld( GameWorld *gw ) {
-	ClearBackground( (Color) { 65, 166, 246, 255 } );
+	ClearBackground(AZULCLARO);
 
     //elementos alterados pela camera
 	BeginMode2D( gw->camera );
