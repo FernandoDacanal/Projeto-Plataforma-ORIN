@@ -12,7 +12,7 @@
 
 #include "include/ResourceManager.h"
 
-#include <stdio.h>
+
 
 /**
  * @brief Carrega uma textura trocando cores.
@@ -164,8 +164,8 @@ void TextoFormatado(char* texto, int posx, int posy, int escala)
 
 		if (efeito == TREMER)
 		{
-			printf("X: %d\n", tremidax = tremer(2));
-			printf("Y: %d\n", tremiday = tremer(2));
+			tremidax = tremer(2);
+			tremiday = tremer(2);
 		}
 
 		DrawTexturePro(

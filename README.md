@@ -3,12 +3,12 @@ Jogo de plataforma desenvolvido para a matéria de Organização e Recuperação
 No momento apenas possui um nível, 2 tipos de itens e 2 tipos de inimigos, porém haverá mais coisas no futuro.
 
 ### Integrantes:
-- Fernando Dacanal
+- Fernando Dacanal Guirão
 - Luiz Bridi de Lima
 
 # TODOs
 
-## Obrigado
+## Obrigatório
 - [   ] Mais 2 fases
 - [   ] Mais 2 itens
 - [   ] Mais 2 inimigos
@@ -32,4 +32,4 @@ No momento apenas possui um nível, 2 tipos de itens e 2 tipos de inimigos, por�
 ### Outros
 - [   ] Multiplayer*
 
-função para definir tamanho da caixa de testo e se o texto passar do tamanho ir para a proxima linha
+Função para definir tamanho da caixa de texto e se o texto passar do tamanho ir para a proxima linha.

@@ -59,13 +59,13 @@ void desenharTexto(Texture2D textura, char *string, Rectangle source, Rectangle 
         unsigned char c = (unsigned char)string[i];
 
         //fazer pulo de linha
-        if(c == 10){
+        if(c == '\n'){
             rec.x = posInicial.x;
             rec.y += rec.height;
         }
         //desenhar caracteres ascii extendido
-        else if(c >= 32){
-            c -= 32;
+        else if(c >= ' '){
+            c -= ' ';	// ' ' == 32
             
             source.x = (c % 16) * source.width;
             source.y = (c / 16) * source.height;
