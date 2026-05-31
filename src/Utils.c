@@ -56,7 +56,7 @@ void TextoFormatado(char* texto, int posx, int posy, int escala)
 {
 	int tam = 0;
 	Color cor = WHITE;
-	unsigned char efeito = SEM_EFEITO;	// TODO: Tem que poder aceitar mais de um efeito ao mesmo tempo
+	unsigned char efeito = SEM_EFEITO;	//TODO: Tem que poder aceitar mais de um efeito ao mesmo tempo
 	int ignorar = 0;
 	int nova_linha = 0;
 	int tremidax = 0;
