@@ -12,12 +12,8 @@
 
 #include "include/ResourceManager.h"
 
-<<<<<<< Updated upstream
-
-=======
 #include <stdio.h>
 #include <string.h>
->>>>>>> Stashed changes
 
 /**
  * @brief Carrega uma textura trocando cores.
