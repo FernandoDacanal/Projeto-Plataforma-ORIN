@@ -115,17 +115,18 @@ void drawGameWorld( GameWorld *gw ) {
 	DrawText(TextFormat("Tempo: %.0f", gw->jogador->quantidadeTempo), 10, 90, 20, ORANGE);
 	*/
 
-	// TextoFormatado("[ROla].{T[G\nComo esta].}T\n[BSim].", 0, 0, 1);
+	//TextoFormatado("[ROla].{T[G\nComo esta].}T\n[BSim].", 0, 0, 1);
     desenharTexto(
         rm.texturaFonte, 
         // unicodeASCII("“‡…‰“"),
-        unicodeASCII("ESSE É UM TEXTO TESTE."),
+        unicodeASCII("[G ESSE É UM TEXTO TESTE.]"),
         HUD_FONTE, 
         (Rectangle) {0, 0, 8, 8}
     );
 }
 
 //TODO: No momento não está sendo utilizado. Remover se não for usar.
+// A gente vai usar depois, só tenho que fazer um fundo novo primeiro
 static void desenharFundo( GameWorld *gw ) {
 
     int larguraFundo = rm.texturaFundo.width;

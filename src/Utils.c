@@ -107,7 +107,6 @@ void TextoFormatado(char* texto, int posx, int posy, int escala)
 		else if (texto[i] == ']')
 		{
 			cor = WHITE;
-			// ++i;
 			++ignorar;
 			continue;
 		}
@@ -124,9 +123,6 @@ void TextoFormatado(char* texto, int posx, int posy, int escala)
 			}
 			else
 				efeito = SEM_EFEITO;
-
-			// ++i;
-			// ++ignorar;
 			continue;
 		}
 		else if (texto[i] == '}')
@@ -147,7 +143,6 @@ void TextoFormatado(char* texto, int posx, int posy, int escala)
 		{
 			++nova_linha;
 			coluna = 0;
-			// ++i;
 			++ignorar;
 			continue;
 		}

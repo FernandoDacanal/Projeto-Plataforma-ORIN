@@ -67,44 +67,46 @@ void desenharTexto(Texture2D textura, char *string, Rectangle source, Rectangle 
             rec.x = posInicial.x;
             rec.y += rec.height;
         }
-
         if (c == '\\'){
             ++i;
             ++ignorar;
             continue;
         }
+        //eu não sei como, mas agora a cor tá formatada como [COR "texto"] envés de [COR"texto"]
+        if (string[i] == '['){
+			switch(string [i + 1]){
+				case 'A' : cor = PRETO; ++i; ++ignorar; break;
+				case 'B' : cor = ROXO; ++i; ++ignorar; break;
+				case 'C' : cor = VERMELHO; ++i; ++ignorar; break;
+				case 'D' : cor = LARANJA; ++i; ++ignorar; break;
 
-        if (c == '['){
-            // Cor
-            if (string[i + 1] == 'R')
-            {
-                cor = RED;
-                ++i;
-                ++ignorar;
-            }
-            else if (string[i + 1] == 'G')
-            {
-                cor = GREEN;
-                ++i;
-                ++ignorar;
-            }
-            else if (string[i + 1] == 'B')
-            {
-                cor = BLUE;
-                ++i;
-                ++ignorar;
-            }
-            else
-                cor = BRANCO;
-            ++i;
-            ++ignorar;
-        }
-        else if (c == ']'){
-            cor = BRANCO;
-            // ++i;
-            ++ignorar;
-            continue;
-        }
+				case 'E' : cor = AMARELO; ++i; ++ignorar; break;
+				case 'F' : cor = VERDECLARO; ++i; ++ignorar; break;
+				case 'G' : cor = VERDE; ++i; ++ignorar; break;
+				case 'H' : cor = VERDEESCURO; ++i; ++ignorar; break;
+
+				case 'I' : cor = AZULESCURO; ++i; ++ignorar; break;
+				case 'J' : cor = AZUL; ++i; ++ignorar; break;
+				case 'K' : cor = AZULCLARO; ++i; ++ignorar; break;
+				case 'L' : cor = CIANO; ++i; ++ignorar; break;
+
+				case 'M' : cor = BRANCO; ++i; ++ignorar; break;
+				case 'N' : cor = CINZACLARO; ++i; ++ignorar; break;
+				case 'O' : cor = CINZA; ++i; ++ignorar; break;
+				case 'P' : cor = CINZAESCURO; ++i; ++ignorar; break;
+
+				default: cor = PINK; ++i; ++ignorar; break;
+			}
+			++i;
+			++ignorar;
+	    }
+		else if (string[i] == ']'){
+			cor = BRANCO;
+			++ignorar;
+			continue;
+		}
+        
+        
         //desenhar caracteres ascii extendido
         else if(c >= ' '){
             c -= ' ';	// ' ' == 32
@@ -134,23 +136,14 @@ void desenharHUD( GameWorld *gw ) {
         (Rectangle){0, 0, 8, 8},
         (Rectangle) {80, 0, 8, 8}
     );
-    char tabela[238];
-    int pos = 0;
-    for (int i = 32; i <= 255; i++) {
-        tabela[pos++] = (char)i;
-        if ((i - 31) % 16 == 0 && i != 255) {
-            tabela[pos++] = '\n';
-        }
-    }
-    tabela[pos] = '\0';
-
     desenharTexto(
         rm.texturaFonte,
-        tabela, 
+        unicodeASCII("€‚„…†‡‰Š‹ŒŽ\n‘’“”∙–—™š›œžŸ\n¡¢£¤¥¦§¨©ª«¬­®¯\n°±²³´µ¶·¸¹º»¼½¾¿\nÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏ\nÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞß\nàáâãäåæçèéêëìíîï\nðñòóôõö÷øùúûüýþÿ"), 
         (Rectangle){0, 0, 8, 8},
-        (Rectangle) {0, 0, 8, 8}
-    )
+        (Rectangle) {80, 32, 8, 8}
+    );
     */
+    
     piscarHUD( gw );
     desenharBorda();
     desenharScore( gw );
