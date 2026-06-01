@@ -110,15 +110,8 @@ void desenharTexto(Texture2D textura, char *string, Rectangle source, Rectangle 
             continue;
         }
         //desenhar caracteres ascii extendido
-<<<<<<< Updated upstream
         else if(c >= ' '){
             c -= ' ';	// ' ' == 32
-            
-=======
-        else if(c >= 32){
-            c -= 32;
-        
->>>>>>> Stashed changes
             source.x = (c % 16) * source.width;
             source.y = (c / 16) * source.height;
 
