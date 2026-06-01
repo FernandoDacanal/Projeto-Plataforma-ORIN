@@ -60,12 +60,9 @@ void desenharTexto(Texture2D textura, char *string, Rectangle source, Rectangle 
     int tam = 0;
     int ignorar = 0;
     Color cor = BRANCO;
-
-    //while (string[tam] != '\0') ++tam;
  
     for(int i = 0; string[i] != '\0'; i++){
         unsigned char c = string[i];
-        printf("teste\n");
         //fazer pulo de linha
         if(c == '\n'){
             rec.x = posInicial.x;
