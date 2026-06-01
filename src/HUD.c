@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <stdio.h>
 
 #include "include/Tipos.h"
 #include "include/HUD.h"
@@ -55,18 +56,69 @@ static void desenharBorda(){
 
 void desenharTexto(Texture2D textura, char *string, Rectangle source, Rectangle rec){
     Vector2 posInicial = {rec.x, rec.y};
-    for(int i = 0; string[i] != '\0'; i++){
-        unsigned char c = (unsigned char)string[i];
 
+    int tam = 0;
+    int ignorar = 0;
+    Color cor = BRANCO;
+
+    //while (string[tam] != '\0') ++tam;
+ 
+    for(int i = 0; string[i] != '\0'; i++){
+        unsigned char c = string[i];
+        printf("teste\n");
         //fazer pulo de linha
         if(c == '\n'){
             rec.x = posInicial.x;
             rec.y += rec.height;
         }
+
+        if (c == '\\'){
+            ++i;
+            ++ignorar;
+            continue;
+        }
+
+        if (c == '['){
+            // Cor
+            if (string[i + 1] == 'R')
+            {
+                cor = RED;
+                ++i;
+                ++ignorar;
+            }
+            else if (string[i + 1] == 'G')
+            {
+                cor = GREEN;
+                ++i;
+                ++ignorar;
+            }
+            else if (string[i + 1] == 'B')
+            {
+                cor = BLUE;
+                ++i;
+                ++ignorar;
+            }
+            else
+                cor = BRANCO;
+            ++i;
+            ++ignorar;
+        }
+        else if (c == ']'){
+            cor = BRANCO;
+            // ++i;
+            ++ignorar;
+            continue;
+        }
         //desenhar caracteres ascii extendido
+<<<<<<< Updated upstream
         else if(c >= ' '){
             c -= ' ';	// ' ' == 32
             
+=======
+        else if(c >= 32){
+            c -= 32;
+        
+>>>>>>> Stashed changes
             source.x = (c % 16) * source.width;
             source.y = (c / 16) * source.height;
 
@@ -76,9 +128,10 @@ void desenharTexto(Texture2D textura, char *string, Rectangle source, Rectangle 
                 rec,
                 (Vector2){0},
                 0,
-                WHITE
+                cor
             );
             rec.x += rec.width;
+            tam++;
         }
     }
 }
