@@ -5,6 +5,7 @@
 #include "include/ResourceManager.h"
 #include "include/Utils.h"
 #include "include/GameWindow.h"
+#include <stdio.h>
 
 static Vector2 HUDSuperior = { BORDA, ALTURA_VIRTUAL - TAMANHO_FONTE * 3 - BORDA};
 static Vector2 HUDInferior = { TAMANHO_FONTE * 2, ALTURA_VIRTUAL - TAMANHO_FONTE * 3 };
@@ -58,23 +59,34 @@ void desenharTexto(Texture2D fonte, char *string, Rectangle source, Rectangle de
 
     int tam = 0;
     int ignorar = 0;
+    
     Color cor = BRANCO;
+
+    unsigned char efeito = SEM_EFEITO;
+
+    int tremidax = 0;
+	int tremiday = 0;
+
+	int tremida = 0;
 
     string = unicodeASCII(string);
  
     for(int i = 0; string[i] != '\0'; i++){
-        unsigned char c = string[i];
         //fazer pulo de linha
-        if(c == '\n'){
+        if(string[i] == '\n'){
             dest.x = posInicial.x;
             dest.y += dest.height;
+            ++ignorar;
+            continue;
         }
-        if (c == '\\'){
+        /* não sei pq vc tinha tirado o contrabarra então eu comentei essa parte do código
+        if(string[i] == '\\'){
             ++i;
             ++ignorar;
             continue;
         }
-        //eu não sei como, mas agora a cor tá formatada como [COR "texto"] envés de [COR"texto"]
+        */
+        //CORES (Letra Maiuscula)
         if (string[i] == '['){
 			switch(string [i + 1]){
 				case 'A' : cor = PRETO; ++i; ++ignorar; break;
@@ -97,18 +109,63 @@ void desenharTexto(Texture2D fonte, char *string, Rectangle source, Rectangle de
 				case 'O' : cor = CINZA; ++i; ++ignorar; break;
 				case 'P' : cor = CINZAESCURO; ++i; ++ignorar; break;
 
+                //coloquei rosa para ficar evidente se tiver algum texto formatado errado
 				default: cor = PINK; ++i; ++ignorar; break;
 			}
 			++i;
 			++ignorar;
 	    }
-		else if (string[i] == ']'){
+        else if (string[i] == ']'){
 			cor = BRANCO;
 			++ignorar;
 			continue;
 		}
-        //desenhar caracteres ascii extendido (talvez esse seja o culpado da formatação ter mudado?)
-        else if(c >= ' '){
+        //FIM CORES
+        //EFEITOS(letra minuscula)
+        if (string[i] == '{')
+		{
+			// Efeitos
+			if (string[i + 1] == 't')
+			{
+				efeito = TREMER;
+				tremida = 2;
+				++i;
+				++ignorar;
+			}
+			else
+				string = SEM_EFEITO;
+			continue;
+		}
+        else if (string[i] == '}')
+		{
+			if (string[i + 1] == 'T')
+			{
+				efeito = SEM_EFEITO;
+				tremidax = 0;
+				tremiday = 0;
+				++i;
+				++ignorar;
+			}
+			// Pode ter mais de 1 efeito ao mesmo tempo e precisa poder terminar só 1 ou mais
+			++ignorar;
+			continue;
+		}
+        if (efeito == TREMER)
+		{
+			tremidax = tremer(2);
+			tremiday = tremer(2);
+        }
+        
+        //desenhar caracteres ascii extendido
+        /*
+            por algum motivo tem que criar esse unsigned char para os caracteres 
+            da tabela ascci extendida funcionarem corretamente.
+            eu tentei colocar "if(unsigned char)string[i] >= ' ')" e substituir a 
+            variavel c por string[i] só que tava imprimindo os caracteres errados D:
+        */
+        unsigned char c = string[i];
+        if(c >= ' '){
+            tam++;
             c -= ' ';	// ' ' == 32
 
             source.x = (c % 16) * source.width;
@@ -117,40 +174,28 @@ void desenharTexto(Texture2D fonte, char *string, Rectangle source, Rectangle de
             DrawTexturePro(
                 fonte,
                 source,
-                dest,
+                (Rectangle){
+                    dest.x + tremidax,
+                    dest.y + tremiday,
+                    dest.width,
+                    dest.height
+                },
                 (Vector2){0},
                 0,
                 cor
             );
             dest.x += dest.width;
-            tam++;
         }
     }
 }
 
 void desenharHUD( GameWorld *gw ) {
-    /*
-    desenharTexto(
-        rm.texturaFonte,
-        "Modo Debug\nTeste de fontes", 
-        (Rectangle){0, 0, 8, 8},
-        (Rectangle) {80, 0, 8, 8}
-    );
-    desenharTexto(
-        rm.texturaFonte,
-        "€‚„…†‡‰Š‹ŒŽ\n‘’“”∙–—™š›œžŸ\n¡¢£¤¥¦§¨©ª«¬­®¯\n°±²³´µ¶·¸¹º»¼½¾¿\nÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏ\nÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞß\nàáâãäåæçèéêëìíîï\nðñòóôõö÷øùúûüýþÿ", 
-        (Rectangle){0, 0, 8, 8},
-        (Rectangle) {80, 32, 8, 8}
-    );
-    */
-    
     piscarHUD( gw );
     desenharBorda();
     desenharScore( gw );
     desenharTime( gw );
     desenharRings( gw );
     desenharLives( gw );
-
 }
 
 void desenharScore( GameWorld *gw ) {

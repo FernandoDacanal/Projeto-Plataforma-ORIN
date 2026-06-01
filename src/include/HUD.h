@@ -15,6 +15,14 @@
 #define HUD_RING_FLASH_SRC (Rectangle){ 56, 32, 56, 16 }
 
 #define HUD_LIVES_SRC      (Rectangle){ 56, 0, 48, 16 }
+
+enum {
+	SEM_EFEITO, 
+    TREMER, 
+    NEGRITO, 
+    ITALICO
+};
+
 /**
  * Desenha texto como textura na tela.
  *

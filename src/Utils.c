@@ -32,22 +32,13 @@ int tremer(int limite)
 {
 	if (limite < 2)
 		return 0;
-	// int retorno = rand() % (limite * 2);
 	int retorno = rand() % limite;
-	//retorno = retorno > limite ? -retorno + limite : retorno;
 	int negativo = rand() % 2;
 	if (negativo != 0)
 		retorno = -retorno;
-	// TraceLog(5, "%i", retorno);
-	//static int somatorio = 0;
-	//somatorio += retorno;
-	//TraceLog(5, "%i", somatorio);
 	return retorno;
 }
-
-
-
-// enum : unsigned char {
+/*
 enum {
 	SEM_EFEITO, TREMER, NEGRITO, ITALICO
 };
@@ -183,7 +174,8 @@ void TextoFormatado(char* texto, int posx, int posy, int escala)
 	}
 	// DrawTexturePro(rm.texturaFonte, (Rectangle){('p' - 32) % 16, 5 * 8, 8, 8}, (Rectangle){posx * escala, posy, 8 * escala, 8 * escala}, (Vector2){0}, 0.f, cor);
 }
-
+	*/
+//transforma caracteres unicode de uma string no seu equivalente da tabela ascii estendida
 char *unicodeASCII(char *string){
     char *stringFormatada = malloc(strlen(string) + 1);
     int posicao = 0;

@@ -94,6 +94,7 @@ void initGameWindow( GameWindow *gameWindow ) {
         }
 
         InitWindow( gameWindow->width, gameWindow->height, gameWindow->title );
+        SetWindowMonitor(0);
 
         gameWindow->renderTarget = LoadRenderTexture(
             LARGURA_VIRTUAL,
@@ -157,8 +158,6 @@ void initGameWindow( GameWindow *gameWindow ) {
             if(IsKeyPressed(KEY_F11)){
                 ToggleFullscreen();
             }
-            
-
             EndDrawing();
         }
 

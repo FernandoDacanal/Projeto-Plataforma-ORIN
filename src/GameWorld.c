@@ -116,11 +116,26 @@ void drawGameWorld( GameWorld *gw ) {
 	*/
 
 	//TextoFormatado("[ROla].{T[G\nComo esta].}T\n[BSim].", 0, 0, 1);
+
+    /*
+    desenharTexto(
+        rm.texturaFonte,
+        "Modo Debug\nTeste de fontes", 
+        (Rectangle){0, 0, 8, 8},
+        (Rectangle) {80, 0, 8, 8}
+    );
+    desenharTexto(
+        rm.texturaFonte,
+        "€‚„…†‡‰Š‹ŒŽ\n‘’“”∙–—™š›œžŸ\n¡¢£¤¥¦§¨©ª«¬­®¯\n°±²³´µ¶·¸¹º»¼½¾¿\nÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏ\nÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞß\nàáâãäåæçèéêëìíîï\nðñòóôõö÷øùúûüýþÿ", 
+        (Rectangle){0, 0, 8, 8},
+        (Rectangle) {80, 32, 8, 8}
+    );
+    */
     desenharTexto(
         rm.texturaFonte, 
-        "[G ESSE É UM TEXTO TESTE.]",
+        "{tIsso não... é... o\n[EAnel de Espinho], né...?}",
         HUD_FONTE, 
-        (Rectangle) {0, 0, 8, 8}
+        (Rectangle) {3, 3, 8, 8}
     );
 }
 
