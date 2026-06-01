@@ -118,8 +118,7 @@ void drawGameWorld( GameWorld *gw ) {
 	//TextoFormatado("[ROla].{T[G\nComo esta].}T\n[BSim].", 0, 0, 1);
     desenharTexto(
         rm.texturaFonte, 
-        // unicodeASCII("“‡…‰“"),
-        unicodeASCII("[G ESSE É UM TEXTO TESTE.]"),
+        "[G ESSE É UM TEXTO TESTE.]",
         HUD_FONTE, 
         (Rectangle) {0, 0, 8, 8}
     );

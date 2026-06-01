@@ -53,19 +53,21 @@ static void desenharBorda(){
     }
 }
 
-void desenharTexto(Texture2D textura, char *string, Rectangle source, Rectangle rec){
-    Vector2 posInicial = {rec.x, rec.y};
+void desenharTexto(Texture2D fonte, char *string, Rectangle source, Rectangle dest){
+    Vector2 posInicial = {dest.x, dest.y};
 
     int tam = 0;
     int ignorar = 0;
     Color cor = BRANCO;
+
+    string = unicodeASCII(string);
  
     for(int i = 0; string[i] != '\0'; i++){
         unsigned char c = string[i];
         //fazer pulo de linha
         if(c == '\n'){
-            rec.x = posInicial.x;
-            rec.y += rec.height;
+            dest.x = posInicial.x;
+            dest.y += dest.height;
         }
         if (c == '\\'){
             ++i;
@@ -105,9 +107,7 @@ void desenharTexto(Texture2D textura, char *string, Rectangle source, Rectangle 
 			++ignorar;
 			continue;
 		}
-        
-        
-        //desenhar caracteres ascii extendido
+        //desenhar caracteres ascii extendido (talvez esse seja o culpado da formatação ter mudado?)
         else if(c >= ' '){
             c -= ' ';	// ' ' == 32
 
@@ -115,14 +115,14 @@ void desenharTexto(Texture2D textura, char *string, Rectangle source, Rectangle 
             source.y = (c / 16) * source.height;
 
             DrawTexturePro(
-                textura,
+                fonte,
                 source,
-                rec,
+                dest,
                 (Vector2){0},
                 0,
                 cor
             );
-            rec.x += rec.width;
+            dest.x += dest.width;
             tam++;
         }
     }
@@ -138,7 +138,7 @@ void desenharHUD( GameWorld *gw ) {
     );
     desenharTexto(
         rm.texturaFonte,
-        unicodeASCII("€‚„…†‡‰Š‹ŒŽ\n‘’“”∙–—™š›œžŸ\n¡¢£¤¥¦§¨©ª«¬­®¯\n°±²³´µ¶·¸¹º»¼½¾¿\nÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏ\nÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞß\nàáâãäåæçèéêëìíîï\nðñòóôõö÷øùúûüýþÿ"), 
+        "€‚„…†‡‰Š‹ŒŽ\n‘’“”∙–—™š›œžŸ\n¡¢£¤¥¦§¨©ª«¬­®¯\n°±²³´µ¶·¸¹º»¼½¾¿\nÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏ\nÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞß\nàáâãäåæçèéêëìíîï\nðñòóôõö÷øùúûüýþÿ", 
         (Rectangle){0, 0, 8, 8},
         (Rectangle) {80, 32, 8, 8}
     );
