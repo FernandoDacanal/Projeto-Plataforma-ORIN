@@ -174,7 +174,7 @@ void TextoFormatado(char* texto, int posx, int posy, int escala)
 	}
 	// DrawTexturePro(rm.texturaFonte, (Rectangle){('p' - 32) % 16, 5 * 8, 8, 8}, (Rectangle){posx * escala, posy, 8 * escala, 8 * escala}, (Vector2){0}, 0.f, cor);
 }
-	*/
+*/
 //transforma caracteres unicode de uma string no seu equivalente da tabela ascii estendida
 char *unicodeASCII(char *string){
     char *stringFormatada = malloc(strlen(string) + 1);
