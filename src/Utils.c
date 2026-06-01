@@ -198,38 +198,38 @@ char *unicodeASCII(char *string){
                 switch ((unsigned char)string[i + 1]){
                     case 0x80:
                         switch((unsigned char)string[i + 2]){
-                            case 0x93: stringFormatada[posicao++] = 0x96; break; //–
-                            case 0x94: stringFormatada[posicao++] = 0x97; break; //—
-                            case 0x98: stringFormatada[posicao++] = 0x91; break; //‘
-                            case 0x99: stringFormatada[posicao++] = 0x92; break; //’
-                            case 0x9A: stringFormatada[posicao++] = 0x82; break; //‚
-                            case 0x9C: stringFormatada[posicao++] = 0x93; break; //“
-                            case 0x9D: stringFormatada[posicao++] = 0x94; break; //”
-                            case 0x9E: stringFormatada[posicao++] = 0x84; break; //„
-                            case 0xA0: stringFormatada[posicao++] = 0x86; break; //†
-                            case 0xA1: stringFormatada[posicao++] = 0x87; break; //‡
-                            case 0xA6: stringFormatada[posicao++] = 0x85; break; //…
-                            case 0xB0: stringFormatada[posicao++] = 0x89; break; //‰
-                            case 0xB9: stringFormatada[posicao++] = 0x8B; break; //‹
-                            case 0xBA: stringFormatada[posicao++] = 0x9B; break; //›
+                            case 0x93: stringFormatada[posicao++] = (char)0x96; break; //–
+                            case 0x94: stringFormatada[posicao++] = (char)0x97; break; //—
+                            case 0x98: stringFormatada[posicao++] = (char)0x91; break; //‘
+                            case 0x99: stringFormatada[posicao++] = (char)0x92; break; //’
+                            case 0x9A: stringFormatada[posicao++] = (char)0x82; break; //‚
+                            case 0x9C: stringFormatada[posicao++] = (char)0x93; break; //“
+                            case 0x9D: stringFormatada[posicao++] = (char)0x94; break; //”
+                            case 0x9E: stringFormatada[posicao++] = (char)0x84; break; //„
+                            case 0xA0: stringFormatada[posicao++] = (char)0x86; break; //†
+                            case 0xA1: stringFormatada[posicao++] = (char)0x87; break; //‡
+                            case 0xA6: stringFormatada[posicao++] = (char)0x85; break; //…
+                            case 0xB0: stringFormatada[posicao++] = (char)0x89; break; //‰
+                            case 0xB9: stringFormatada[posicao++] = (char)0x8B; break; //‹
+                            case 0xBA: stringFormatada[posicao++] = (char)0x9B; break; //›
                         }
                         i++;
                     break;
                     case 0x82:
                         if((unsigned char)string[i + 2] == 0xAC){
-                            stringFormatada[posicao++] = 0x80; //€
+                            stringFormatada[posicao++] = (char)0x80; //€
                         }
                         i++;
                     break;
                     case 0x84:
                         if((unsigned char)string[i + 2] == 0xA2){
-                            stringFormatada[posicao++] = 0x99; //™
+                            stringFormatada[posicao++] = (char)0x99; //™
                         }
                         i++;
                     break;
                     case 0x88:
                         if ((unsigned char)string[i + 2] == 0x99){
-                            stringFormatada[posicao++] = 0x95; //∙
+                            stringFormatada[posicao++] = (char)0x95; //∙
                         }
                         i++;
                     break;
@@ -250,13 +250,13 @@ char *unicodeASCII(char *string){
             break;
             case 0xC5:
                 switch((unsigned char)string[i + 1]){
-                    case 0x92: stringFormatada[posicao++] = 0x8C; break; //Œ
-                    case 0x93: stringFormatada[posicao++] = 0x9C; break; //œ
-                    case 0xA0: stringFormatada[posicao++] = 0x8A; break; //Š
-                    case 0xA1: stringFormatada[posicao++] = 0x9A; break; //š
-                    case 0xB8: stringFormatada[posicao++] = 0x9F; break; //Ÿ
-                    case 0xBD: stringFormatada[posicao++] = 0x8E; break; //Ž
-                    case 0xBE: stringFormatada[posicao++] = 0x9E; break; //ž
+                    case 0x92: stringFormatada[posicao++] = (char)0x8C; break; //Œ
+                    case 0x93: stringFormatada[posicao++] = (char)0x9C; break; //œ
+                    case 0xA0: stringFormatada[posicao++] = (char)0x8A; break; //Š
+                    case 0xA1: stringFormatada[posicao++] = (char)0x9A; break; //š
+                    case 0xB8: stringFormatada[posicao++] = (char)0x9F; break; //Ÿ
+                    case 0xBD: stringFormatada[posicao++] = (char)0x8E; break; //Ž
+                    case 0xBE: stringFormatada[posicao++] = (char)0x9E; break; //ž
                 }
                 i++;
             break;
