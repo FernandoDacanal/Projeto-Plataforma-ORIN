@@ -8,13 +8,8 @@
 #include "include/raylib/raylib.h"
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
-#include <math.h>
 
 #include "include/Utils.h"
-#include "include/ResourceManager.h"
-
-
 
 /**
  * @brief Carrega uma textura trocando cores.
@@ -30,162 +25,6 @@ Texture2D carregarTexturaAlterandoCores( const char *caminhoArquivo, Color *core
     return textura;
 }
 
-int efeitoTremer(int limite)
-{
-	if (limite < 2)
-		return 0;
-	int retorno = rand() % limite;
-	int negativo = rand() % 2;
-	if (negativo != 0)
-		retorno = -retorno;
-	return retorno;
-}
-
-int efeitoOnda(int limite, int i)
-{
-    if (limite < 1)
-        return 0;
-    const float velocidade = 60.0f;
-    return (int)(sinf(GetTime() * velocidade * 0.15 + i * 0.4f) * limite);
-}
-
-/*
-enum {
-	SEM_EFEITO, TREMER, NEGRITO, ITALICO
-};
-
-void TextoFormatado(char* texto, int posx, int posy, int escala)
-{
-	int tam = 0;
-	Color cor = WHITE;
-	unsigned char efeito = SEM_EFEITO;	//TODO: Tem que poder aceitar mais de um efeito ao mesmo tempo
-	int ignorar = 0;
-	int nova_linha = 0;
-	int tremidax = 0;
-	int tremiday = 0;
-
-	int tremida = 0;
-
-	// TODO: TEMP
-	int coluna = 0;
-	while (texto[tam] != '\0') ++tam;
-	for (int i = 0; i < tam; i++)
-	{
-		if (texto[i] == '\\')
-		{
-			++i;
-			++ignorar;
-			continue;
-		}
-
-		if (texto[i] == '[')
-		{
-			switch(texto [i + 1]){
-				case 'A' : cor = PRETO; ++i; ++ignorar; break;
-				case 'B' : cor = ROXO; ++i; ++ignorar; break;
-				case 'C' : cor = VERMELHO; ++i; ++ignorar; break;
-				case 'D' : cor = LARANJA; ++i; ++ignorar; break;
-
-				case 'E' : cor = AMARELO; ++i; ++ignorar; break;
-				case 'F' : cor = VERDECLARO; ++i; ++ignorar; break;
-				case 'G' : cor = VERDE; ++i; ++ignorar; break;
-				case 'H' : cor = VERDEESCURO; ++i; ++ignorar; break;
-
-				case 'I' : cor = AZULESCURO; ++i; ++ignorar; break;
-				case 'J' : cor = AZUL; ++i; ++ignorar; break;
-				case 'K' : cor = AZULCLARO; ++i; ++ignorar; break;
-				case 'L' : cor = CIANO; ++i; ++ignorar; break;
-
-				case 'M' : cor = BRANCO; ++i; ++ignorar; break;
-				case 'N' : cor = CINZACLARO; ++i; ++ignorar; break;
-				case 'O' : cor = CINZA; ++i; ++ignorar; break;
-				case 'P' : cor = CINZAESCURO; ++i; ++ignorar; break;
-
-				default: cor = PINK; ++i; ++ignorar; break;
-			}
-			++i;
-			++ignorar;
-		}
-		else if (texto[i] == ']')
-		{
-			cor = WHITE;
-			++ignorar;
-			continue;
-		}
-
-		if (texto[i] == '{')
-		{
-			// Efeitos
-			if (texto[i + 1] == 'T')
-			{
-				efeito = TREMER;
-				tremida = 2;
-				++i;
-				++ignorar;
-			}
-			else
-				efeito = SEM_EFEITO;
-			continue;
-		}
-		else if (texto[i] == '}')
-		{
-			if (texto[i + 1] == 'T')
-			{
-				efeito = SEM_EFEITO;
-				tremidax = 0;
-				tremiday = 0;
-				++i;
-				++ignorar;
-			}
-			// Pode ter mais de 1 efeito ao mesmo tempo e precisa poder terminar só 1 ou mais
-			++ignorar;
-			continue;
-		}
-		if (texto[i] == '\n')
-		{
-			++nova_linha;
-			coluna = 0;
-			++ignorar;
-			continue;
-		}
-
-		// int y = ((texto[i] - 32) % 16);
-		int y = 0;
-		int temp = texto[i] - 32;
-		while (temp >= 16)
-		{
-			temp -= 16;
-			++y;
-		}
-		// DrawTexturePro(rm.texturaFonte, (Rectangle){(texto[i] % 32) * 8, y * 8, 8, 8},
-		// 	(Rectangle){posx + ((i - ignorar) * 8) * escala, posy + (nova_linha * 8 * escala), 8 * escala, 8 * escala},
-		// 	(Vector2){0}, 0.f, cor);
-
-		if (efeito == TREMER)
-		{
-			tremidax = tremer(2);
-			tremiday = tremer(2);
-		}
-
-		DrawTexturePro(
-				rm.texturaFonte,
-				(Rectangle){(texto[i] % 32) * 8, y * 8, 8, 8},
-				(Rectangle){
-					posx + (coluna * 8) * escala + tremidax, 
-					posy + (nova_linha * 8 * escala) + tremiday,
-					8 * escala,
-					8 * escala
-				},
-				(Vector2){0},
-				0.f,
-				cor
-			);
-
-		++coluna;
-	}
-	// DrawTexturePro(rm.texturaFonte, (Rectangle){('p' - 32) % 16, 5 * 8, 8, 8}, (Rectangle){posx * escala, posy, 8 * escala, 8 * escala}, (Vector2){0}, 0.f, cor);
-}
-*/
 //transforma caracteres unicode de uma string no seu equivalente da tabela ascii estendida
 char *unicodeASCII(char *string){
     char *stringFormatada = malloc(strlen(string) + 1);
@@ -271,4 +110,23 @@ char *unicodeASCII(char *string){
     }
     stringFormatada[posicao] = '\0';
     return stringFormatada;
+}
+void numeroParaString(int numero, char *string) {
+    int i = 0;
+    int sinal = numero;
+    if (numero < 0)
+        numero = -numero;
+    while (numero > 0) {
+        string[i++] = numero % 10 + '0';
+      	numero /= 10;
+    } 
+    if (sinal < 0) {
+        string[i++] = '-';
+    }
+    string[i] = '\0';
+    for (int j = 0, k = i - 1; j < k; j++, k--) {
+        char temp = string[j];
+        string[j] = string[k];
+        string[k] = temp;
+    }
 }

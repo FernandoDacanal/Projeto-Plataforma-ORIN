@@ -14,11 +14,9 @@
  */
 Texture2D carregarTexturaAlterandoCores( const char *caminhoArquivo, Color *coresFonte, Color *coresAlvo, int quantidadeCores );
 
-//int tremer(int limite);
-int efeitoTremer(int limite);
-int efeitoOnda(int limite, int i);
 void TextoFormatado(char* texto, int posx, int posy, int escala);
 char *unicodeASCII(char *string);
+void numeroParaString(int numero, char *string);
 
 #define PRETO       (Color){  35,  35,  35, 255}
 #define ROXO        (Color){  93,  39,  93, 255}

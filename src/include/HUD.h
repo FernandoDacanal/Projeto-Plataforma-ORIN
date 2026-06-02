@@ -7,15 +7,6 @@
 
 #define HUD_FONTE (Rectangle){0, 0, 8, 8}
 
-#define HUD_SCORE_SRC      (Rectangle){ 0, 0, 40, 16 }
-#define HUD_TIME_SRC       (Rectangle){ 0, 16, 56, 16 }
-#define HUD_TIME_FLASH_SRC (Rectangle){ 56, 16, 56, 16 }
-
-#define HUD_RING_SRC       (Rectangle){ 0, 32, 56, 16 }
-#define HUD_RING_FLASH_SRC (Rectangle){ 56, 32, 56, 16 }
-
-#define HUD_LIVES_SRC      (Rectangle){ 56, 0, 48, 16 }
-
 //tá bom de efeito
 enum {
 	SEM_EFEITO, 
@@ -33,15 +24,8 @@ enum {
  * @param source Posicao e tamanho da fonte.
  * @param rec Posição e tamanho do texto na tela.
  */
-void desenharTexto(char *string, Rectangle source, Rectangle rec); 
-
-void desenharSpriteHUD( Rectangle source, Vector2 pos );
-void desenharNumero( int valor, Vector2 pos );
-
+void desenharTexto(char *string, Rectangle source, Rectangle rec);
 void desenharHUD(GameWorld *gw);
-
-//função que definine se os elementos TIME e RINGS da HUD devem estar piscando
-void piscarHUD(GameWorld *gw);
 
 void desenharScore(GameWorld *gw);
 void desenharTime(GameWorld *gw);
