@@ -19,7 +19,7 @@
 enum {
 	SEM_EFEITO, 
     TREMER, 
-    NEGRITO, 
+    NEGRITO, //vou fazer uma versão em negrito da fonte
     ITALICO
 };
 

@@ -133,7 +133,7 @@ void drawGameWorld( GameWorld *gw ) {
     */
     desenharTexto(
         rm.texturaFonte, 
-        "{tIsso não... é... o\n[EAnel de Espinho], né...?}",
+        "{iIsso não... é... o\n{t[EAnel de Espinho], né...?}}\nmais texto",
         HUD_FONTE, 
         (Rectangle) {3, 3, 8, 8}
     );

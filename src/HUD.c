@@ -67,7 +67,7 @@ void desenharTexto(Texture2D fonte, char *string, Rectangle source, Rectangle de
     int tremidax = 0;
 	int tremiday = 0;
 
-	int tremida = 0;
+    bool italico = false;
 
     string = unicodeASCII(string);
  
@@ -121,41 +121,42 @@ void desenharTexto(Texture2D fonte, char *string, Rectangle source, Rectangle de
 			continue;
 		}
         //FIM CORES
-        //EFEITOS(letra minuscula)
+        // PRECISA CONSCERTAR EFEITO E LOGO DEPOIS COR (TEXTO NO GAMEWORLD)
+        //EFEITOS(letra minuscula) - definições
         if (string[i] == '{')
 		{
-			// Efeitos
-			if (string[i + 1] == 't')
-			{
-				efeito = TREMER;
-				tremida = 2;
-				++i;
-				++ignorar;
-			}
-			else
-				string = SEM_EFEITO;
-			continue;
+            switch(string[i + 1]){
+                case 't':
+                    efeito = TREMER; ++i; ++ignorar; break;
+                case 'i':
+                    efeito = ITALICO; ++i; ++ignorar; break;
+                default: efeito = SEM_EFEITO; ++i; ++ignorar; break;
+            }
+            ++i;
+            ++ignorar;
 		}
-        else if (string[i] == '}')
-		{
-			if (string[i + 1] == 'T')
-			{
-				efeito = SEM_EFEITO;
-				tremidax = 0;
-				tremiday = 0;
-				++i;
-				++ignorar;
-			}
-			// Pode ter mais de 1 efeito ao mesmo tempo e precisa poder terminar só 1 ou mais
+        else if (string[i] == '}'){
+			efeito = SEM_EFEITO;
 			++ignorar;
 			continue;
 		}
-        if (efeito == TREMER)
-		{
-			tremidax = tremer(2);
-			tremiday = tremer(2);
+        //implementação
+        switch(efeito){
+            case TREMER:
+                tremidax = tremer(2);
+			    tremiday = tremer(2);
+            break;
+            case ITALICO:
+                italico = true;
+            break;
+            case SEM_EFEITO:
+                italico = false;
+                tremidax = 0;
+                tremiday = 0;
+            break;
         }
-        
+        //FIM EFEITOS
+
         //desenhar caracteres ascii extendido
         /*
             por algum motivo tem que criar esse unsigned char para os caracteres 
@@ -172,7 +173,7 @@ void desenharTexto(Texture2D fonte, char *string, Rectangle source, Rectangle de
             source.y = (c / 16) * source.height;
 
             DrawTexturePro(
-                fonte,
+                italico ?  rm.texturaFonteItalico : rm.texturaFonte,
                 source,
                 (Rectangle){
                     dest.x + tremidax,
