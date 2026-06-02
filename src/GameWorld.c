@@ -113,27 +113,24 @@ void drawGameWorld( GameWorld *gw ) {
 	);
 	DrawFPS( 10, 70 );
 	DrawText(TextFormat("Tempo: %.0f", gw->jogador->quantidadeTempo), 10, 90, 20, ORANGE);
-	*/
-
-	//TextoFormatado("[ROla].{T[G\nComo esta].}T\n[BSim].", 0, 0, 1);
+    */
+    DrawFPS( 200, 70 );
+    DrawRectangle(2, 2, 162, 84, PRETO);
+    DrawRectangleLines(2, 2, 162, 84, BRANCO);
 
     /*
-    desenharTexto(
-        rm.texturaFonte,
-        "Modo Debug\nTeste de fontes", 
-        (Rectangle){0, 0, 8, 8},
-        (Rectangle) {80, 0, 8, 8}
-    );
-    desenharTexto(
-        rm.texturaFonte,
-        "€‚„…†‡‰Š‹ŒŽ\n‘’“”∙–—™š›œžŸ\n¡¢£¤¥¦§¨©ª«¬­®¯\n°±²³´µ¶·¸¹º»¼½¾¿\nÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏ\nÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞß\nàáâãäåæçèéêëìíîï\nðñòóôõö÷øùúûüýþÿ", 
-        (Rectangle){0, 0, 8, 8},
-        (Rectangle) {80, 32, 8, 8}
-    );
+        Por algum motivo você tem que dar um espaço entre os efeitos para eles funcionarem
+        e você não pode só fazer isso {t{oTEXTO}} para ter o efeito tremendo e ondulado
+        você tem que inserir algum caractere antes {t\n{o}TEXTO}.
+        Mas, se for qualquer caractere que não é '\n' ele vai ser impresso.
+        Só que ai, se você usar o efeito de mudar o tamanho do texto você quer
+        pular a linha com o efeito para não ficar um texto em cima do outro,
+        mas se você fechar a chave depois do pular linha ou você tem que dar um 
+        espaço a mais no texto ou os efeitos quebram AAAAAAAAAAAAAAAAAAAAA
     */
-    desenharTexto(
-        rm.texturaFonte, 
-        "{iIsso não... é... o\n{t[EAnel de Espinho], né...?}}\nmais texto",
+    desenharTexto( 
+        //essa sintaxe é válida
+        "[C{x\n{yNormal\n} {tTremendo} \n{oOndulando} \n{t\n{oTremendo e ondulando} \n[G{x\n{y\n{iItálico\n} {i\n{tTremendo} \n{i\n{oOndulando} \n{i\n{t\n{oTremendo e ondulando}]\n",
         HUD_FONTE, 
         (Rectangle) {3, 3, 8, 8}
     );

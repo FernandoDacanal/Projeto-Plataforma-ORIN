@@ -16,11 +16,14 @@
 
 #define HUD_LIVES_SRC      (Rectangle){ 56, 0, 48, 16 }
 
+//tá bom de efeito
 enum {
 	SEM_EFEITO, 
     TREMER, 
-    NEGRITO, //vou fazer uma versão em negrito da fonte
-    ITALICO
+    ONDA,
+    ITALICO,
+    AUMENTARX,
+    AUMENTARY
 };
 
 /**
@@ -30,7 +33,7 @@ enum {
  * @param source Posicao e tamanho da fonte.
  * @param rec Posição e tamanho do texto na tela.
  */
-void desenharTexto(Texture2D textura, char *string, Rectangle source, Rectangle rec); 
+void desenharTexto(char *string, Rectangle source, Rectangle rec); 
 
 void desenharSpriteHUD( Rectangle source, Vector2 pos );
 void desenharNumero( int valor, Vector2 pos );

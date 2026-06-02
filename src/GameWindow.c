@@ -92,6 +92,7 @@ void initGameWindow( GameWindow *gameWindow ) {
         if ( gameWindow->alwaysRun ) {
             SetConfigFlags( FLAG_WINDOW_ALWAYS_RUN );
         }
+        
 
         InitWindow( gameWindow->width, gameWindow->height, gameWindow->title );
         SetWindowMonitor(0);
@@ -128,6 +129,7 @@ void initGameWindow( GameWindow *gameWindow ) {
             if ( delta > 1.0f / 30.0f ) {
                 delta = 1.0f / 30.0f;
             }
+            
 
             updateGameWorld( gameWindow->gw, delta );
 

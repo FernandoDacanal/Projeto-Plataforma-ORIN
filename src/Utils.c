@@ -8,6 +8,8 @@
 #include "include/raylib/raylib.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
+#include <math.h>
 
 #include "include/Utils.h"
 #include "include/ResourceManager.h"
@@ -28,7 +30,7 @@ Texture2D carregarTexturaAlterandoCores( const char *caminhoArquivo, Color *core
     return textura;
 }
 
-int tremer(int limite)
+int efeitoTremer(int limite)
 {
 	if (limite < 2)
 		return 0;
@@ -38,6 +40,15 @@ int tremer(int limite)
 		retorno = -retorno;
 	return retorno;
 }
+
+int efeitoOnda(int limite, int i)
+{
+    if (limite < 1)
+        return 0;
+    const float velocidade = 60.0f;
+    return (int)(sinf(GetTime() * velocidade * 0.15 + i * 0.4f) * limite);
+}
+
 /*
 enum {
 	SEM_EFEITO, TREMER, NEGRITO, ITALICO

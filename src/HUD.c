@@ -54,18 +54,18 @@ static void desenharBorda(){
     }
 }
 
-void desenharTexto(Texture2D fonte, char *string, Rectangle source, Rectangle dest){
+void desenharTexto(char *string, Rectangle source, Rectangle dest){
     Vector2 posInicial = {dest.x, dest.y};
 
     int tam = 0;
     int ignorar = 0;
     
     Color cor = BRANCO;
-
     unsigned char efeito = SEM_EFEITO;
-
-    int tremidax = 0;
-	int tremiday = 0;
+    int tremida = 0;
+    int onda = 0;
+    int larguraFonte = 1;
+    int alturaFonte = 1;
 
     bool italico = false;
 
@@ -75,11 +75,12 @@ void desenharTexto(Texture2D fonte, char *string, Rectangle source, Rectangle de
         //fazer pulo de linha
         if(string[i] == '\n'){
             dest.x = posInicial.x;
-            dest.y += dest.height;
+            dest.y += dest.height * alturaFonte;
             ++ignorar;
             continue;
         }
-        /* não sei pq vc tinha tirado o contrabarra então eu comentei essa parte do código
+        //não sei pq vc tinha tirado o contrabarra então eu comentei essa parte do código
+        /*
         if(string[i] == '\\'){
             ++i;
             ++ignorar;
@@ -121,15 +122,21 @@ void desenharTexto(Texture2D fonte, char *string, Rectangle source, Rectangle de
 			continue;
 		}
         //FIM CORES
-        // PRECISA CONSCERTAR EFEITO E LOGO DEPOIS COR (TEXTO NO GAMEWORLD)
+        //PRECISA CONCERTAR EFEITO E LOGO DEPOIS COR (TEXTO NO GAMEWORLD)
         //EFEITOS(letra minuscula) - definições
         if (string[i] == '{')
 		{
             switch(string[i + 1]){
                 case 't':
                     efeito = TREMER; ++i; ++ignorar; break;
+                case 'o':
+                    efeito = ONDA; ++i; ++ignorar; break;
                 case 'i':
                     efeito = ITALICO; ++i; ++ignorar; break;
+                case 'x': 
+                    efeito = AUMENTARX; ++larguraFonte; ++i; ++ignorar; break;
+                case 'y': 
+                    efeito = AUMENTARY; ++alturaFonte; ++i; ++ignorar; break;
                 default: efeito = SEM_EFEITO; ++i; ++ignorar; break;
             }
             ++i;
@@ -142,17 +149,17 @@ void desenharTexto(Texture2D fonte, char *string, Rectangle source, Rectangle de
 		}
         //implementação
         switch(efeito){
-            case TREMER:
-                tremidax = tremer(2);
-			    tremiday = tremer(2);
-            break;
-            case ITALICO:
-                italico = true;
-            break;
+            case TREMER: tremida = efeitoTremer(2); break;
+            case ITALICO: italico = true; break;
+            case ONDA: onda = efeitoOnda(2, i); break;
+            case AUMENTARX: break;
+            case AUMENTARY: break;
             case SEM_EFEITO:
                 italico = false;
-                tremidax = 0;
-                tremiday = 0;
+                tremida = 0;
+                onda = 0;
+                larguraFonte = 1;
+                alturaFonte = 1;
             break;
         }
         //FIM EFEITOS
@@ -176,16 +183,16 @@ void desenharTexto(Texture2D fonte, char *string, Rectangle source, Rectangle de
                 italico ?  rm.texturaFonteItalico : rm.texturaFonte,
                 source,
                 (Rectangle){
-                    dest.x + tremidax,
-                    dest.y + tremiday,
-                    dest.width,
-                    dest.height
+                    dest.x + tremida,
+                    dest.y + tremida + onda,
+                    dest.width * larguraFonte,
+                    dest.height * alturaFonte
                 },
                 (Vector2){0},
                 0,
                 cor
             );
-            dest.x += dest.width;
+            dest.x += dest.width * larguraFonte;
         }
     }
 }
@@ -207,7 +214,6 @@ void desenharScore( GameWorld *gw ) {
     );
     */
     desenharTexto(
-        rm.texturaFonte,
         "SCORE",
         HUD_FONTE,
         (Rectangle) {HUDSuperior.x, HUDSuperior.y, TAMANHO_FONTE, TAMANHO_FONTE}
@@ -233,8 +239,8 @@ void desenharTime( GameWorld *gw ) {
     int tremor2 = 0;
 
     if ( gw->jogador->quantidadeAneis == 0 ) {
-        tremor1 = tremer( 2 );
-        tremor2 = tremer( 2 );
+        tremor1 = efeitoTremer( 2 );
+        tremor2 = efeitoTremer( 2 );
     }
     Vector2 pos = {
         HUDSuperior.x + tremor1,
@@ -242,7 +248,6 @@ void desenharTime( GameWorld *gw ) {
     };
 
     desenharTexto(
-        rm.texturaFonte,
         "TIME",
         HUD_FONTE,
         (Rectangle) {pos.x, pos.y, TAMANHO_FONTE, TAMANHO_FONTE}
@@ -279,8 +284,8 @@ void desenharRings( GameWorld *gw ) {
     int tremor2 = 0;
 
     if ( gw->jogador->quantidadeAneis == 0 ) {
-        tremor1 = tremer( 2 );
-        tremor2 = tremer( 2 );
+        tremor1 = efeitoTremer( 2 );
+        tremor2 = efeitoTremer( 2 );
     }
 
     Vector2 pos = {
@@ -299,7 +304,6 @@ void desenharRings( GameWorld *gw ) {
     */
 
     desenharTexto(
-        rm.texturaFonte,
         "RINGS",
         HUD_FONTE,
         (Rectangle) {pos.x, pos.y, TAMANHO_FONTE, TAMANHO_FONTE}
