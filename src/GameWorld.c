@@ -114,9 +114,8 @@ void drawGameWorld( GameWorld *gw ) {
 	DrawFPS( 10, 70 );
 	DrawText(TextFormat("Tempo: %.0f", gw->jogador->quantidadeTempo), 10, 90, 20, ORANGE);
     */
-    DrawFPS( 200, 70 );
-    DrawRectangle(2, 2, 162, 84, PRETO);
-    DrawRectangleLines(2, 2, 162, 84, BRANCO);
+    DrawRectangle(2, 2, 162, 92, PRETO);
+    DrawRectangleLines(2, 2, 162, 92, BRANCO);
 
     /*
         Por algum motivo você tem que dar um espaço entre os efeitos para eles funcionarem
@@ -128,10 +127,34 @@ void drawGameWorld( GameWorld *gw ) {
         mas se você fechar a chave depois do pular linha ou você tem que dar um 
         espaço a mais no texto ou os efeitos quebram AAAAAAAAAAAAAAAAAAAAA
     */
+    /*
     desenharTexto( 
         //essa sintaxe é válida
-        "[C{x\n{yNormal\n} {tTremendo} \n{oOndulando} \n{t\n{oTremendo e ondulando} \n[G{x\n{y\n{iItálico\n} {i\n{tTremendo} \n{i\n{oOndulando} \n{i\n{t\n{oTremendo e ondulando}]\n",
+        "[C{x\n{yNormal\n}}" 
+        " {tTremendo} \n"
+        "{oOndulando} \n"
+        "{t\n{oTremendo e ondulando}}] \n"
+        "sem formatação\n"
+        "[G{i\n{x\n{yItálico\n}}} "
+        "{i\n{tTremendo}} \n"
+        "{i\n{oOndulando}} \n"
+        "{i\n{t\n{oTremendo e ondulando}}}]\n",
         HUD_FONTE, 
+        (Rectangle) {3, 3, 8, 8}
+    );
+    */
+    desenharTexto( 
+        //tem que corrigir o parser para essa string exibir corretamente que nem a comentada de cima
+        "[C{x{yNormal\n}}"
+        "{tTremendo}\n"
+        "{oOndulando}\n"
+        "{t{oTremendo e ondulando}}]\n"
+        "sem formatação\n"
+        "[G{i{x{yItálico\n}}"
+        "{tTremendo}\n"
+        "{oOndulando}\n"
+        "{t{oTremendo e ondulando}}}]",
+        HUD_FONTE,
         (Rectangle) {3, 3, 8, 8}
     );
 }

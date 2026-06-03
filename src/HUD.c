@@ -188,10 +188,8 @@ void desenharTexto(char *string, Rectangle source, Rectangle dest){
         if(c >= ' '){
             tam++;
             c -= ' ';	// ' ' == 32
-
             source.x = (c % 16) * source.width;
             source.y = (c / 16) * source.height;
-
             DrawTexturePro(
                 italico ?  rm.texturaFonteItalico : rm.texturaFonte,
                 source,
