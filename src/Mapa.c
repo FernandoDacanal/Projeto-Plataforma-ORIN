@@ -9,8 +9,8 @@
 #include <stdlib.h>
 
 #include "include/InimigoSpikes.h"
-#include "include/InimigoSpikes.h"
 #include "include/ItemAnelVerm.h"
+#include "include/InimigoVoador.h"
 #include "include/raylib/raylib.h"
 
 #include "include/Macros.h"
@@ -194,6 +194,24 @@ Mapa *carregarMapa( const char *caminhoArquivo ) {
                             );
                             el->objeto = inimigo;
                             el->tipo = TIPO_ELEMENTO_MAPA_INIMIGO;
+                            break;
+                        case '2':
+
+                            inimigo = criarInimigo( TIPO_INIMIGO_VOADOR );
+
+                            inimigo->objeto = criarInimigoVoador( 
+                                (Rectangle) { 
+                                    .x = novoMapa->dimensaoPadraoElementos * colunaAtual, 
+                                    .y = novoMapa->dimensaoPadraoElementos * linhaAtual - 16, 
+                                    .width = 32, 
+                                    .height = 32
+                                },
+                                YELLOW
+                            );
+
+                            el->objeto = inimigo;
+                            el->tipo = TIPO_ELEMENTO_MAPA_INIMIGO;
+
                             break;
                             
                         default:

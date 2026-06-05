@@ -12,13 +12,11 @@
 #include "include/raylib/raylib.h"
 
 #include "include/Animacao.h"
-#include "include/Inimigo.h"
 #include "include/InimigoMotobug.h"
 #include "include/InimigoSpikes.h"
-#include "include/Item.h"
+#include "include/InimigoVoador.h"
 #include "include/ItemAnel.h"
 #include "include/ItemAnelVerm.h"
-#include "include/Macros.h"
 #include "include/Jogador.h"
 #include "include/ResourceManager.h"
 #include "include/Tipos.h"
@@ -706,6 +704,53 @@ static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
                 if ( j->estado >= ESTADO_JOGADOR_PULANDO && j->estado <= ESTADO_JOGADOR_PULANDO_CORRENDO ) {
                     j->vel.y = j->velPulo;
                     spikes->estado = ESTADO_INIMIGO_SPIKES_MORRENDO;
+                    j->quantidadePontos += 10;
+                    PlaySound( rm.somHitInimigo );
+                } else if ( !j->invulneravel ) {
+                    if ( j->quantidadeAneis > 0 ) {
+                        j->quantidadeAneis = 0;
+                        PlaySound( rm.somHitComAnel );
+                    } else if (j->quantidadeVidas > 0) {
+                        j->quantidadeVidas--;
+                        PlaySound( rm.somMorte );
+                    }
+                    j->invulneravel = true;
+                }
+
+                return; // um inimigo de cada vez!
+            }
+
+        }
+        else if ( inimigo->tipo == TIPO_INIMIGO_VOADOR ) {
+
+            InimigoVoador *voador = (InimigoVoador*) inimigo->objeto;
+
+            if ( !voador->ativo || voador->estado == ESTADO_INIMIGO_VOADOR_MORRENDO ) {
+                el = el->proximo;
+                continue;
+            }
+
+            qaInimigo = getQuadroAnimacaoAtualInimigoVoador( voador );
+            olhandoParaDireita = &voador->olhandoParaDireita;
+            ret = &voador->ret;
+
+            float deslocamentoX = *olhandoParaDireita
+                ? ret->width - qaInimigo->retColisao.x - qaInimigo->retColisao.width
+                : qaInimigo->retColisao.x;
+            float deslocamentoY = qaInimigo->retColisao.y;
+
+            Rectangle retColInimigoCalculado = {
+                ret->x + deslocamentoX,
+                ret->y + deslocamentoY,
+                qaInimigo->retColisao.width,
+                qaInimigo->retColisao.height
+            };
+
+            if ( CheckCollisionRecs( retColCalculado, retColInimigoCalculado ) ) {
+
+                if ( j->estado >= ESTADO_JOGADOR_PULANDO && j->estado <= ESTADO_JOGADOR_PULANDO_CORRENDO ) {
+                    j->vel.y = j->velPulo;
+                    voador->estado = ESTADO_INIMIGO_VOADOR_MORRENDO;
                     j->quantidadePontos += 10;
                     PlaySound( rm.somHitInimigo );
                 } else if ( !j->invulneravel ) {

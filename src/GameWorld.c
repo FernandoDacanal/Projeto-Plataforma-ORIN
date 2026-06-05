@@ -12,12 +12,9 @@
 #include "include/GameWorld.h"
 #include "include/GameWindow.h"
 #include "include/Jogador.h"
-// #include "include/Macros.h"
 #include "include/Mapa.h"
-// #include "include/Obstaculo.h"
 #include "include/Tipos.h"
 #include "include/ResourceManager.h"
-// #include "include/Animacao.h"
 #include "include/HUD.h"
 #include "include/Utils.h"
 
@@ -114,10 +111,9 @@ void drawGameWorld( GameWorld *gw ) {
 	DrawFPS( 10, 70 );
 	DrawText(TextFormat("Tempo: %.0f", gw->jogador->quantidadeTempo), 10, 90, 20, ORANGE);
     */
+    /*
     DrawRectangle(2, 2, 162, 92, PRETO);
     DrawRectangleLines(2, 2, 162, 92, BRANCO);
-
-    /*
         Por algum motivo você tem que dar um espaço entre os efeitos para eles funcionarem
         e você não pode só fazer isso {t{oTEXTO}} para ter o efeito tremendo e ondulado
         você tem que inserir algum caractere antes {t\n{o}TEXTO}.
@@ -143,6 +139,7 @@ void drawGameWorld( GameWorld *gw ) {
         (Rectangle) {3, 3, 8, 8}
     );
     */
+    /*
     desenharTexto( 
         //tem que corrigir o parser para essa string exibir corretamente que nem a comentada de cima
         "[C{x{yNormal\n}}"
@@ -157,6 +154,7 @@ void drawGameWorld( GameWorld *gw ) {
         HUD_FONTE,
         (Rectangle) {3, 3, 8, 8}
     );
+    */
 }
 
 //TODO: No momento não está sendo utilizado. Remover se não for usar.
