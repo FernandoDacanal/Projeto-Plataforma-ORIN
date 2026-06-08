@@ -12,7 +12,20 @@
 
 #include "include/GameWindow.h"
 
-int main( void ) {
+extern bool mod_desenvolvedor;
+
+int main (int argc, char* argv[])
+{
+	//for (int i = 1; i < argc; i++)
+	//{
+	//	// Ai teria que iterar por que pode ser argumento string
+	//}
+	if (argc > 1)
+	{
+		// Eu to com preguiça de fazer passar por todos
+		// os argumentos, pelo menos por enquanto.
+		mod_desenvolvedor = true;
+	}
 
     GameWindow *gameWindow = createGameWindow(
         640,             // width
@@ -33,5 +46,4 @@ int main( void ) {
     initGameWindow( gameWindow );
 
     return 0;
-
 }

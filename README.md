@@ -9,27 +9,27 @@ No momento apenas possui um nível, 2 tipos de itens e 2 tipos de inimigos, por�
 # TODOs
 
 ## Obrigatório
-- [   ] Mais 2 fases
-- [   ] Mais 2 itens
-- [   ] Mais 2 inimigos
+- [ ] Mais 2 fases
+- [ ] Mais 2 itens
+- [ ] Mais 2 inimigos
 
 # Implementar
-- [ x ] Sprites novos dos inimigos
-- [ - ] Sistema de texto
-- [   ] Fundo com paralaxe bom
-- [   ] Plataformas no background
-- [   ] Resolver "pulo no ar"
-- [   ] Segurar espaço faz pular mais alto
+- [x] Sprites novos dos inimigos
+- [ ] Sistema de texto
+- [ ] Fundo com paralaxe bom
+- [ ] Plataformas no background
+- [ ] Resolver "pulo no ar"
+- [ ] Segurar espaço faz pular mais alto
 
 ## Ideias
 ### Opções de Movimentação/Combate
-- [   ] Pular na parede
-- [   ] Soco, chute e mergulhar
-- [   ] Pulo triplo
-- [   ] Ground Pound
-- [   ] Botão de correr
+- [ ] Pular na parede
+- [ ] Soco, chute e mergulhar
+- [ ] Pulo triplo
+- [ ] Ground Pound
+- [ ] Botão de correr
 
 ### Outros
-- [   ] Multiplayer*
+- [ ] Multiplayer*
 
 Função para definir tamanho da caixa de texto e se o texto passar do tamanho ir para a proxima linha.

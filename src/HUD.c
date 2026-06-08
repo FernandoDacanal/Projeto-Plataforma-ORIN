@@ -1,8 +1,6 @@
 #include <stdbool.h>
 #include <math.h>
 #include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
 
 #include "include/Tipos.h"
 #include "include/HUD.h"
@@ -14,7 +12,7 @@ static Vector2 HUDSuperior = { BORDA, ALTURA_VIRTUAL - TAMANHO_FONTE * 3 - BORDA
 static Vector2 HUDInferior = { TAMANHO_FONTE * 2, ALTURA_VIRTUAL - TAMANHO_FONTE * 3 };
 
 //função responsável por fazer o efeito de tremer o texto
-int efeitoTremer(int limite)
+static int efeitoTremerTemp(int limite)
 {
 	if (limite < 2)
 		return 0;
@@ -24,8 +22,9 @@ int efeitoTremer(int limite)
 		retorno = -retorno;
 	return retorno;
 }
+
 //função responsável por fazer o efeito de onda no texto
-int efeitoOnda(int limite, int i)
+static int efeitoOndaTemp(int limite, int i)
 {
     if (limite < 1)
         return 0;
@@ -69,7 +68,8 @@ void desenharBorda(Color cor1, Color cor2){
     }
 }
 
-void desenharTexto(char *string, Rectangle source, Rectangle dest){
+void desenharTexto(char* string, Rectangle source, Rectangle dest)
+{
     Vector2 posInicial = {dest.x, dest.y};
 
     int tam = 0;
@@ -85,7 +85,8 @@ void desenharTexto(char *string, Rectangle source, Rectangle dest){
 
     string = unicodeASCII(string);
  
-    for(int i = 0; string[i] != '\0'; i++){
+    for(int i = 0; string[i] != '\0'; i++)
+	{
         //fazer pulo de linha
         if(string[i] == '\n'){
             dest.x = posInicial.x;
@@ -93,16 +94,14 @@ void desenharTexto(char *string, Rectangle source, Rectangle dest){
             ++ignorar;
             continue;
         }
-        //não sei pq vc tinha tirado o contrabarra então eu comentei essa parte do código
-        /*
-        if(string[i] == '\\'){
-            ++i;
-            ++ignorar;
-            continue;
-        }
-        */
-        //CORES (Letra Maiuscula)
-        if (string[i] == '['){
+
+		if (string[i] == '\\')
+		{
+			++ignorar;
+			continue;
+		}
+		else if (string[i] == '[')
+		{
 			switch(string [i + 1]){
 				case 'A' : cor = PRETO; ++i; ++ignorar; break;
 				case 'B' : cor = ROXO; ++i; ++ignorar; break;
@@ -124,19 +123,18 @@ void desenharTexto(char *string, Rectangle source, Rectangle dest){
 				case 'O' : cor = CINZA; ++i; ++ignorar; break;
 				case 'P' : cor = CINZAESCURO; ++i; ++ignorar; break;
 
-                //coloquei rosa para ficar evidente se tiver algum texto formatado errado
+						   //coloquei rosa para ficar evidente se tiver algum texto formatado errado
 				default: cor = PINK; ++i; ++ignorar; break;
 			}
 			++i;
 			++ignorar;
-	    }
-        else if (string[i] == ']'){
+		}
+		else if (string[i] == ']'){
 			cor = BRANCO;
 			++ignorar;
 			continue;
 		}
-        //FIM CORES
-        //EFEITOS(letra minuscula) - definições
+
         if (string[i] == '{')
 		{
             switch(string[i + 1]){
@@ -160,11 +158,11 @@ void desenharTexto(char *string, Rectangle source, Rectangle dest){
 			++ignorar;
 			continue;
 		}
-        //implementação
+
         switch(efeito){
-            case TREMER: tremida = efeitoTremer(2); break;
+            case TREMER: tremida = efeitoTremerTemp(2); break;
             case ITALICO: italico = true; break;
-            case ONDA: onda = efeitoOnda(2, i); break;
+            case ONDA: onda = efeitoOndaTemp(2, i); break;
             case AUMENTARX: break;
             case AUMENTARY: break;
             case SEM_EFEITO:
@@ -175,7 +173,6 @@ void desenharTexto(char *string, Rectangle source, Rectangle dest){
                 alturaFonte = 1;
             break;
         }
-        //FIM EFEITOS
 
         //desenhar caracteres ascii extendido
         /*
@@ -236,8 +233,8 @@ void desenharTime( GameWorld *gw ) {
     int tremor2 = 0;
 
     if ( gw->jogador->quantidadeAneis == 0 ) {
-        tremor1 = efeitoTremer( 2 );
-        tremor2 = efeitoTremer( 2 );
+        tremor1 = efeitoTremerTemp( 2 );
+        tremor2 = efeitoTremerTemp( 2 );
     }
     Vector2 pos = {
         HUDSuperior.x + tremor1,

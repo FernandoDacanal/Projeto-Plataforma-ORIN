@@ -24,8 +24,10 @@
 //#include "raylib/raygui.h"       // other compilation units must only include
 //#undef RAYGUI_IMPLEMENTATION     // raygui.h
 
+#include "extras/dev.h"
+#include "texto/texto.h"
 
-#include "include/Utils.h"
+
 
 static void desenharFundo( GameWorld *gw );
 static void atualizarCamera( GameWorld *gw );
@@ -34,6 +36,8 @@ static void inicializar( GameWorld *gw );
 static void reiniciar( GameWorld *gw );
 
 RenderTexture2D alvoRenderizacao;
+
+bool musica_ativa = true;	// Eu sei que não é legal ficar fazendo variável global ... :)
 
 
 
@@ -61,12 +65,17 @@ void destroyGameWorld( GameWorld *gw ) {
  * @brief Lê a entrada do usuário e atualiza o estado do jogo.
  */
 void updateGameWorld( GameWorld *gw, float delta ) {
+	if (IsKeyPressed(KEY_M))
+		musica_ativa = !musica_ativa;
 
-    if ( !IsMusicStreamPlaying( rm.musicaFase01 ) ) {
-        PlayMusicStream( rm.musicaFase01 );
-    } else {
-        UpdateMusicStream( rm.musicaFase01 );
-    }
+	if (musica_ativa)
+	{
+		if ( !IsMusicStreamPlaying( rm.musicaFase01 ) ) {
+			PlayMusicStream( rm.musicaFase01 );
+		} else {
+			UpdateMusicStream( rm.musicaFase01 );
+		}
+	}
 
     if ( IsKeyPressed( KEY_R ) ) {
         reiniciar( gw );
@@ -97,64 +106,39 @@ void drawGameWorld( GameWorld *gw ) {
 	desenharHUD(gw);
     
 	//DEBUG
-	/*
-	DrawText( TextFormat( "Anéis: %d", gw->jogador->quantidadeAneis ), 10, 10, 20, ORANGE );
-	DrawText( TextFormat( "Vidas: %d", gw->jogador->quantidadeVidas ), 10, 30, 20, ORANGE );
-	DrawText( 
-	TextFormat( 
-	"Invulnerável: %s%s", 
-	gw->jogador->invulneravel ? "sim" : "não",
-	gw->jogador->invulneravel ? TextFormat( " (%.2fs/%.2fs)", gw->jogador->contadorTempoInvulnerabilidade, gw->jogador->tempoInvulnerabilidade ) : ""
-	), 
-	10, 50, 20, ORANGE
-	);
-	DrawFPS( 10, 70 );
-	DrawText(TextFormat("Tempo: %.0f", gw->jogador->quantidadeTempo), 10, 90, 20, ORANGE);
-    */
-    /*
-    DrawRectangle(2, 2, 162, 92, PRETO);
-    DrawRectangleLines(2, 2, 162, 92, BRANCO);
-        Por algum motivo você tem que dar um espaço entre os efeitos para eles funcionarem
-        e você não pode só fazer isso {t{oTEXTO}} para ter o efeito tremendo e ondulado
-        você tem que inserir algum caractere antes {t\n{o}TEXTO}.
-        Mas, se for qualquer caractere que não é '\n' ele vai ser impresso.
-        Só que ai, se você usar o efeito de mudar o tamanho do texto você quer
-        pular a linha com o efeito para não ficar um texto em cima do outro,
-        mas se você fechar a chave depois do pular linha ou você tem que dar um 
-        espaço a mais no texto ou os efeitos quebram AAAAAAAAAAAAAAAAAAAAA
-    */
-    /*
-    desenharTexto( 
-        //essa sintaxe é válida
-        "[C{x\n{yNormal\n}}" 
-        " {tTremendo} \n"
-        "{oOndulando} \n"
-        "{t\n{oTremendo e ondulando}}] \n"
-        "sem formatação\n"
-        "[G{i\n{x\n{yItálico\n}}} "
-        "{i\n{tTremendo}} \n"
-        "{i\n{oOndulando}} \n"
-        "{i\n{t\n{oTremendo e ondulando}}}]\n",
-        HUD_FONTE, 
-        (Rectangle) {3, 3, 8, 8}
-    );
-    */
-    /*
-    desenharTexto( 
-        //tem que corrigir o parser para essa string exibir corretamente que nem a comentada de cima
-        "[C{x{yNormal\n}}"
-        "{tTremendo}\n"
-        "{oOndulando}\n"
-        "{t{oTremendo e ondulando}}]\n"
-        "sem formatação\n"
-        "[G{i{x{yItálico\n}}"
-        "{tTremendo}\n"
-        "{oOndulando}\n"
-        "{t{oTremendo e ondulando}}}]",
-        HUD_FONTE,
-        (Rectangle) {3, 3, 8, 8}
-    );
-    */
+	// TODO: Passar argumento de debug
+	//DrawText( TextFormat( "Anéis: %d", gw->jogador->quantidadeAneis ), 10, 10, 20, ORANGE );
+	//DrawText( TextFormat( "Vidas: %d", gw->jogador->quantidadeVidas ), 10, 30, 20, ORANGE );
+	//DrawText( 
+	//TextFormat( 
+	//"Invulnerável: %s%s", 
+	//gw->jogador->invulneravel ? "sim" : "não",
+	//gw->jogador->invulneravel ? TextFormat( " (%.2fs/%.2fs)", gw->jogador->contadorTempoInvulnerabilidade, gw->jogador->tempoInvulnerabilidade ) : ""
+	//), 
+	//10, 50, 20, ORANGE
+	//);
+	//DrawFPS( 10, 70 );
+	//DrawText(TextFormat("Tempo: %.0f", gw->jogador->quantidadeTempo), 10, 90, 20, ORANGE);
+	
+	  DrawRectangle(2, 2, 193, 100, PRETO);
+	  DrawRectangleLines(2, 2, 194, 101, BRANCO);
+	  desenharTexto2( 
+	      "[C]{x}{y}Normal\n{/y}{/x}"
+	      "{t}Tremendo{/t}\n"
+	      "{o}Ondulando{/o}\n"
+	      "{t}{o}Tremendo e ondulando{/o}{/t}[/]\n"
+	      "sem formatação\n"
+	      "[G]{i}{x}{y}Itálico\n{/y}{/x}"
+	      "{t}Tremendo{/t}\n"
+	      "{o}Ondulando{/o}\n"
+	      "{t}{o}Tremendo e ondulando{/t}{/o}{/i}[/]\n"
+	"ÁáÉéÍíÓóÚú",
+	5, 5
+	  );
+
+	//desenharTexto2("{i}Abacate{/i}", 5, 5 + 6 * 8);
+	//desenharTexto2("[A]A{s2x2}b[/]a{/s}{s1x2}cate", 5, 5 + 7 * 8);
+	//desenharTexto2("[A]A{s2x2}b[/]a{s1x2}cate", 5, 5 + 7 * 8);	// Até pode não fechar os efeitos/cores e só usar outro, mas não recomendo
 }
 
 //TODO: No momento não está sendo utilizado. Remover se não for usar.
@@ -205,7 +189,10 @@ static void atualizarCamera( GameWorld *gw ) {
 }
 
 static void inicializar( GameWorld *gw ) {
+	if (mod_desenvolvedor)
+		musica_ativa = false;
     //gw->mapa = carregarMapa( "resources/mapas/mapaTeste.txt" );
+
     gw->mapa = carregarMapa( "resources/mapas/mapa01.txt" );
     gw->jogador = criarJogador( (float)GetScreenWidth() / 2 + 144, calcularAlturaMapa( gw->mapa ) - 196, 32, 32 );
 
