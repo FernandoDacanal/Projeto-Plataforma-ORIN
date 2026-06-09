@@ -2,7 +2,7 @@
 Jogo de plataforma desenvolvido para a matéria de Organização e Recuperação da Informação(ORIN).  
 No momento apenas possui um nível, 2 tipos de itens e 2 tipos de inimigos, porém haverá mais coisas no futuro.
 
-![Texto Formatado]("https://github.com/FernandoDacanal/Projeto-Plataforma-ORIN/imagens/textos formatados.png" "Texto Formatado")
+![Texto Formatado]("https://github.com/FernandoDacanal/Projeto-Plataforma-ORIN/imagens/textos formatados.png")
 
 ### Integrantes:
 - Fernando Dacanal Guirão
