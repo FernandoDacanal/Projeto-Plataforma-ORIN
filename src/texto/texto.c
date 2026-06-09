@@ -48,7 +48,7 @@ int efeitoOnda(int limite, int i)
     return (int)(sinf(GetTime() * velocidade * 0.15 + i * 0.4f) * limite);
 }
 
-void desenharTexto2(char *str, int x, int y)
+void desenharTexto(char *str, int x, int y)
 {
 	str = unicodeASCII(str);
 
@@ -86,6 +86,7 @@ void desenharTexto2(char *str, int x, int y)
 
 			switch (str[i + 1])
 			{
+				// Mudar em vez de "[A]" ..., ser "[PRETO]" ...
 				case 'A':
 				case 'a':
 					estado.cor = PRETO;
@@ -211,12 +212,42 @@ void desenharTexto2(char *str, int x, int y)
 					// TODO: Também aceitar número
 				case 'x':
 				case 'X':
-					estado.escalaX = desligar ? 1 : 2;
+					if (desligar)
+						estado.escalaX = 1;
+					else
+					{
+						int j;
+						int escala = 0;
+						
+						for (j = i + 2; str[j] >= '0' && str[j] <= '9'; j++)
+						{
+							escala *= 10;
+							escala += str[j] - '0';
+						}
+						
+						if (escala > 0)
+							estado.escalaX = escala;
+					}
 					break;
 
 				case 'y':
 				case 'Y':
-					estado.escalaY = desligar ? 1 : 2;
+					if (desligar)
+						estado.escalaY = 1;
+					else
+					{
+						int j;
+						int escala = 0;
+						
+						for (j = i + 2; str[j] >= '0' && str[j] <= '9'; j++)
+						{
+							escala *= 10;
+							escala += str[j] - '0';
+						}
+						
+						if (escala > 0)
+							estado.escalaY = escala;
+					}
 					break;
 
 				case 's':
@@ -228,16 +259,15 @@ void desenharTexto2(char *str, int x, int y)
 					}
 					else
 					{
-						int j = i + 2;
+						int j;
 
 						int escalaX = 0;
 						int escalaY = 0;
 
-						while (str[j] >= '0' && str[j] <= '9')
+						for (j = i +2; str[j] >= '0' && str[j] <= '9'; j++)
 						{
 							escalaX *= 10;
 							escalaX += str[j] - '0';
-							j++;
 						}
 
 						if (str[j] == 'x' || str[j] == 'X')
@@ -334,4 +364,32 @@ void desenharTexto2(char *str, int x, int y)
 
 		cursor.x += 8 * estado.escalaX;
 	}
+}
+
+void testeTexto()
+{
+	DrawRectangle(2, 2, 170, 83, PRETO);
+	DrawRectangleLines(2, 2, 171, 84, BRANCO);
+	desenharTexto("[C]{x}{y}Normal\n{/y}{/x}"
+			"{t}Tremendo{/t}\n"
+			"{o}Ondulando{/o}\n"
+			"{t}{o}Tremendo e ondulando{/o}{/t}[/]\n"
+			"sem formatação\n"
+			"[G]{i}{x}{y}Itálico\n{/y}{/x}"
+			"{t}Tremendo{/t}\n"
+			"{o}Ondulando{/o}\n"
+			"{t}{o}Tremendo e ondulando{/t}{/o}{/i}[/]\n"
+			"ÁáÉéÍíÓóÚú",
+			3, 5);
+
+	// desenharTexto("{i}Abacate{/i}", 5, 5 + 6 * 8);
+	// desenharTexto("[A]A{s2x2}b[/]a{/s}{s1x2}cate", 5, 5 + 7 * 8);
+	// desenharTexto("[A]A{s2x2}b[/]a{s1x2}cate", 5, 5 + 7 * 8);	// Até pode não fechar os efeitos/cores e só usar outro, mas não recomendo
+	// desenharTexto("Normal\n"
+	// 		"{x2}x=2{/x}\n"
+	// 		"{x3}x=3{/x}\n"
+	// 		"{y2}y=2{/y}\n\n"
+	// 		"{y3}y=3{/y}\n\n\n"
+	// 		"{x2}{y2}x e y = 2{/y}{/x}"
+	// 		, 100, 50);
 }

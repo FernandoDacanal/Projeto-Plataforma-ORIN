@@ -119,26 +119,7 @@ void drawGameWorld( GameWorld *gw ) {
 	//);
 	//DrawFPS( 10, 70 );
 	//DrawText(TextFormat("Tempo: %.0f", gw->jogador->quantidadeTempo), 10, 90, 20, ORANGE);
-	
-	  DrawRectangle(2, 2, 193, 100, PRETO);
-	  DrawRectangleLines(2, 2, 194, 101, BRANCO);
-	  desenharTexto2( 
-	      "[C]{x}{y}Normal\n{/y}{/x}"
-	      "{t}Tremendo{/t}\n"
-	      "{o}Ondulando{/o}\n"
-	      "{t}{o}Tremendo e ondulando{/o}{/t}[/]\n"
-	      "sem formatação\n"
-	      "[G]{i}{x}{y}Itálico\n{/y}{/x}"
-	      "{t}Tremendo{/t}\n"
-	      "{o}Ondulando{/o}\n"
-	      "{t}{o}Tremendo e ondulando{/t}{/o}{/i}[/]\n"
-	"ÁáÉéÍíÓóÚú",
-	5, 5
-	  );
-
-	//desenharTexto2("{i}Abacate{/i}", 5, 5 + 6 * 8);
-	//desenharTexto2("[A]A{s2x2}b[/]a{/s}{s1x2}cate", 5, 5 + 7 * 8);
-	//desenharTexto2("[A]A{s2x2}b[/]a{s1x2}cate", 5, 5 + 7 * 8);	// Até pode não fechar os efeitos/cores e só usar outro, mas não recomendo
+	testeTexto();
 }
 
 //TODO: No momento não está sendo utilizado. Remover se não for usar.
@@ -194,7 +175,8 @@ static void inicializar( GameWorld *gw ) {
     //gw->mapa = carregarMapa( "resources/mapas/mapaTeste.txt" );
 
     gw->mapa = carregarMapa( "resources/mapas/mapa01.txt" );
-    gw->jogador = criarJogador( (float)GetScreenWidth() / 2 + 144, calcularAlturaMapa( gw->mapa ) - 196, 32, 32 );
+    // gw->jogador = criarJogador( (float)GetScreenWidth() / 2 + 144, calcularAlturaMapa( gw->mapa ) - 196, 32, 32 );
+    gw->jogador = criarJogador( (float)GetScreenWidth() / 2 + 17, calcularAlturaMapa( gw->mapa ) - 82, 32, 32 );
 
     gw->camera = (Camera2D) {
         .offset = { 0 },    // deslocamento relativo da câmera em relação ao alvo

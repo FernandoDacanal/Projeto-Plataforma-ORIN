@@ -2,6 +2,8 @@
 Jogo de plataforma desenvolvido para a matéria de Organização e Recuperação da Informação(ORIN).  
 No momento apenas possui um nível, 2 tipos de itens e 2 tipos de inimigos, porém haverá mais coisas no futuro.
 
+![Texto Formatado]("Imagens/textos formatados.png")
+
 ### Integrantes:
 - Fernando Dacanal Guirão
 - Luiz Bridi de Lima
@@ -15,7 +17,7 @@ No momento apenas possui um nível, 2 tipos de itens e 2 tipos de inimigos, por�
 
 # Implementar
 - [x] Sprites novos dos inimigos
-- [ ] Sistema de texto
+- [x] Sistema de texto
 - [ ] Fundo com paralaxe bom
 - [ ] Plataformas no background
 - [ ] Resolver "pulo no ar"
@@ -31,5 +33,3 @@ No momento apenas possui um nível, 2 tipos de itens e 2 tipos de inimigos, por�
 
 ### Outros
 - [ ] Multiplayer*
-
-Função para definir tamanho da caixa de texto e se o texto passar do tamanho ir para a proxima linha.

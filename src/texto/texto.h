@@ -7,4 +7,9 @@
 extern Rectangle fonte_tam;	// Tamanho dos caracteres
 extern ResourceManager fonte;
 
-void desenharTexto2(char* str, int x, int y);
+void desenharTexto(char* str, int x, int y);
+
+void testeTexto();
+
+int efeitoTremer(int limite);
+int efeitoOnda(int limite, int i);
