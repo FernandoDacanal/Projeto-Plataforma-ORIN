@@ -44,13 +44,19 @@ typedef enum EstadoInimigoVoador {
     ESTADO_INIMIGO_VOADOR_ATIRANDO,
 } EstadoInimigoVoador;
 
+typedef enum EstadoInimigoPeixe {
+    ESTADO_INIMIGO_PEIXE_ANDANDO,
+    ESTADO_INIMIGO_PEIXE_MORRENDO,
+} EstadoInimigoPeixe;
+
 /**
  * @brief Representa o tipo de um inimigo.
  */
 typedef enum TipoInimigo {
     TIPO_INIMIGO_MOTOBUG,
     TIPO_INIMIGO_SPIKES,
-    TIPO_INIMIGO_VOADOR
+    TIPO_INIMIGO_VOADOR,
+    TIPO_INIMIGO_PEIXE
 } TipoInimigo;
 
 /**
@@ -229,6 +235,30 @@ typedef struct InimigoVoador {
     Animacao animacaoAtirando;
 
 } InimigoVoador;
+
+typedef struct InimigoPeixe {
+
+    Rectangle ret;
+    Vector2 vel;
+    Color cor;
+
+    float velAndando;
+    float velMaxQueda;
+
+    EstadoInimigoPeixe estado;
+    bool ativo;
+    bool olhandoParaDireita;     // *cuidado! a reflexão dos inimigos é ao contrário
+                                 // do jogador! eles começam olhando para a esquerda
+                                 // e as sprites são orientadas para a esquerda inicialmente
+    Animacao *animacoes[2];
+    int quantidadeAnimacoes;
+
+    Animacao animacaoAndando;
+    Animacao animacaoMorrendo;
+    Animacao animacaoMirando;
+    Animacao animacaoAtirando;
+
+} InimigoPeixe;
 
 /**
  * @brief Representa um inimigo.
