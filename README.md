@@ -9,9 +9,8 @@ No momento apenas possui um nível, 2 tipos de itens e 2 tipos de inimigos, por�
 - Luiz Bridi de Lima
 
 # TODOs
-
 ## Obrigatório
-- [ ] Mais 2 fases
+- [ ] Mais 1 fase
 - [ ] Mais 2 itens
 - [ ] Mais 2 inimigos
 
@@ -20,7 +19,8 @@ No momento apenas possui um nível, 2 tipos de itens e 2 tipos de inimigos, por�
 - [x] Sistema de texto
 - [ ] Fundo com paralaxe bom
 - [ ] Plataformas no background
-- [ ] Resolver "pulo no ar"
+- [x] Resolver "pulo no ar"
+- [x] _Coyote Time_ Implementado
 - [ ] Segurar espaço faz pular mais alto
 
 ## Ideias

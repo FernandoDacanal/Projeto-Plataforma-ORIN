@@ -207,7 +207,6 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
         1,               // separação
         false,           // de trás para frente
         (Rectangle) {10, 12, 12, 20}     // retângulo de colisão padrão para cada quadro
-            
     );
 
     novoJogador->animacoes[ESTADO_JOGADOR_PARADO] = &novoJogador->animacaoParado; quantidadeAnimacoes++;
@@ -218,6 +217,12 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
     novoJogador->animacoes[ESTADO_JOGADOR_PULANDO_RAPIDO] = &novoJogador->animacaoPulandoRapido; quantidadeAnimacoes++;
     novoJogador->animacoes[ESTADO_JOGADOR_PULANDO_CORRENDO] = &novoJogador->animacaoPulandoCorrendo; quantidadeAnimacoes++;
     novoJogador->quantidadeAnimacoes = quantidadeAnimacoes;
+
+	/*--------------------*/
+	novoJogador->noChao = false;
+	novoJogador->Coyote = 0.f;
+	novoJogador->CoyoteMax = 0.15f;
+	/*--------------------*/
 
     return novoJogador;
 
@@ -311,7 +316,8 @@ void entradaJogador( Jogador *j, float delta ) {
         j->estado = ESTADO_JOGADOR_CORRENDO;
     }
 
-    if ( IsKeyPressed( KEY_SPACE ) && j->quantidadePulos < j->quantidadeMaxPulos ) {
+    if (IsKeyPressed( KEY_SPACE ) && (j->noChao && j->quantidadePulos < j->quantidadeMaxPulos || j->Coyote > 0.f))
+	{
         j->vel.y = j->velPulo;
         j->quantidadePulos++;
         PlaySound( rm.somPulo );
@@ -330,6 +336,15 @@ void entradaJogador( Jogador *j, float delta ) {
  * @brief Aplica física e resolve colisões do jogador com o mundo.
  */
 void atualizarJogador( Jogador *j, GameWorld *gw, float delta ) {
+	if (j->noChao)
+		j->Coyote = j->CoyoteMax;
+	else
+	{
+		j->Coyote -= delta;
+		if (j->Coyote < 0)
+			j->Coyote = 0;
+	}
+
     if(j->quantidadeTempo <= 599){
         j->quantidadeTempo += delta;
     }
