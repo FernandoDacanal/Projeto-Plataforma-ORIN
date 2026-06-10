@@ -68,6 +68,14 @@ void updateGameWorld( GameWorld *gw, float delta ) {
 	if (IsKeyPressed(KEY_M))
 		musica_ativa = !musica_ativa;
 
+	// HACK: Temporário de carregar novo mapa
+	if (IsKeyPressed(KEY_DELETE))
+	{
+		destruirMapa(gw->mapa);
+		gw->mapa = carregarMapa("resources/mapas/mapaTeste.txt");
+		gw->jogador = criarJogador( 10, calcularAlturaMapa( gw->mapa ) - 82, 32, 32 );
+	}
+
 	if (musica_ativa)
 	{
 		if ( !IsMusicStreamPlaying( rm.musicaFase01 ) ) {
@@ -172,7 +180,6 @@ static void atualizarCamera( GameWorld *gw ) {
 static void inicializar( GameWorld *gw ) {
 	if (mod_desenvolvedor)
 		musica_ativa = false;
-    //gw->mapa = carregarMapa( "resources/mapas/mapaTeste.txt" );
 
     gw->mapa = carregarMapa( "resources/mapas/mapa01.txt" );
     // gw->jogador = criarJogador( (float)GetScreenWidth() / 2 + 144, calcularAlturaMapa( gw->mapa ) - 196, 32, 32 );

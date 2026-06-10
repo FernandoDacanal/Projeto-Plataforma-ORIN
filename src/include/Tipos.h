@@ -138,6 +138,7 @@ typedef struct Jogador {
     float contadorTempoInvulnerabilidade;
 
 	bool noChao;
+	float Coyote, CoyoteMax;
 
     bool piscaPisca;
     float tempoPiscaPisca;
