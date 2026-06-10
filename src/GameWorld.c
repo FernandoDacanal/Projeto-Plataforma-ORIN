@@ -6,7 +6,7 @@
  * @copyright Copyright (c) 2026
  */
 #include <math.h>
-//#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "include/GameWorld.h"
@@ -69,21 +69,21 @@ void updateGameWorld( GameWorld *gw, float delta ) {
 		musica_ativa = !musica_ativa;
 
 	// HACK: Temporário de carregar novo mapa
-	if (IsKeyPressed(KEY_DELETE))
-	{
-		destruirMapa(gw->mapa);
-		gw->mapa = carregarMapa("resources/mapas/mapaTeste.txt");
-		UnloadTexture(rm.texturaTerreno);
-		rm.texturaTerreno = LoadTexture("resources/imagens/tiles/terreno2.png");
-		gw->jogador = criarJogador(10, calcularAlturaMapa( gw->mapa ) - 82, 32, 32);
-	}
-	else if (IsKeyPressed(KEY_ONE))
+	if (IsKeyPressed(KEY_ONE))
 	{
 		destruirMapa(gw->mapa);
 		gw->mapa = carregarMapa("resources/mapas/mapa01.txt");
 		UnloadTexture(rm.texturaTerreno);
 		rm.texturaTerreno = LoadTexture("resources/imagens/tiles/terreno1.png");
-    	gw->jogador = criarJogador( (float)GetScreenWidth() / 2 + 17, calcularAlturaMapa( gw->mapa ) - 82, 32, 32 );
+		gw->jogador = criarJogador(310, 208, 32, 32);
+	}
+	else if (IsKeyPressed(KEY_TWO))
+	{
+		destruirMapa(gw->mapa);
+		gw->mapa = carregarMapa("resources/mapas/mapaTeste.txt");
+		UnloadTexture(rm.texturaTerreno);
+		rm.texturaTerreno = LoadTexture("resources/imagens/tiles/terreno2.png");
+		gw->jogador = criarJogador(22, 208, 32, 32);
 	}
 
 	if (musica_ativa)
@@ -137,6 +137,11 @@ void drawGameWorld( GameWorld *gw ) {
 	//);
 	//DrawFPS( 10, 70 );
 	//DrawText(TextFormat("Tempo: %.0f", gw->jogador->quantidadeTempo), 10, 90, 20, ORANGE);
+	DrawText(TextFormat("X: %f", gw->jogador->ret.x), 50, 10, 20, ORANGE);
+	DrawText(TextFormat("y: %f", gw->jogador->ret.y), 50, 30, 20, ORANGE);
+	printf("X: %f\n", gw->jogador->ret.x);
+	printf("Y: %f\n", gw->jogador->ret.y);
+
 	testeTexto();
 }
 
