@@ -5,7 +5,6 @@
  *
  * @copyright Copyright (c) 2026
  */
-#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
@@ -218,8 +217,11 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
     novoJogador->animacoes[ESTADO_JOGADOR_PULANDO_CORRENDO] = &novoJogador->animacaoPulandoCorrendo; quantidadeAnimacoes++;
     novoJogador->quantidadeAnimacoes = quantidadeAnimacoes;
 
-    return novoJogador;
+	/*--------------------*/
+	novoJogador->noChao = false;
+	/*--------------------*/
 
+    return novoJogador;
 }
 
 /**
@@ -310,9 +312,11 @@ void entradaJogador( Jogador *j, float delta ) {
         j->estado = ESTADO_JOGADOR_CORRENDO;
     }
 
-    if ( IsKeyPressed( KEY_SPACE ) && j->quantidadePulos < j->quantidadeMaxPulos ) {
+    if (IsKeyPressed( KEY_SPACE ) && j->noChao && j->quantidadePulos < j->quantidadeMaxPulos)
+	{
         j->vel.y = j->velPulo;
         j->quantidadePulos++;
+		j->noChao = false;
         PlaySound( rm.somPulo );
     }
 
@@ -373,6 +377,7 @@ void atualizarJogador( Jogador *j, GameWorld *gw, float delta ) {
     resolverColisaoJogadorObstaculosMapaX( j, gw->mapa );
 
     // fase Y: aplica gravidade, move verticalmente e resolve colisões verticais
+	j->noChao = false;
     j->vel.y += gw->gravidade * delta;
     if ( j->vel.y > j->velMaxQueda ) {
         j->vel.y = j->velMaxQueda;
@@ -382,7 +387,6 @@ void atualizarJogador( Jogador *j, GameWorld *gw, float delta ) {
 
     resolverColisaoJogadorItensMapa( j, gw->mapa );
     resolverColisaoJogadorInimigosMapa( j, gw->mapa );
-
 }
 
 /**
@@ -399,7 +403,6 @@ void desenharJogador( Jogador *j ) {
         DrawRectangleRec( j->ret, Fade( j->cor, 0.5f ) );
         DrawRectangleLines( j->ret.x, j->ret.y, j->ret.width, j->ret.height, BLACK );
     }
-
 }
 
 static void desenharQuadroAnimacaoJogador( Jogador *j, QuadroAnimacao *qa, Color tonalidade ) {
@@ -427,9 +430,7 @@ static void desenharQuadroAnimacaoJogador( Jogador *j, QuadroAnimacao *qa, Color
             float yDesenho = j->ret.y + qa->retColisao.y;
             DrawRectangle( xDesenho, yDesenho, qa->retColisao.width, qa->retColisao.height, Fade( GREEN, 0.5f ) );
         }
-
     }
-
 }
 
 static QuadroAnimacao *getQuadroAnimacaoAtualJogador( Jogador *j ) {
@@ -475,9 +476,7 @@ static void resolverColisaoJogadorObstaculosMapaX( Jogador *j, Mapa *mapa ) {
         }
 
         el = el->proximo;
-
     }
-
 }
 
 /**
@@ -508,6 +507,7 @@ static void resolverColisaoJogadorObstaculosMapaY( Jogador *j, Mapa *mapa ) {
             if ( retColCalculado.y + retColCalculado.height / 2 < o->ret.y + o->ret.height / 2 ) {
                 j->ret.y = o->ret.y - qa->retColisao.height - deslocamentoY;
                 j->quantidadePulos = 0;
+				j->noChao = true;
             } else {
                 j->ret.y = o->ret.y + o->ret.height - deslocamentoY;
             }
@@ -515,9 +515,7 @@ static void resolverColisaoJogadorObstaculosMapaY( Jogador *j, Mapa *mapa ) {
         }
 
         el = el->proximo;
-
     }
-
 }
 
 static void resolverColisaoJogadorItensMapa( Jogador *j, Mapa *mapa ) {
@@ -565,7 +563,6 @@ static void resolverColisaoJogadorItensMapa( Jogador *j, Mapa *mapa ) {
                 j->quantidadeAneis++;
                 PlaySound( rm.somAnel );
             }
-
         }
 
         else if ( item->tipo == TIPO_ITEM_ANELVERM ) {
@@ -595,9 +592,7 @@ static void resolverColisaoJogadorItensMapa( Jogador *j, Mapa *mapa ) {
         }
 
         el = el->proximo;
-
     }
-
 }
 
 static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
@@ -670,7 +665,6 @@ static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
                 }
 
                 return; // um inimigo de cada vez!
-
             }
         }
             
@@ -716,10 +710,8 @@ static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
                     }
                     j->invulneravel = true;
                 }
-
                 return; // um inimigo de cada vez!
             }
-
         }
         else if ( inimigo->tipo == TIPO_INIMIGO_VOADOR ) {
 
@@ -763,12 +755,9 @@ static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
                     }
                     j->invulneravel = true;
                 }
-
                 return; // um inimigo de cada vez!
             }
-
         }
-
         el = el->proximo;
     }
 }
