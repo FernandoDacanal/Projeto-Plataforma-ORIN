@@ -5,6 +5,7 @@
  *
  * @copyright Copyright (c) 2026
  */
+#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
@@ -14,6 +15,7 @@
 #include "include/InimigoMotobug.h"
 #include "include/InimigoSpikes.h"
 #include "include/InimigoVoador.h"
+#include "include/InimigoPeixe.h"
 #include "include/ItemAnel.h"
 #include "include/ItemAnelVerm.h"
 #include "include/Jogador.h"
@@ -223,6 +225,7 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
 	/*--------------------*/
 
     return novoJogador;
+
 }
 
 /**
@@ -317,7 +320,6 @@ void entradaJogador( Jogador *j, float delta ) {
 	{
         j->vel.y = j->velPulo;
         j->quantidadePulos++;
-		j->noChao = false;
         PlaySound( rm.somPulo );
     }
 
@@ -387,7 +389,6 @@ void atualizarJogador( Jogador *j, GameWorld *gw, float delta ) {
     resolverColisaoJogadorObstaculosMapaX( j, gw->mapa );
 
     // fase Y: aplica gravidade, move verticalmente e resolve colisões verticais
-	j->noChao = false;
     j->vel.y += gw->gravidade * delta;
     if ( j->vel.y > j->velMaxQueda ) {
         j->vel.y = j->velMaxQueda;
@@ -397,6 +398,7 @@ void atualizarJogador( Jogador *j, GameWorld *gw, float delta ) {
 
     resolverColisaoJogadorItensMapa( j, gw->mapa );
     resolverColisaoJogadorInimigosMapa( j, gw->mapa );
+
 }
 
 /**
@@ -413,6 +415,7 @@ void desenharJogador( Jogador *j ) {
         DrawRectangleRec( j->ret, Fade( j->cor, 0.5f ) );
         DrawRectangleLines( j->ret.x, j->ret.y, j->ret.width, j->ret.height, BLACK );
     }
+
 }
 
 static void desenharQuadroAnimacaoJogador( Jogador *j, QuadroAnimacao *qa, Color tonalidade ) {
@@ -440,7 +443,9 @@ static void desenharQuadroAnimacaoJogador( Jogador *j, QuadroAnimacao *qa, Color
             float yDesenho = j->ret.y + qa->retColisao.y;
             DrawRectangle( xDesenho, yDesenho, qa->retColisao.width, qa->retColisao.height, Fade( GREEN, 0.5f ) );
         }
+
     }
+
 }
 
 static QuadroAnimacao *getQuadroAnimacaoAtualJogador( Jogador *j ) {
@@ -486,7 +491,9 @@ static void resolverColisaoJogadorObstaculosMapaX( Jogador *j, Mapa *mapa ) {
         }
 
         el = el->proximo;
+
     }
+
 }
 
 /**
@@ -517,7 +524,6 @@ static void resolverColisaoJogadorObstaculosMapaY( Jogador *j, Mapa *mapa ) {
             if ( retColCalculado.y + retColCalculado.height / 2 < o->ret.y + o->ret.height / 2 ) {
                 j->ret.y = o->ret.y - qa->retColisao.height - deslocamentoY;
                 j->quantidadePulos = 0;
-				j->noChao = true;
             } else {
                 j->ret.y = o->ret.y + o->ret.height - deslocamentoY;
             }
@@ -525,7 +531,9 @@ static void resolverColisaoJogadorObstaculosMapaY( Jogador *j, Mapa *mapa ) {
         }
 
         el = el->proximo;
+
     }
+
 }
 
 static void resolverColisaoJogadorItensMapa( Jogador *j, Mapa *mapa ) {
@@ -573,6 +581,7 @@ static void resolverColisaoJogadorItensMapa( Jogador *j, Mapa *mapa ) {
                 j->quantidadeAneis++;
                 PlaySound( rm.somAnel );
             }
+
         }
 
         else if ( item->tipo == TIPO_ITEM_ANELVERM ) {
@@ -602,7 +611,9 @@ static void resolverColisaoJogadorItensMapa( Jogador *j, Mapa *mapa ) {
         }
 
         el = el->proximo;
+
     }
+
 }
 
 static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
@@ -675,6 +686,7 @@ static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
                 }
 
                 return; // um inimigo de cada vez!
+
             }
         }
             
@@ -720,8 +732,10 @@ static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
                     }
                     j->invulneravel = true;
                 }
+
                 return; // um inimigo de cada vez!
             }
+
         }
         else if ( inimigo->tipo == TIPO_INIMIGO_VOADOR ) {
 
@@ -765,9 +779,60 @@ static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
                     }
                     j->invulneravel = true;
                 }
+
                 return; // um inimigo de cada vez!
             }
+
         }
+
+        else if ( inimigo->tipo == TIPO_INIMIGO_PEIXE ) {
+
+            InimigoPeixe *peixe = (InimigoPeixe*) inimigo->objeto;
+
+            if ( !peixe->ativo || peixe->estado == ESTADO_INIMIGO_PEIXE_MORRENDO ) {
+                el = el->proximo;
+                continue;
+            }
+
+            qaInimigo = getQuadroAnimacaoAtualInimigoPeixe( peixe );
+            olhandoParaDireita = &peixe->olhandoParaDireita;
+            ret = &peixe->ret;
+
+            float deslocamentoX = *olhandoParaDireita
+                ? ret->width - qaInimigo->retColisao.x - qaInimigo->retColisao.width
+                : qaInimigo->retColisao.x;
+            float deslocamentoY = qaInimigo->retColisao.y;
+
+            Rectangle retColInimigoCalculado = {
+                ret->x + deslocamentoX,
+                ret->y + deslocamentoY,
+                qaInimigo->retColisao.width,
+                qaInimigo->retColisao.height
+            };
+
+            if ( CheckCollisionRecs( retColCalculado, retColInimigoCalculado ) ) {
+
+                if ( j->estado >= ESTADO_JOGADOR_PULANDO && j->estado <= ESTADO_JOGADOR_PULANDO_CORRENDO ) {
+                    j->vel.y = j->velPulo;
+                    peixe->estado = ESTADO_INIMIGO_PEIXE_MORRENDO;
+                    j->quantidadePontos += 10;
+                    PlaySound( rm.somHitInimigo );
+                } else if ( !j->invulneravel ) {
+                    if ( j->quantidadeAneis > 0 ) {
+                        j->quantidadeAneis = 0;
+                        PlaySound( rm.somHitComAnel );
+                    } else if (j->quantidadeVidas > 0) {
+                        j->quantidadeVidas--;
+                        PlaySound( rm.somMorte );
+                    }
+                    j->invulneravel = true;
+                }
+
+                return; // um inimigo de cada vez!
+            }
+
+        }
+
         el = el->proximo;
     }
 }
