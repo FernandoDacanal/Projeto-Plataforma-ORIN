@@ -73,7 +73,17 @@ void updateGameWorld( GameWorld *gw, float delta ) {
 	{
 		destruirMapa(gw->mapa);
 		gw->mapa = carregarMapa("resources/mapas/mapaTeste.txt");
-		gw->jogador = criarJogador( 10, calcularAlturaMapa( gw->mapa ) - 82, 32, 32 );
+		UnloadTexture(rm.texturaTerreno);
+		rm.texturaTerreno = LoadTexture("resources/imagens/tiles/terreno2.png");
+		gw->jogador = criarJogador(10, calcularAlturaMapa( gw->mapa ) - 82, 32, 32);
+	}
+	else if (IsKeyPressed(KEY_ONE))
+	{
+		destruirMapa(gw->mapa);
+		gw->mapa = carregarMapa("resources/mapas/mapa01.txt");
+		UnloadTexture(rm.texturaTerreno);
+		rm.texturaTerreno = LoadTexture("resources/imagens/tiles/terreno1.png");
+    	gw->jogador = criarJogador( (float)GetScreenWidth() / 2 + 17, calcularAlturaMapa( gw->mapa ) - 82, 32, 32 );
 	}
 
 	if (musica_ativa)
