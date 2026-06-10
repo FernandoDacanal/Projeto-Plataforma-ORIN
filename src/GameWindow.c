@@ -139,7 +139,7 @@ void initGameWindow( GameWindow *gameWindow ) {
 
             BeginDrawing();
             ClearBackground( BLACK );
-            int escala = (int)fminf(
+            float escala = fminf(
                 (float)GetScreenWidth() / LARGURA_VIRTUAL,
                 (float)GetScreenHeight() / ALTURA_VIRTUAL
             );
