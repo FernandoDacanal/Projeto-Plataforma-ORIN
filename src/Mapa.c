@@ -11,6 +11,7 @@
 #include "include/InimigoSpikes.h"
 #include "include/ItemAnelVerm.h"
 #include "include/InimigoVoador.h"
+#include "include/InimigoPeixe.h"
 #include "include/raylib/raylib.h"
 
 #include "include/Macros.h"
@@ -205,6 +206,24 @@ Mapa *carregarMapa( const char *caminhoArquivo ) {
                                     .y = novoMapa->dimensaoPadraoElementos * linhaAtual - 16, 
                                     .width = 32, 
                                     .height = 32
+                                },
+                                YELLOW
+                            );
+
+                            el->objeto = inimigo;
+                            el->tipo = TIPO_ELEMENTO_MAPA_INIMIGO;
+
+                            break;
+                        case '3':
+
+                            inimigo = criarInimigo( TIPO_INIMIGO_PEIXE);
+
+                            inimigo->objeto = criarInimigoPeixe( 
+                                (Rectangle) { 
+                                    .x = novoMapa->dimensaoPadraoElementos * colunaAtual, 
+                                    .y = novoMapa->dimensaoPadraoElementos * linhaAtual - 16, 
+                                    .width = 16, 
+                                    .height = 16
                                 },
                                 YELLOW
                             );
