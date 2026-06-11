@@ -28,8 +28,8 @@ int main (int argc, char* argv[])
 	}
 
     GameWindow *gameWindow = createGameWindow(
-        640,             // width
-        360,             // height
+        960,             // width
+        540,             // height
         "Jogo de Sonic", // title
         60,              // target FPS
         false,           // antialiasing

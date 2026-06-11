@@ -76,6 +76,8 @@ void updateGameWorld( GameWorld *gw, float delta ) {
 		gw->mapa = carregarMapa("resources/mapas/mapa01.txt");
 		UnloadTexture(rm.texturaTerreno);
 		rm.texturaTerreno = LoadTexture("resources/imagens/tiles/terreno1.png");
+        UnloadMusicStream(rm.musicaFase01);
+        rm.musicaFase01 = LoadMusicStream( "resources/sons/musicas/green-hill-zone.mp3" );
 		gw->jogador = criarJogador(310, 208, 32, 32);
 	}
 	else if (IsKeyPressed(KEY_TWO))
@@ -84,7 +86,14 @@ void updateGameWorld( GameWorld *gw, float delta ) {
 		destruirMapa(gw->mapa);
 		gw->mapa = carregarMapa("resources/mapas/mapa02.txt");
 		UnloadTexture(rm.texturaTerreno);
-		rm.texturaTerreno = LoadTexture("resources/imagens/tiles/terreno2.png");
+        rm.texturaTerreno = carregarTexturaAlterandoCores(
+            "resources/imagens/tiles/terreno2.png",
+            FUNDO,
+            (Color[]) {BLANK},
+            3
+        );
+        UnloadMusicStream(rm.musicaFase01);
+        rm.musicaFase01 = LoadMusicStream( "resources/sons/musicas/desert-hill.mp3" );
 		gw->jogador = criarJogador(22, 208, 32, 32);
 	}
 
