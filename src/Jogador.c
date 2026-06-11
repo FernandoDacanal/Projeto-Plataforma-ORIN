@@ -18,6 +18,7 @@
 #include "include/InimigoPeixe.h"
 #include "include/ItemAnel.h"
 #include "include/ItemAnelVerm.h"
+#include "include/ItemVelocidade.h"
 #include "include/Jogador.h"
 #include "include/ResourceManager.h"
 #include "include/Tipos.h"
@@ -609,6 +610,31 @@ static void resolverColisaoJogadorItensMapa( Jogador *j, Mapa *mapa ) {
                 itemAnelVerm->estado = ESTADO_ITEM_ANELVERM_COLETADO;
                 j->quantidadeAneis += 10;
                 j->quantidadePontos += 1000;
+                PlaySound( rm.somAnel );
+            }
+        }
+
+        else if ( item->tipo == TIPO_ITEM_VELOCIDADE ) {
+
+            ItemVelocidade *itemVelocidade = (ItemVelocidade*) item->objeto;
+
+            if ( !itemVelocidade->ativo || itemVelocidade->estado == ESTADO_ITEM_VELOCIDADE_COLETADO ) {
+                el = el->proximo;
+                continue;
+            }
+
+            QuadroAnimacao *qaItem = getQuadroAnimacaoAtualItemVelocidade( itemVelocidade );
+            
+            Rectangle retColItemCalculado = {
+                itemVelocidade->ret.x + qaItem->retColisao.x,
+                itemVelocidade->ret.y + qaItem->retColisao.y,
+                qaItem->retColisao.width,
+                qaItem->retColisao.height
+            };
+
+            if ( CheckCollisionRecs( retColCalculado, retColItemCalculado ) ) {
+                itemVelocidade->estado = ESTADO_ITEM_VELOCIDADE_COLETADO;
+                j->vel.x = j->vel.x * 5;
                 PlaySound( rm.somAnel );
             }
         }
