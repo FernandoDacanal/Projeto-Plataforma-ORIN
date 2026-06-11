@@ -320,6 +320,8 @@ void entradaJogador( Jogador *j, float delta ) {
 	{
         j->vel.y = j->velPulo;
         j->quantidadePulos++;
+		j->noChao = false;
+		j->Coyote = 0;
         PlaySound( rm.somPulo );
     }
 
@@ -524,6 +526,7 @@ static void resolverColisaoJogadorObstaculosMapaY( Jogador *j, Mapa *mapa ) {
             if ( retColCalculado.y + retColCalculado.height / 2 < o->ret.y + o->ret.height / 2 ) {
                 j->ret.y = o->ret.y - qa->retColisao.height - deslocamentoY;
                 j->quantidadePulos = 0;
+				j->noChao = true;
             } else {
                 j->ret.y = o->ret.y + o->ret.height - deslocamentoY;
             }
