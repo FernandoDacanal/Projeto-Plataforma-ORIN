@@ -392,6 +392,7 @@ void atualizarJogador( Jogador *j, GameWorld *gw, float delta ) {
     resolverColisaoJogadorObstaculosMapaX( j, gw->mapa );
 
     // fase Y: aplica gravidade, move verticalmente e resolve colisões verticais
+	j->noChao = false;
     j->vel.y += gw->gravidade * delta;
     if ( j->vel.y > j->velMaxQueda ) {
         j->vel.y = j->velMaxQueda;
