@@ -139,8 +139,11 @@ void drawGameWorld( GameWorld *gw ) {
 	//);
 	//DrawFPS( 10, 70 );
 	//DrawText(TextFormat("Tempo: %.0f", gw->jogador->quantidadeTempo), 10, 90, 20, ORANGE);
-	DrawText(TextFormat("X: %f", gw->jogador->ret.x), 50, 10, 20, ORANGE);
-	DrawText(TextFormat("y: %f", gw->jogador->ret.y), 50, 30, 20, ORANGE);
+	// DrawText(TextFormat("X: %f", gw->jogador->ret.x), 50, 10, 20, ORANGE);
+	// DrawText(TextFormat("y: %f", gw->jogador->ret.y), 50, 30, 20, ORANGE);
+
+	if (gw->jogador->acelerado)
+		desenharTexto("[c]{t}ACELERADO!!!{/t}[/]", 10, 10);
 
 	//testeTexto();
 }

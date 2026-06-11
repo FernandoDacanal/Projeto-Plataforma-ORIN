@@ -223,6 +223,7 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
 	novoJogador->noChao = false;
 	novoJogador->Coyote = 0.f;
 	novoJogador->CoyoteMax = 0.15f;
+	novoJogador->acelerado = 0;
 	/*--------------------*/
 
     return novoJogador;
@@ -248,6 +249,11 @@ void entradaJogador( Jogador *j, float delta ) {
 
     EstadoJogador estadoAnterior = j->estado;
 
+	if (j->acelerado)
+		j->velCorrendo = 1200;
+	else
+		j->velCorrendo = 800;
+
     if ( IsKeyDown( KEY_RIGHT) || IsKeyDown(KEY_D) ) {
         if ( j->vel.x < 0 ) {
             j->vel.x += j->frenagem * delta;
@@ -260,7 +266,7 @@ void entradaJogador( Jogador *j, float delta ) {
                 j->freando = false;
             }
         } else {
-            j->vel.x += j->aceleracao * delta;
+            j->vel.x += (j->aceleracao + (j->acelerado ? 1400 : 0)) * delta;
             if ( j->vel.x > j->velCorrendo ) {
                 j->vel.x = j->velCorrendo;
             }
@@ -278,7 +284,7 @@ void entradaJogador( Jogador *j, float delta ) {
                 j->freando = false;
             }
         } else {
-            j->vel.x -= j->aceleracao * delta;
+            j->vel.x -= (j->aceleracao + (j->acelerado ? 1400 : 0))* delta;
             if ( j->vel.x < -j->velCorrendo ) {
                 j->vel.x = -j->velCorrendo;
             }
@@ -346,6 +352,12 @@ void atualizarJogador( Jogador *j, GameWorld *gw, float delta ) {
 		j->Coyote -= delta;
 		if (j->Coyote < 0)
 			j->Coyote = 0;
+	}
+	if (j->acelerado)
+	{
+		j->acelerado -= delta;
+		if (j->acelerado < 0)
+			j->acelerado = 0;
 	}
 
     if(j->quantidadeTempo <= 599){
@@ -634,6 +646,7 @@ static void resolverColisaoJogadorItensMapa( Jogador *j, Mapa *mapa ) {
             };
 
             if ( CheckCollisionRecs( retColCalculado, retColItemCalculado ) ) {
+				j->acelerado = 2.f;
                 itemVelocidade->estado = ESTADO_ITEM_VELOCIDADE_COLETADO;
                 PlaySound( rm.somAnel );
             }
