@@ -635,7 +635,6 @@ static void resolverColisaoJogadorItensMapa( Jogador *j, Mapa *mapa ) {
 
             if ( CheckCollisionRecs( retColCalculado, retColItemCalculado ) ) {
                 itemVelocidade->estado = ESTADO_ITEM_VELOCIDADE_COLETADO;
-                j->vel.x = j->vel.x * 5;
                 PlaySound( rm.somAnel );
             }
         }
