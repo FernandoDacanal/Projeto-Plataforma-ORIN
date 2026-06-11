@@ -82,7 +82,7 @@ void updateGameWorld( GameWorld *gw, float delta ) {
 	{
 		cor_fundo = AMARELO;
 		destruirMapa(gw->mapa);
-		gw->mapa = carregarMapa("resources/mapas/mapaTeste.txt");
+		gw->mapa = carregarMapa("resources/mapas/mapa02.txt");
 		UnloadTexture(rm.texturaTerreno);
 		rm.texturaTerreno = LoadTexture("resources/imagens/tiles/terreno2.png");
 		gw->jogador = criarJogador(22, 208, 32, 32);
