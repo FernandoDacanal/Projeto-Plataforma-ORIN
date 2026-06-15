@@ -67,6 +67,11 @@ typedef enum EstadoItemAnel {
     ESTADO_ITEM_ANEL_COLETADO,
 } EstadoItemAnel;
 
+typedef enum EstadoItemVelocidade {
+    ESTADO_ITEM_VELOCIDADE_PARADO,
+    ESTADO_ITEM_VELOCIDADE_COLETADO,
+} EstadoItemVelocidade;
+
 typedef enum EstadoItemAnelVerm {
     ESTADO_ITEM_ANELVERM_PARADO,
     ESTADO_ITEM_ANELVERM_COLETADO,
@@ -78,6 +83,7 @@ typedef enum EstadoItemAnelVerm {
 typedef enum TipoItem {
     TIPO_ITEM_ANEL,
     TIPO_ITEM_ANELVERM,
+    TIPO_ITEM_VELOCIDADE,
 } TipoItem;
 
 /**
@@ -145,6 +151,7 @@ typedef struct Jogador {
 
 	bool noChao;
 	float Coyote, CoyoteMax;
+	float acelerado;
 
     bool piscaPisca;
     float tempoPiscaPisca;
@@ -290,6 +297,22 @@ typedef struct ItemAnel {
     Animacao animacaoColetando;
 
 } ItemAnel;
+
+typedef struct ItemVelocidade {
+
+    Rectangle ret;
+    Color cor;
+
+    EstadoItemVelocidade estado;
+    bool ativo;
+
+    Animacao *animacoes[2];
+    int quantidadeAnimacoes;
+
+    Animacao animacaoParado;
+    Animacao animacaoColetando;
+
+} ItemVelocidade;
 
 typedef struct ItemAnelVerm {
 

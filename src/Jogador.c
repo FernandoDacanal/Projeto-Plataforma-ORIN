@@ -18,6 +18,7 @@
 #include "include/InimigoPeixe.h"
 #include "include/ItemAnel.h"
 #include "include/ItemAnelVerm.h"
+#include "include/ItemVelocidade.h"
 #include "include/Jogador.h"
 #include "include/ResourceManager.h"
 #include "include/Tipos.h"
@@ -222,6 +223,7 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
 	novoJogador->noChao = false;
 	novoJogador->Coyote = 0.f;
 	novoJogador->CoyoteMax = 0.15f;
+	novoJogador->acelerado = 0;
 	/*--------------------*/
 
     return novoJogador;
@@ -247,6 +249,11 @@ void entradaJogador( Jogador *j, float delta ) {
 
     EstadoJogador estadoAnterior = j->estado;
 
+	if (j->acelerado)
+		j->velCorrendo = 1200;
+	else
+		j->velCorrendo = 800;
+
     if ( IsKeyDown( KEY_RIGHT) || IsKeyDown(KEY_D) ) {
         if ( j->vel.x < 0 ) {
             j->vel.x += j->frenagem * delta;
@@ -259,7 +266,7 @@ void entradaJogador( Jogador *j, float delta ) {
                 j->freando = false;
             }
         } else {
-            j->vel.x += j->aceleracao * delta;
+            j->vel.x += (j->aceleracao + (j->acelerado ? 1400 : 0)) * delta;
             if ( j->vel.x > j->velCorrendo ) {
                 j->vel.x = j->velCorrendo;
             }
@@ -277,7 +284,7 @@ void entradaJogador( Jogador *j, float delta ) {
                 j->freando = false;
             }
         } else {
-            j->vel.x -= j->aceleracao * delta;
+            j->vel.x -= (j->aceleracao + (j->acelerado ? 1400 : 0))* delta;
             if ( j->vel.x < -j->velCorrendo ) {
                 j->vel.x = -j->velCorrendo;
             }
@@ -346,6 +353,12 @@ void atualizarJogador( Jogador *j, GameWorld *gw, float delta ) {
 		if (j->Coyote < 0)
 			j->Coyote = 0;
 	}
+	if (j->acelerado)
+	{
+		j->acelerado -= delta;
+		if (j->acelerado < 0)
+			j->acelerado = 0;
+	}
 
     if(j->quantidadeTempo <= 599){
         j->quantidadeTempo += delta;
@@ -391,6 +404,7 @@ void atualizarJogador( Jogador *j, GameWorld *gw, float delta ) {
     resolverColisaoJogadorObstaculosMapaX( j, gw->mapa );
 
     // fase Y: aplica gravidade, move verticalmente e resolve colisões verticais
+	j->noChao = false;
     j->vel.y += gw->gravidade * delta;
     if ( j->vel.y > j->velMaxQueda ) {
         j->vel.y = j->velMaxQueda;
@@ -610,6 +624,31 @@ static void resolverColisaoJogadorItensMapa( Jogador *j, Mapa *mapa ) {
                 j->quantidadeAneis += 10;
                 j->quantidadePontos += 1000;
                 PlaySound( rm.somAnel );
+            }
+        }
+
+        else if ( item->tipo == TIPO_ITEM_VELOCIDADE ) {
+
+            ItemVelocidade *itemVelocidade = (ItemVelocidade*) item->objeto;
+
+            if ( !itemVelocidade->ativo || itemVelocidade->estado == ESTADO_ITEM_VELOCIDADE_COLETADO ) {
+                el = el->proximo;
+                continue;
+            }
+
+            QuadroAnimacao *qaItem = getQuadroAnimacaoAtualItemVelocidade( itemVelocidade );
+            
+            Rectangle retColItemCalculado = {
+                itemVelocidade->ret.x + qaItem->retColisao.x,
+                itemVelocidade->ret.y + qaItem->retColisao.y,
+                qaItem->retColisao.width,
+                qaItem->retColisao.height
+            };
+
+            if ( CheckCollisionRecs( retColCalculado, retColItemCalculado ) ) {
+				j->acelerado = 2.f;
+                itemVelocidade->estado = ESTADO_ITEM_VELOCIDADE_COLETADO;
+                PlaySound( rm.somHitInimigo );
             }
         }
 

@@ -12,6 +12,7 @@
 #include "include/ItemAnelVerm.h"
 #include "include/InimigoVoador.h"
 #include "include/InimigoPeixe.h"
+#include "include/ItemVelocidade.h"
 #include "include/raylib/raylib.h"
 
 #include "include/Macros.h"
@@ -135,6 +136,25 @@ Mapa *carregarMapa( const char *caminhoArquivo ) {
                             item = criarItem( TIPO_ITEM_ANELVERM );
 
                             item->objeto = criarItemAnelVerm( 
+                                (Rectangle) { 
+                                    .x = novoMapa->dimensaoPadraoElementos * colunaAtual, 
+                                    .y = novoMapa->dimensaoPadraoElementos * linhaAtual, 
+                                    .width = 16, 
+                                    .height = 16
+                                },
+                                RED
+                            );
+
+                            el->objeto = item;
+                            el->tipo = TIPO_ELEMENTO_MAPA_ITEM;
+
+                            break;
+
+                        case 'c':
+
+                            item = criarItem( TIPO_ITEM_VELOCIDADE );
+
+                            item->objeto = criarItemVelocidade( 
                                 (Rectangle) { 
                                     .x = novoMapa->dimensaoPadraoElementos * colunaAtual, 
                                     .y = novoMapa->dimensaoPadraoElementos * linhaAtual, 

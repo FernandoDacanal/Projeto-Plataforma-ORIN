@@ -9,6 +9,7 @@
 #include <stdlib.h>
 
 #include "include/ItemAnelVerm.h"
+#include "include/ItemVelocidade.h"
 #include "include/raylib/raylib.h"
 
 #include "include/Item.h"
@@ -40,6 +41,9 @@ void destruirItem( Item *item ) {
             case TIPO_ITEM_ANELVERM:
                 destruirItemAnelVerm( (ItemAnelVerm*) item->objeto );
                 break;
+            case TIPO_ITEM_VELOCIDADE:
+                destruirItemVelocidade( (ItemVelocidade*) item->objeto );
+                break;
             default:
                 break;
         }
@@ -59,6 +63,9 @@ void atualizarItem( Item *item, float delta ) {
         case TIPO_ITEM_ANELVERM:
             atualizarItemAnelVerm( (ItemAnelVerm*) item->objeto, delta );
             break;
+        case TIPO_ITEM_VELOCIDADE:
+            atualizarItemVelocidade( (ItemVelocidade*) item->objeto, delta );
+            break;
         default:
             return;
     }
@@ -76,6 +83,9 @@ void desenharItem( Item *item ) {
             break;
         case TIPO_ITEM_ANELVERM:
             desenharItemAnelVerm( (ItemAnelVerm*) item->objeto );
+            break;
+        case TIPO_ITEM_VELOCIDADE:
+            desenharItemVelocidade( (ItemVelocidade*) item->objeto );
             break;
         default:
             return;

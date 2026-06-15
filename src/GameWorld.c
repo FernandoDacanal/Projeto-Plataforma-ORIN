@@ -6,7 +6,6 @@
  * @copyright Copyright (c) 2026
  */
 #include <math.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 #include "include/GameWorld.h"
@@ -38,6 +37,7 @@ static void reiniciar( GameWorld *gw );
 RenderTexture2D alvoRenderizacao;
 
 bool musica_ativa = true;	// Eu sei que não é legal ficar fazendo variável global ... :)
+Color cor_fundo;
 
 
 
@@ -71,18 +71,29 @@ void updateGameWorld( GameWorld *gw, float delta ) {
 	// HACK: Temporário de carregar novo mapa
 	if (IsKeyPressed(KEY_ONE))
 	{
+		cor_fundo = AZULCLARO;
 		destruirMapa(gw->mapa);
 		gw->mapa = carregarMapa("resources/mapas/mapa01.txt");
 		UnloadTexture(rm.texturaTerreno);
 		rm.texturaTerreno = LoadTexture("resources/imagens/tiles/terreno1.png");
+        UnloadMusicStream(rm.musicaFase01);
+        rm.musicaFase01 = LoadMusicStream( "resources/sons/musicas/green-hill-zone.mp3" );
 		gw->jogador = criarJogador(310, 208, 32, 32);
 	}
 	else if (IsKeyPressed(KEY_TWO))
 	{
+		cor_fundo = AMARELO;
 		destruirMapa(gw->mapa);
-		gw->mapa = carregarMapa("resources/mapas/mapaTeste.txt");
+		gw->mapa = carregarMapa("resources/mapas/mapa02.txt");
 		UnloadTexture(rm.texturaTerreno);
-		rm.texturaTerreno = LoadTexture("resources/imagens/tiles/terreno2.png");
+        rm.texturaTerreno = carregarTexturaAlterandoCores(
+            "resources/imagens/tiles/terreno2.png",
+            FUNDO,
+            (Color[]) {BLANK},
+            3
+        );
+        UnloadMusicStream(rm.musicaFase01);
+        rm.musicaFase01 = LoadMusicStream( "resources/sons/musicas/desert-hill.mp3" );
 		gw->jogador = criarJogador(22, 208, 32, 32);
 	}
 
@@ -112,7 +123,7 @@ void updateGameWorld( GameWorld *gw, float delta ) {
  * @brief Desenha o estado do jogo.
  */
 void drawGameWorld( GameWorld *gw ) {
-	ClearBackground(AZULCLARO);
+	ClearBackground(cor_fundo);
 
     //elementos alterados pela camera
 	BeginMode2D( gw->camera );
@@ -137,12 +148,13 @@ void drawGameWorld( GameWorld *gw ) {
 	//);
 	//DrawFPS( 10, 70 );
 	//DrawText(TextFormat("Tempo: %.0f", gw->jogador->quantidadeTempo), 10, 90, 20, ORANGE);
-	DrawText(TextFormat("X: %f", gw->jogador->ret.x), 50, 10, 20, ORANGE);
-	DrawText(TextFormat("y: %f", gw->jogador->ret.y), 50, 30, 20, ORANGE);
-	printf("X: %f\n", gw->jogador->ret.x);
-	printf("Y: %f\n", gw->jogador->ret.y);
+	// DrawText(TextFormat("X: %f", gw->jogador->ret.x), 50, 10, 20, ORANGE);
+	// DrawText(TextFormat("y: %f", gw->jogador->ret.y), 50, 30, 20, ORANGE);
 
-	testeTexto();
+	if (gw->jogador->acelerado)
+		desenharTexto("[c]{t}ACELERADO!!!{/t}[/]", 10, 10);
+
+	//testeTexto();
 }
 
 //TODO: No momento não está sendo utilizado. Remover se não for usar.
@@ -195,6 +207,8 @@ static void atualizarCamera( GameWorld *gw ) {
 static void inicializar( GameWorld *gw ) {
 	if (mod_desenvolvedor)
 		musica_ativa = false;
+
+	cor_fundo = AZULCLARO;
 
     gw->mapa = carregarMapa( "resources/mapas/mapa01.txt" );
     // gw->jogador = criarJogador( (float)GetScreenWidth() / 2 + 144, calcularAlturaMapa( gw->mapa ) - 196, 32, 32 );
