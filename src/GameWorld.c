@@ -155,6 +155,9 @@ void drawGameWorld( GameWorld *gw ) {
 		desenharTexto("[c]{t}ACELERADO!!!{/t}[/]", 10, 10);
 
 	//testeTexto();
+	
+	desenharTexto("{c}{t}contorno{/t}{/c}", 50, 50);
+	//desenharTexto("{x4}xy{/x}{y3}y3{/y}", 56, 50);
 }
 
 //TODO: No momento não está sendo utilizado. Remover se não for usar.

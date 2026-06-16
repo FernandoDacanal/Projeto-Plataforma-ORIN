@@ -21,6 +21,8 @@ typedef struct ResourceManager {
 
     Texture2D texturaFonte;
     Texture2D texturaFonteItalico;
+	Texture2D texturaFonteContorno;
+	Texture2D texturaFonteItalicoContorno;
 
     Sound somAnel;
     Sound somFrenagem;

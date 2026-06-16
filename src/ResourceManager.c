@@ -72,6 +72,19 @@ void loadResourcesResourceManager( void ) {
         (Color[]) {BLANK},
         1
     );
+    rm.texturaFonteContorno = carregarTexturaAlterandoCores(
+        "resources/imagens/hud/fonte-borda.png",
+        (Color[]) {0, 0, 0, 255},
+        (Color[]) {BLANK},
+        1
+    );
+	// TODO: QUANDO ADICIONAR ITALICO COM BORDA
+    //rm.texturaFonteContorno = carregarTexturaAlterandoCores(
+    //    "resources/imagens/hud/fonte-italico-borda.png",
+    //    (Color[]) {0, 0, 0, 255},
+    //    (Color[]) {BLANK},
+    //    1
+    //);
 
     rm.texturaTerreno = LoadTexture( "resources/imagens/tiles/terreno1.png" );
     rm.texturaFundo = LoadTexture( "resources/imagens/fundo/fundo.png" );

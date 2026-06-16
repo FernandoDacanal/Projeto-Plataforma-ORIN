@@ -22,8 +22,10 @@ typedef struct {
     bool italico;
 	bool negrito;
 
-    int tremida;
-    int onda;
+    bool tremida;
+    bool onda;
+
+	bool contorno;
 
     int escalaX;
     int escalaY;
@@ -52,7 +54,7 @@ void desenharTexto(char *str, int x, int y)
 {
 	str = unicodeASCII(str);
 
-	EstadoTexto estado = { BRANCO, false, false, false, false, 1, 1 };
+	EstadoTexto estado = { BRANCO, false, false, false, false, false, 1, 1 };
 	Vector2 cursor = { x, y };
 
 	for (int i = 0; str[i] != '\0'; i++)
@@ -209,7 +211,11 @@ void desenharTexto(char *str, int x, int y)
 					estado.tremida = !desligar;
 					break;
 
-					// TODO: Também aceitar número
+				case 'c':
+				case 'C':
+					estado.contorno = !desligar;
+					break;
+
 				case 'x':
 				case 'X':
 					if (desligar)
@@ -224,7 +230,7 @@ void desenharTexto(char *str, int x, int y)
 							escala *= 10;
 							escala += str[j] - '0';
 						}
-						
+					
 						if (escala > 0)
 							estado.escalaX = escala;
 					}
@@ -320,6 +326,7 @@ void desenharTexto(char *str, int x, int y)
 
 		c -= ' ';
 
+		// Se for mudar o tamanho do texto, mudar o 8
 		Rectangle source = { (c % 16) * 8, (c / 16) * 8, fonte_tam.width, fonte_tam.height };
 
 		Rectangle draw =
@@ -332,9 +339,7 @@ void desenharTexto(char *str, int x, int y)
 		};
 
 		DrawTexturePro(
-				estado.italico ?
-				rm.texturaFonteItalico :
-				rm.texturaFonte,
+				estado.italico ? (estado.contorno ? rm.texturaFonteItalicoContorno : rm.texturaFonteItalico) : (estado.contorno ? rm.texturaFonteContorno : rm.texturaFonte),
 
 				source,
 				draw,
