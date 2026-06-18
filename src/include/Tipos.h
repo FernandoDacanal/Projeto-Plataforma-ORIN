@@ -429,6 +429,10 @@ typedef struct Mapa {
 /**
  * @brief Representa o mundo do jogo e seus elementos.
  */
+ typedef enum ESTADOJOGO{
+    jogando,
+    dialogo,
+} ESTADOJOGO;
 typedef struct GameWorld {
 
     Mapa *mapa;
@@ -437,5 +441,7 @@ typedef struct GameWorld {
     Camera2D camera;
 
     float gravidade;
+
+    ESTADOJOGO estadoJogo;
 
 } GameWorld;

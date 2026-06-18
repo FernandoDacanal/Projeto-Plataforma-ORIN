@@ -52,7 +52,7 @@ PersonagemPlaca *criarPersonagemPlaca( Rectangle ret, Color cor ) {
         1,               // separação
         false,           // de trás para frente
         (Rectangle) {    // retângulo de colisão padrão para cada quadro
-            0, 16, 16, 16
+            -8, 16, 32, 16
         }
     );
     novoPersonagem->animacaoInteragivel.quantidadeQuadros = 4;
@@ -71,7 +71,7 @@ PersonagemPlaca *criarPersonagemPlaca( Rectangle ret, Color cor ) {
         1,                // separação
         false,            // de trás para frente
         (Rectangle) {    // retângulo de colisão padrão para cada quadro
-            0, 16, 16, 16
+            -8, 16, 32, 16
         }
     );
     novoPersonagem->animacaoFalando.quantidadeQuadros = 2;
@@ -90,7 +90,7 @@ PersonagemPlaca *criarPersonagemPlaca( Rectangle ret, Color cor ) {
         1,                // separação
         false,            // de trás para frente
         (Rectangle) {    // retângulo de colisão padrão para cada quadro
-            0, 16, 16, 16
+            -8, 16, 32, 16
         }
     );
 

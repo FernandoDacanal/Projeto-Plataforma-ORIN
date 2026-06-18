@@ -1101,19 +1101,8 @@ static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
                 }
                 */
                 if(IsKeyDown( KEY_W ) || IsKeyPressed( KEY_UP) && placa->estado == ESTADO_PERSONAGEM_PLACA_INTERAGIVEL){
-                    int paginaAtual = 0;
-                    char *texto = "Uau esse é um dialogo muito bom que deve ser reconhecido internacionalmente por quão bom ele é";
-                    int largura = 15;
-                    int altura = 2;
                     placa->estado = ESTADO_PERSONAGEM_PLACA_FALANDO;
                     j->estado = ESTADO_JOGADOR_FALANDO;
-                    int totalPaginas = obterTotalPaginas(texto, largura, altura);
-                    if(paginaAtual + 1 < totalPaginas){
-                        if(IsKeyPressed(KEY_SPACE)){
-                            paginaAtual++;
-                            desenharDialogo(texto, 400, 400, largura, altura, paginaAtual);
-                        }
-                    }
                 }
 
                 return; // um inimigo de cada vez!
