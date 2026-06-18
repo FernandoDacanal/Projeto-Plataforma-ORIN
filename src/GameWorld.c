@@ -69,9 +69,9 @@ void updateGameWorld( GameWorld *gw, float delta ) {
     if (IsKeyPressed(KEY_M))
 		musica_ativa = !musica_ativa;
 
-	// HACK: Temporário de carregar novo mapa
 	if (mod_desenvolvedor)
 	{
+		// 1 e 2 resetam tudo
 		if (IsKeyPressed(KEY_ONE))
 		{
 			gw->cor_fundo = AZULCLARO;
@@ -96,6 +96,7 @@ void updateGameWorld( GameWorld *gw, float delta ) {
 			gw->jogador = criarJogador(22, 208, 32, 32);
 			mapaAtual = MAPA2;
 		}
+		// Muda para a próxima fase e matém todas as outras coisas
 		else if (IsKeyPressed(KEY_THREE))
 		{
 			MudarFase(gw, MAPA2);

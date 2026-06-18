@@ -476,4 +476,7 @@ void MudarFase(GameWorld* gw, unsigned char mapa)
 			gw->jogador->ret.y = 208;
 			break;
 	}
+
+	gw->jogador->vel.x = 0;
+	gw->jogador->vel.y = 0;
 }
