@@ -471,7 +471,7 @@ void MudarFase(GameWorld* gw, unsigned char mapa)
 			rm.texturaTerreno = LoadTexture("resources/imagens/tiles/terreno2.png");
 			UnloadMusicStream(rm.musicaFase01);
 			rm.musicaFase01 = LoadMusicStream( "resources/sons/musicas/desert-hill.mp3" );
-			mapaAtual = MAPA1;
+			mapaAtual = MAPA2;
 			gw->jogador->ret.x = 22;
 			gw->jogador->ret.y = 208;
 			break;
