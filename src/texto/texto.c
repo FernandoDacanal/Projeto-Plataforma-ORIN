@@ -429,326 +429,198 @@ void desenharTexto(char *str, int x, int y, ...)
     free(valores);
 }
 
-// void desenharTexto(char *str, int x, int y)
-// {
-// 	str = unicodeASCII(str);
-//
-// 	EstadoTexto estado = { BRANCO, false, false, false, false, false, 1, 1 };
-// 	Vector2 cursor = { x, y };
-//
-// 	for (int i = 0; str[i] != '\0'; i++)
-// 	{
-// 		if (str[i] == '\\')
-// 		{
-// 			i++;
-//
-// 			if (str[i] == '\0')
-// 				break;
-// 		}
-//
-// 		else if (str[i] == '\n')
-// 		{
-// 			cursor.x = x;
-// 			cursor.y += 8 * estado.escalaY;
-// 			continue;
-// 		}
-//
-// 		else if (str[i] == '[')
-// 		{
-// 			if (str[i + 1] == '/')
-// 			{
-// 				estado.cor = BRANCO;
-//
-// 				while (str[i] != ']')
-// 					i++;
-//
-// 				continue;
-// 			}
-//
-// 			switch (str[i + 1])
-// 			{
-// 				// Mudar em vez de "[A]" ..., ser "[PRETO]" ...
-// 				case 'A':
-// 				case 'a':
-// 					estado.cor = PRETO;
-// 					break;
-//
-// 				case 'B':
-// 				case 'b':
-// 					estado.cor = ROXO;
-// 					break;
-//
-// 				case 'C':
-// 				case 'c':
-// 					estado.cor = VERMELHO;
-// 					break;
-//
-// 				case 'D':
-// 				case 'd':
-// 					estado.cor = LARANJA;
-// 					break;
-//
-// 				case 'E':
-// 				case 'e':
-// 					estado.cor = AMARELO;
-// 					break;
-//
-// 				case 'F':
-// 				case 'f':
-// 					estado.cor = VERDECLARO;
-// 					break;
-//
-// 				case 'G':
-// 				case 'g':
-// 					estado.cor = VERDE;
-// 					break;
-//
-// 				case 'H':
-// 				case 'h':
-// 					estado.cor = VERDEESCURO;
-// 					break;
-//
-// 				case 'I':
-// 				case 'i':
-// 					estado.cor = AZULESCURO;
-// 					break;
-//
-// 				case 'J':
-// 				case 'j':
-// 					estado.cor = AZUL;
-// 					break;
-//
-// 				case 'K':
-// 				case 'k':
-// 					estado.cor = AZULCLARO;
-// 					break;
-//
-// 				case 'L':
-// 				case 'l':
-// 					estado.cor = CIANO;
-// 					break;
-//
-// 				case 'M':
-// 				case 'm':
-// 					estado.cor = BRANCO;
-// 					break;
-//
-// 				case 'N':
-// 				case 'n':
-// 					estado.cor = CINZACLARO;
-// 					break;
-//
-// 				case 'O':
-// 				case 'o':
-// 					estado.cor = CINZA;
-// 					break;
-//
-// 				case 'P':
-// 				case 'p':
-// 					estado.cor = CINZAESCURO;
-// 					break;
-//
-// 				default:
-// 					estado.cor = PINK; // TODO: Temporário para testes.
-// 			}
-//
-// 			while (str[i] != ']')
-// 				i++;
-//
-// 			continue;
-// 		}
-//
-// 		else if (str[i] == '{')
-// 		{
-// 			bool desligar = false;
-//
-// 			if (str[i + 1] == '/')
-// 			{
-// 				desligar = true;
-// 				i++;
-// 			}
-//
-// 			switch (str[i + 1])
-// 			{
-// 				case 'b':
-// 				case 'B':
-// 					estado.negrito = !desligar;
-// 					break;
-//
-// 				case 'i':
-// 				case 'I':
-// 					estado.italico = !desligar;
-// 					break;
-//
-// 				case 'o':
-// 				case 'O':
-// 					estado.onda = !desligar;
-// 					break;
-//
-// 				case 't':
-// 				case 'T':
-// 					estado.tremida = !desligar;
-// 					break;
-//
-// 				case 'c':
-// 				case 'C':
-// 					estado.contorno = !desligar;
-// 					break;
-//
-// 				case 'x':
-// 				case 'X':
-// 					if (desligar)
-// 						estado.escalaX = 1;
-// 					else
-// 					{
-// 						int j;
-// 						int escala = 0;
-//
-// 						for (j = i + 2; str[j] >= '0' && str[j] <= '9'; j++)
-// 						{
-// 							escala *= 10;
-// 							escala += str[j] - '0';
-// 						}
-//
-// 						if (escala > 0)
-// 							estado.escalaX = escala;
-// 					}
-// 					break;
-//
-// 				case 'y':
-// 				case 'Y':
-// 					if (desligar)
-// 						estado.escalaY = 1;
-// 					else
-// 					{
-// 						int j;
-// 						int escala = 0;
-//
-// 						for (j = i + 2; str[j] >= '0' && str[j] <= '9'; j++)
-// 						{
-// 							escala *= 10;
-// 							escala += str[j] - '0';
-// 						}
-//
-// 						if (escala > 0)
-// 							estado.escalaY = escala;
-// 					}
-// 					break;
-//
-// 				case 's':
-// 				case 'S':
-// 					if (desligar)
-// 					{
-// 						estado.escalaX = 1;
-// 						estado.escalaY = 1;
-// 					}
-// 					else
-// 					{
-// 						int j;
-//
-// 						int escalaX = 0;
-// 						int escalaY = 0;
-//
-// 						for (j = i +2; str[j] >= '0' && str[j] <= '9'; j++)
-// 						{
-// 							escalaX *= 10;
-// 							escalaX += str[j] - '0';
-// 						}
-//
-// 						if (str[j] == 'x' || str[j] == 'X')
-// 						{
-// 							j++;
-//
-// 							while (str[j] >= '0' && str[j] <= '9')
-// 							{
-// 								escalaY *= 10;
-// 								escalaY += str[j] - '0';
-// 								j++;
-// 							}
-//
-// 							if (escalaX > 0)
-// 								estado.escalaX = escalaX;
-//
-// 							if (escalaY > 0)
-// 								estado.escalaY = escalaY;
-// 						}
-// 					}
-//
-// 			}
-//
-// 			while (str[i] != '}')
-// 				i++;
-//
-// 			continue;
-// 		}
-//
-// 		int tremidaX = 0;
-// 		int tremidaY = 0;
-//
-// 		if (estado.tremida)
-// 		{
-// 			tremidaX = efeitoTremer(2);
-// 			tremidaY = efeitoTremer(2);
-// 		}
-//
-// 		int onda = 0;
-//
-// 		if (estado.onda)
-// 		{
-// 			onda = efeitoOnda(3, i);
-// 		}
-//
-// 		unsigned char c = str[i];
-//
-// 		if (c < ' ')
-// 			continue;
-//
-// 		c -= ' ';
-//
-// 		// Se for mudar o tamanho do texto, mudar o 8
-// 		Rectangle source = { (c % 16) * 8, (c / 16) * 8, fonte_tam.width, fonte_tam.height };
-//
-// 		Rectangle draw =
-// 		{
-// 			cursor.x + tremidaX,
-// 			cursor.y + tremidaY + onda,
-//
-// 			8 * estado.escalaX,
-// 			8 * estado.escalaY
-// 		};
-//
-// 		DrawTexturePro(
-// 				estado.italico ? (estado.contorno ? rm.texturaFonteItalicoContorno : rm.texturaFonteItalico) : (estado.contorno ? rm.texturaFonteContorno : rm.texturaFonte),
-//
-// 				source,
-// 				draw,
-//
-// 				(Vector2){0,0},
-// 				0,
-// 				estado.cor
-// 				);
-//
-// 		if (estado.negrito)
-// 		{
-// 			draw.x++;
-//
-// 			DrawTexturePro(
-// 					estado.italico ?
-// 					rm.texturaFonteItalico :
-// 					rm.texturaFonte,
-//
-// 					source,
-// 					draw,
-//
-// 					(Vector2){0,0},
-// 					0,
-// 					estado.cor
-// 					);
-// 		}
-//
-// 		cursor.x += 8 * estado.escalaX;
-// 	}
-// }
+void desenharDialogo(
+    char *texto,
+    int x,
+    int y,
+    int caracteresPorLinha,
+    int linhasPorPagina,
+    int paginaAtual)
+{
+    if (texto == NULL)
+        return;
+
+    int tamanho = strlen(texto);
+
+    // Espaço extra para os '\n' inseridos
+    char *textoFormatado = malloc(tamanho * 2 + 1);
+
+    if (textoFormatado == NULL)
+        return;
+
+    int coluna = 0;
+    int j = 0;
+
+    int ultimoEspaco = -1;
+
+    for (int i = 0; texto[i] != '\0'; i++)
+    {
+        textoFormatado[j] = texto[i];
+
+        if (texto[i] == ' ')
+            ultimoEspaco = j;
+
+        if (texto[i] == '\n')
+        {
+            coluna = 0;
+            j++;
+            continue;
+        }
+
+        coluna++;
+
+        if (coluna >= caracteresPorLinha)
+        {
+            if (ultimoEspaco != -1)
+            {
+                textoFormatado[ultimoEspaco] = '\n';
+
+                coluna = j - ultimoEspaco;
+                ultimoEspaco = -1;
+            }
+            else
+            {
+                j++;
+                textoFormatado[j] = '\n';
+                coluna = 0;
+            }
+        }
+
+        j++;
+    }
+
+    textoFormatado[j] = '\0';
+
+    // =====================================================
+    // Conta as linhas totais
+    // =====================================================
+
+    int totalLinhas = 1;
+
+    for (int i = 0; textoFormatado[i] != '\0'; i++)
+    {
+        if (textoFormatado[i] == '\n')
+            totalLinhas++;
+    }
+
+    int linhaInicial = paginaAtual * linhasPorPagina;
+    int linhaFinal   = linhaInicial + linhasPorPagina;
+
+    if (linhaInicial >= totalLinhas)
+    {
+        free(textoFormatado);
+        return;
+    }
+
+    // =====================================================
+    // Monta apenas as linhas da página atual
+    // =====================================================
+
+    char *pagina = malloc(strlen(textoFormatado) + 1);
+
+    if (pagina == NULL)
+    {
+        free(textoFormatado);
+        return;
+    }
+
+    int linhaAtual = 0;
+    int k = 0;
+
+    for (int i = 0; textoFormatado[i] != '\0'; i++)
+    {
+        if (linhaAtual >= linhaInicial &&
+            linhaAtual < linhaFinal)
+        {
+            pagina[k++] = textoFormatado[i];
+        }
+
+        if (textoFormatado[i] == '\n')
+        {
+            linhaAtual++;
+
+            if (linhaAtual >= linhaFinal)
+                break;
+        }
+    }
+
+    pagina[k] = '\0';
+
+    desenharTexto(pagina, x, y);
+
+    free(pagina);
+    free(textoFormatado);
+}
+
+int obterTotalPaginas(
+    char *texto,
+    int caracteresPorLinha,
+    int linhasPorPagina)
+{
+    if (texto == NULL || linhasPorPagina <= 0)
+        return 0;
+
+    int tamanho = strlen(texto);
+
+    char *textoFormatado = malloc(tamanho * 2 + 1);
+
+    if (textoFormatado == NULL)
+        return 0;
+
+    int coluna = 0;
+    int j = 0;
+
+    int ultimoEspaco = -1;
+
+    for (int i = 0; texto[i] != '\0'; i++)
+    {
+        textoFormatado[j] = texto[i];
+
+        if (texto[i] == ' ')
+            ultimoEspaco = j;
+
+        if (texto[i] == '\n')
+        {
+            coluna = 0;
+            j++;
+            continue;
+        }
+
+        coluna++;
+
+        if (coluna >= caracteresPorLinha)
+        {
+            if (ultimoEspaco != -1)
+            {
+                textoFormatado[ultimoEspaco] = '\n';
+
+                coluna = j - ultimoEspaco;
+                ultimoEspaco = -1;
+            }
+            else
+            {
+                j++;
+                textoFormatado[j] = '\n';
+                coluna = 0;
+            }
+        }
+
+        j++;
+    }
+
+    textoFormatado[j] = '\0';
+
+    int totalLinhas = 1;
+
+    for (int i = 0; textoFormatado[i] != '\0'; i++)
+    {
+        if (textoFormatado[i] == '\n')
+            totalLinhas++;
+    }
+
+    free(textoFormatado);
+    return (totalLinhas + linhasPorPagina - 1) / linhasPorPagina;
+}
 
 void testeTexto()
 {

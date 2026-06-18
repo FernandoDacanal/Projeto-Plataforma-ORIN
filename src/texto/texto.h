@@ -9,6 +9,8 @@ extern ResourceManager fonte;
 
 // void desenharTexto(char* str, int x, int y);
 void desenharTexto(char* str, int x, int y, ...);
+void desenharDialogo(char *texto, int x, int y, int caracteresPorLinha, int linhasPorPagina, int paginaAtual);
+int obterTotalPaginas(char *texto, int caracteresPorLinha, int linhasPorPagina);
 
 void testeTexto();
 
