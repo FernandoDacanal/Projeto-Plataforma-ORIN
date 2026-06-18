@@ -105,9 +105,6 @@ PersonagemPlaca *criarPersonagemPlaca( Rectangle ret, Color cor ) {
     return novoPersonagem;
 }
 
-/**
- * @brief Destroi um personagem (peixe).
- */
 void destruirPersonagemPlaca( PersonagemPlaca *personagem ) {
     if ( personagem != NULL ) {
         for ( int i = 0; i < personagem->quantidadeAnimacoes; i++ ) {

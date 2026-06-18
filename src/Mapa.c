@@ -305,7 +305,6 @@ Mapa *carregarMapa( const char *caminhoArquivo ) {
     UnloadFileText( dadosMapa );
 
     return novoMapa;
-
 }
 
 /**
@@ -340,9 +339,7 @@ void destruirMapa( Mapa *m ) {
             el = el->proximo;
             free( t );
         }
-
     }
-
 }
 
 /**
@@ -363,7 +360,6 @@ void atualizarMapa( Mapa *m, GameWorld *gw, float delta ) {
         atualizarInimigo( (Inimigo*) el->objeto, gw, delta );
         el = el->proximo;
     }
-
 }
 
 /**
@@ -390,7 +386,6 @@ void desenharMapa( Mapa *m ) {
         desenharInimigo( (Inimigo*) el->objeto );
         el = el->proximo;
     }
-
 }
 
 /**

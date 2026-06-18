@@ -24,6 +24,8 @@
 #include "include/ResourceManager.h"
 #include "include/Tipos.h"
 
+#include "include/nivel.h"
+
 static void desenharQuadroAnimacaoJogador( Jogador *j, QuadroAnimacao *qa, Color tonalidade );
 static QuadroAnimacao *getQuadroAnimacaoAtualJogador( Jogador *j );
 static Animacao *getAnimacaoAtualJogador( Jogador *j );
@@ -423,7 +425,6 @@ void atualizarJogador( Jogador *j, GameWorld *gw, float delta ) {
 
     resolverColisaoJogadorItensMapa( j, gw->mapa );
     resolverColisaoJogadorInimigosMapa( j, gw->mapa );
-
 }
 
 /**
@@ -605,6 +606,7 @@ static void resolverColisaoJogadorItensMapa( Jogador *j, Mapa *mapa ) {
             if ( CheckCollisionRecs( retColCalculado, retColItemCalculado ) ) {
                 itemAnel->estado = ESTADO_ITEM_ANEL_COLETADO;
                 j->quantidadeAneis++;
+				j->quantidadePontos++;
                 PlaySound( rm.somAnel );
             }
 
@@ -631,7 +633,7 @@ static void resolverColisaoJogadorItensMapa( Jogador *j, Mapa *mapa ) {
             if ( CheckCollisionRecs( retColCalculado, retColItemCalculado ) ) {
                 itemAnelVerm->estado = ESTADO_ITEM_ANELVERM_COLETADO;
                 j->quantidadeAneis += 10;
-                j->quantidadePontos += 1000;
+                j->quantidadePontos += 10;
                 PlaySound( rm.somAnel );
             }
         }
@@ -720,21 +722,65 @@ static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
 
             if ( CheckCollisionRecs( retColCalculado, retColInimigoCalculado ) ) {
 
-                if ( j->estado >= ESTADO_JOGADOR_PULANDO && j->estado <= ESTADO_JOGADOR_PULANDO_CORRENDO ) {
-                    j->vel.y = j->velPulo;
-                    motobug->estado = ESTADO_INIMIGO_MOTOBUG_MORRENDO;
-                    j->quantidadePontos += 10;
-                    PlaySound( rm.somHitInimigo );
-                } else if ( !j->invulneravel ) {
-                    if ( j->quantidadeAneis > 0 ) {
-                        j->quantidadeAneis = 0;
-                        PlaySound( rm.somHitComAnel );
-                    } else if(j->quantidadeVidas > 0) {
-                        j->quantidadeVidas--;
-                        PlaySound( rm.somMorte );
-                    }
-                    j->invulneravel = true;
-                }
+				if ( j->estado >= ESTADO_JOGADOR_PULANDO && j->estado <= ESTADO_JOGADOR_PULANDO_CORRENDO ) {
+					j->vel.y = j->velPulo;
+					motobug->estado = ESTADO_INIMIGO_MOTOBUG_MORRENDO;
+					j->quantidadePontos += 10;
+					PlaySound( rm.somHitInimigo );
+				}
+				// Se tiver 0 de vida não perde vida e nada acontece além de ficar invulneravel
+				else if ( !j->invulneravel )
+				{
+					// Se tiver anéis gasta anéis em vez de perder vida
+					if ( j->quantidadeAneis > 0 )
+					{
+						j->quantidadeAneis = 0;
+						PlaySound( rm.somHitComAnel );
+					}
+					else if (j->quantidadeVidas == 1)
+					{
+						j->quantidadeVidas--;
+
+						switch (mapaAtual)
+						{
+							case MAPA1:
+								j->ret.x = 313;
+								j->ret.y = 208;
+								break;
+							case MAPA2:
+								j->ret.x = 22;
+								j->ret.y = 208;
+								break;
+						}
+
+						j->vel.x = 0;
+						j->vel.y = 0;
+
+						PlaySound( rm.somMorte );
+						// TODO: Fim de jogo/Game Over aqui
+					}
+					else if(j->quantidadeVidas > 0) {
+						j->quantidadeVidas--;
+
+						switch (mapaAtual)
+						{
+							case MAPA1:
+								j->ret.x = 313;
+								j->ret.y = 208;
+								break;
+							case MAPA2:
+								j->ret.x = 22;
+								j->ret.y = 208;
+								break;
+						}
+
+						j->vel.x = 0;
+						j->vel.y = 0;
+
+						PlaySound( rm.somMorte );
+					}
+					j->invulneravel = true;
+				}
 
                 return; // um inimigo de cada vez!
 
@@ -774,26 +820,66 @@ static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
                     j->quantidadePontos += 10;
                     PlaySound( rm.somHitInimigo );
                 } else if ( !j->invulneravel ) {
-                    if ( j->quantidadeAneis > 0 ) {
-                        j->quantidadeAneis = 0;
-                        PlaySound( rm.somHitComAnel );
-                    } else if (j->quantidadeVidas > 0) {
-                        j->quantidadeVidas--;
-                        PlaySound( rm.somMorte );
-                    }
-                    j->invulneravel = true;
-                }
+					if ( j->quantidadeAneis > 0 )
+					{
+						j->quantidadeAneis = 0;
+						PlaySound( rm.somHitComAnel );
+					}
+					else if (j->quantidadeVidas == 1)
+					{
+						j->quantidadeVidas--;
 
-                return; // um inimigo de cada vez!
-            }
+						switch (mapaAtual)
+						{
+							case MAPA1:
+								j->ret.x = 313;
+								j->ret.y = 208;
+								break;
+							case MAPA2:
+								j->ret.x = 22;
+								j->ret.y = 208;
+								break;
+						}
 
-        }
-        else if ( inimigo->tipo == TIPO_INIMIGO_VOADOR ) {
+						j->vel.x = 0;
+						j->vel.y = 0;
 
-            InimigoVoador *voador = (InimigoVoador*) inimigo->objeto;
+						PlaySound( rm.somMorte );
+						// TODO: Fim de jogo/Game Over aqui
+					}
+					else if (j->quantidadeVidas > 0) {
+						j->quantidadeVidas--;
 
-            if ( !voador->ativo || voador->estado == ESTADO_INIMIGO_VOADOR_MORRENDO ) {
-                el = el->proximo;
+						switch (mapaAtual)
+						{
+							case MAPA1:
+								j->ret.x = 313;
+								j->ret.y = 208;
+								break;
+							case MAPA2:
+								j->ret.x = 22;
+								j->ret.y = 208;
+								break;
+						}
+
+						j->vel.x = 0;
+						j->vel.y = 0;
+
+						PlaySound( rm.somMorte );
+					}
+					j->invulneravel = true;
+				}
+
+				return; // um inimigo de cada vez!
+			}
+
+		}
+		else if ( inimigo->tipo == TIPO_INIMIGO_VOADOR ) {
+
+			InimigoVoador *voador = (InimigoVoador*) inimigo->objeto;
+
+			if ( !voador->ativo || voador->estado == ESTADO_INIMIGO_VOADOR_MORRENDO ) {
+				el = el->proximo;
                 continue;
             }
 
@@ -821,24 +907,65 @@ static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
                     j->quantidadePontos += 10;
                     PlaySound( rm.somHitInimigo );
                 } else if ( !j->invulneravel ) {
-                    if ( j->quantidadeAneis > 0 ) {
-                        j->quantidadeAneis = 0;
-                        PlaySound( rm.somHitComAnel );
-                    } else if (j->quantidadeVidas > 0) {
-                        j->quantidadeVidas--;
-                        PlaySound( rm.somMorte );
-                    }
-                    j->invulneravel = true;
-                }
+					if ( j->quantidadeAneis > 0 )
+					{
+						j->quantidadeAneis = 0;
+						PlaySound( rm.somHitComAnel );
+					}
+					else if (j->quantidadeVidas == 1)
+					{
+						j->quantidadeVidas--;
 
-                return; // um inimigo de cada vez!
-            }
+						switch (mapaAtual)
+						{
+							case MAPA1:
+								j->ret.x = 313;
+								j->ret.y = 208;
+								break;
+							case MAPA2:
+								j->ret.x = 22;
+								j->ret.y = 208;
+								break;
+						}
 
-        }
+						j->vel.x = 0;
+						j->vel.y = 0;
 
-        else if ( inimigo->tipo == TIPO_INIMIGO_PEIXE ) {
+						PlaySound( rm.somMorte );
+						// TODO: Fim de jogo/Game Over aqui
+					}
+					else if (j->quantidadeVidas > 0) {
+						j->quantidadeVidas--;
 
-            InimigoPeixe *peixe = (InimigoPeixe*) inimigo->objeto;
+						switch (mapaAtual)
+						{
+							case MAPA1:
+								j->ret.x = 313;
+								j->ret.y = 208;
+								break;
+							case MAPA2:
+								j->ret.x = 22;
+								j->ret.y = 208;
+								break;
+						}
+
+						j->vel.x = 0;
+						j->vel.y = 0;
+
+						PlaySound( rm.somMorte );
+					}
+					j->invulneravel = true;
+				}
+
+				return; // um inimigo de cada vez!
+			}
+
+		}
+
+		// FIXME: Por algum motivo o peixe está morrendo quando o jogador está invulnerável/tocando no peixe.
+		else if ( inimigo->tipo == TIPO_INIMIGO_PEIXE ) {
+
+			InimigoPeixe *peixe = (InimigoPeixe*) inimigo->objeto;
 
             if ( !peixe->ativo || peixe->estado == ESTADO_INIMIGO_PEIXE_MORRENDO ) {
                 el = el->proximo;
@@ -869,42 +996,82 @@ static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
                     j->quantidadePontos += 10;
                     PlaySound( rm.somHitInimigo );
                 } else if ( !j->invulneravel ) {
-                    if ( j->quantidadeAneis > 0 ) {
-                        j->quantidadeAneis = 0;
-                        PlaySound( rm.somHitComAnel );
-                    } else if (j->quantidadeVidas > 0) {
-                        j->quantidadeVidas--;
-                        PlaySound( rm.somMorte );
-                    }
-                    j->invulneravel = true;
-                }
+					if ( j->quantidadeAneis > 0 )
+					{
+						j->quantidadeAneis = 0;
+						PlaySound( rm.somHitComAnel );
+					}
+					else if (j->quantidadeVidas == 1)
+					{
+						j->quantidadeVidas--;
+						
+						switch (mapaAtual)
+						{
+							case MAPA1:
+								j->ret.x = 313;
+								j->ret.y = 208;
+								break;
+							case MAPA2:
+								j->ret.x = 22;
+								j->ret.y = 208;
+								break;
+						}
 
-                return; // um inimigo de cada vez!
-            }
+						j->vel.x = 0;
+						j->vel.y = 0;
 
-        }
-        else if ( inimigo->tipo == TIPO_PERSONAGEM_PLACA ) {
-            PersonagemPlaca *placa = (PersonagemPlaca*) inimigo->objeto;
-            if ( !placa->ativo ) {
-                el = el->proximo;
-                continue;
-            }
+						PlaySound( rm.somMorte );
+						// TODO: Fim de jogo/Game Over aqui
+					}
+					else if (j->quantidadeVidas > 0) {
+						j->quantidadeVidas--;
 
-            qaInimigo = getQuadroAnimacaoAtualPersonagemPlaca( placa );
-            olhandoParaDireita = &placa->olhandoParaDireita;
-            ret = &placa->ret;
+						switch (mapaAtual)
+						{
+							case MAPA1:
+								j->ret.x = 313;
+								j->ret.y = 208;
+								break;
+							case MAPA2:
+								j->ret.x = 22;
+								j->ret.y = 208;
+								break;
+						}
 
-            float deslocamentoX = *olhandoParaDireita
-                ? ret->width - qaInimigo->retColisao.x - qaInimigo->retColisao.width
-                : qaInimigo->retColisao.x;
-            float deslocamentoY = qaInimigo->retColisao.y;
+						j->vel.x = 0;
+						j->vel.y = 0;
 
-            Rectangle retColInimigoCalculado = {
-                ret->x + deslocamentoX,
-                ret->y + deslocamentoY,
-                qaInimigo->retColisao.width,
-                qaInimigo->retColisao.height
-            };
+						PlaySound( rm.somMorte );
+					}
+					j->invulneravel = true;
+				}
+
+				return; // um inimigo de cada vez!
+			}
+
+		}
+		else if ( inimigo->tipo == TIPO_PERSONAGEM_PLACA ) {
+			PersonagemPlaca *placa = (PersonagemPlaca*) inimigo->objeto;
+			if ( !placa->ativo ) {
+				el = el->proximo;
+				continue;
+			}
+
+			qaInimigo = getQuadroAnimacaoAtualPersonagemPlaca( placa );
+			olhandoParaDireita = &placa->olhandoParaDireita;
+			ret = &placa->ret;
+
+			float deslocamentoX = *olhandoParaDireita
+				? ret->width - qaInimigo->retColisao.x - qaInimigo->retColisao.width
+				: qaInimigo->retColisao.x;
+			float deslocamentoY = qaInimigo->retColisao.y;
+
+			Rectangle retColInimigoCalculado = {
+				ret->x + deslocamentoX,
+				ret->y + deslocamentoY,
+				qaInimigo->retColisao.width,
+				qaInimigo->retColisao.height
+			};
             placa->estado = ESTADO_PERSONAGEM_PLACA_PARADO;
 
             if ( CheckCollisionRecs( retColCalculado, retColInimigoCalculado ) ) {
@@ -914,7 +1081,7 @@ static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
                     placa->estado = ESTADO_PERSONAGEM_PLACA_FALANDO;
                 }
                 */
-                if(IsKeyPressed( KEY_W ) || IsKeyPressed( KEY_UP) && placa->estado == ESTADO_PERSONAGEM_PLACA_INTERAGIVEL){
+                if(IsKeyPressed( KEY_W ) && placa->estado == ESTADO_PERSONAGEM_PLACA_INTERAGIVEL){
                     placa->estado = ESTADO_PERSONAGEM_PLACA_FALANDO;
                     j->estado = ESTADO_JOGADOR_FALANDO;
                 }

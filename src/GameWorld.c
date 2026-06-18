@@ -26,8 +26,10 @@
 
 #include "extras/dev.h"
 #include "texto/texto.h"
+#include "include/nivel.h"
 
 
+unsigned char mapaAtual = MAPA1;
 
 static void desenharFundo( GameWorld *gw );
 static void atualizarCamera( GameWorld *gw );
@@ -70,32 +72,32 @@ void updateGameWorld( GameWorld *gw, float delta ) {
 		musica_ativa = !musica_ativa;
 
 	// HACK: Temporário de carregar novo mapa
-	if (IsKeyPressed(KEY_ONE))
+	if (mod_desenvolvedor)
 	{
-		cor_fundo = AZULCLARO;
-		destruirMapa(gw->mapa);
-		gw->mapa = carregarMapa("resources/mapas/mapa01.txt");
-		UnloadTexture(rm.texturaTerreno);
-		rm.texturaTerreno = LoadTexture("resources/imagens/tiles/terreno1.png");
-        UnloadMusicStream(rm.musicaFase01);
-        rm.musicaFase01 = LoadMusicStream( "resources/sons/musicas/green-hill-zone.mp3" );
-		gw->jogador = criarJogador(310, 208, 32, 32);
-	}
-	else if (IsKeyPressed(KEY_TWO))
-	{
-		cor_fundo = AMARELO;
-		destruirMapa(gw->mapa);
-		gw->mapa = carregarMapa("resources/mapas/mapa02.txt");
-		UnloadTexture(rm.texturaTerreno);
-        rm.texturaTerreno = carregarTexturaAlterandoCores(
-            "resources/imagens/tiles/terreno2.png",
-            FUNDO,
-            (Color[]) {BLANK},
-            3
-        );
-        UnloadMusicStream(rm.musicaFase01);
-        rm.musicaFase01 = LoadMusicStream( "resources/sons/musicas/desert-hill.mp3" );
-		gw->jogador = criarJogador(22, 208, 32, 32);
+		if (IsKeyPressed(KEY_ONE))
+		{
+			cor_fundo = AZULCLARO;
+			destruirMapa(gw->mapa);
+			gw->mapa = carregarMapa("resources/mapas/mapa01.txt");
+			UnloadTexture(rm.texturaTerreno);
+			rm.texturaTerreno = LoadTexture("resources/imagens/tiles/terreno1.png");
+			UnloadMusicStream(rm.musicaFase01);
+			rm.musicaFase01 = LoadMusicStream( "resources/sons/musicas/green-hill-zone.mp3" );
+			gw->jogador = criarJogador(310, 208, 32, 32);
+			mapaAtual = MAPA1;
+		}
+		else if (IsKeyPressed(KEY_TWO))
+		{
+			cor_fundo = AMARELO;
+			destruirMapa(gw->mapa);
+			gw->mapa = carregarMapa("resources/mapas/mapa02.txt");
+			UnloadTexture(rm.texturaTerreno);
+			rm.texturaTerreno = carregarTexturaAlterandoCores("resources/imagens/tiles/terreno2.png", FUNDO, (Color[]) {BLANK}, 3);
+			UnloadMusicStream(rm.musicaFase01);
+			rm.musicaFase01 = LoadMusicStream( "resources/sons/musicas/desert-hill.mp3" );
+			gw->jogador = criarJogador(22, 208, 32, 32);
+			mapaAtual = MAPA2;
+		}
 	}
 
 	if (musica_ativa)
@@ -107,7 +109,8 @@ void updateGameWorld( GameWorld *gw, float delta ) {
 		}
 	}
 
-    if ( IsKeyPressed( KEY_R ) ) {
+    if (IsKeyPressed( KEY_R ))
+	{
         reiniciar( gw );
         return;
     }
@@ -117,7 +120,6 @@ void updateGameWorld( GameWorld *gw, float delta ) {
     entradaJogador( j, delta );
     atualizarJogador( j, gw, delta );
     atualizarCamera( gw );
-
 }
 
 /**
@@ -136,21 +138,14 @@ void drawGameWorld( GameWorld *gw ) {
 	desenharHUD(gw);
     
 	//DEBUG
-	// TODO: Passar argumento de debug
-	//DrawText( TextFormat( "Anéis: %d", gw->jogador->quantidadeAneis ), 10, 10, 20, ORANGE );
-	//DrawText( TextFormat( "Vidas: %d", gw->jogador->quantidadeVidas ), 10, 30, 20, ORANGE );
-	//DrawText( 
-	//TextFormat( 
-	//"Invulnerável: %s%s", 
-	//gw->jogador->invulneravel ? "sim" : "não",
-	//gw->jogador->invulneravel ? TextFormat( " (%.2fs/%.2fs)", gw->jogador->contadorTempoInvulnerabilidade, gw->jogador->tempoInvulnerabilidade ) : ""
-	//), 
-	//10, 50, 20, ORANGE
-	//);
-	//DrawFPS( 10, 70 );
-	//DrawText(TextFormat("Tempo: %.0f", gw->jogador->quantidadeTempo), 10, 90, 20, ORANGE);
-	// DrawText(TextFormat("X: %f", gw->jogador->ret.x), 50, 10, 20, ORANGE);
-	// DrawText(TextFormat("y: %f", gw->jogador->ret.y), 50, 30, 20, ORANGE);
+	if (mod_desenvolvedor)
+	{
+		desenharTexto("[a]FPS: %[/]", 5, 5, GetFPS());
+		desenharTexto("[a]x: %[/]", 5, 13, (int)gw->jogador->ret.x);
+		desenharTexto("[a]y: %[/]", 5, 21, (int)gw->jogador->ret.y);
+		if (gw->jogador->invulneravel)
+			desenharTexto("[a]Invulnerável: %[/]", 5, 29, gw->jogador->invulneravel);
+	}
 
 	if (gw->jogador->acelerado)
 		desenharTexto("[c]{t}{c}ACELERADO!!!{/c}{/t}[/]", 10, 10);
@@ -216,7 +211,7 @@ static void inicializar( GameWorld *gw ) {
 
     gw->mapa = carregarMapa( "resources/mapas/mapa01.txt" );
     // gw->jogador = criarJogador( (float)GetScreenWidth() / 2 + 144, calcularAlturaMapa( gw->mapa ) - 196, 32, 32 );
-    gw->jogador = criarJogador( (float)GetScreenWidth() / 2 + 17, calcularAlturaMapa( gw->mapa ) - 82, 32, 32 );
+    gw->jogador = criarJogador( 313, 208, 32, 32 );
 
     gw->camera = (Camera2D) {
         .offset = { 0 },    // deslocamento relativo da câmera em relação ao alvo
@@ -238,5 +233,4 @@ static void reiniciar( GameWorld *gw ) {
     }
 
     inicializar( gw );
-
 }
