@@ -2,6 +2,10 @@
 #include "../include/ResourceManager.h"
 #include "../include/Utils.h"
 
+#include <stdarg.h>
+#include <string.h>
+#include <stdio.h>
+
 #include <stdbool.h>
 #include <stdlib.h>
 #include <math.h>
@@ -50,326 +54,701 @@ int efeitoOnda(int limite, int i)
     return (int)(sinf(GetTime() * velocidade * 0.15 + i * 0.4f) * limite);
 }
 
-void desenharTexto(char *str, int x, int y)
+// Modifique a função desenharTexto para aceitar argumentos variáveis
+void desenharTexto(char *str, int x, int y, ...)
 {
-	str = unicodeASCII(str);
+    // Primeiro, processamos os argumentos variáveis
+    va_list args;
+    va_start(args, y); // y é o último parâmetro fixo
+    
+    // Conta quantos % existem na string
+    int numArgs = 0;
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (str[i] == '%') {
+            numArgs++;
+        }
+    }
+    
+    // Cria um array para armazenar os valores inteiros
+    int *valores = malloc(numArgs * sizeof(int));
+    if (valores != NULL) {
+        // Pega todos os argumentos inteiros
+        for (int i = 0; i < numArgs; i++) {
+            valores[i] = va_arg(args, int);
+        }
+    }
+    
+    va_end(args);
+    
+    // Constrói a string final com as substituições
+    char *strFinal = malloc(strlen(str) + numArgs * 12 + 1);
+    if (strFinal == NULL) {
+        free(valores);
+        return;
+    }
+    
+    int idxStrFinal = 0;
+    int idxValores = 0;
+    
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (str[i] == '%' && valores != NULL && idxValores < numArgs) {
+            // Converte o inteiro para string
+            char buffer[12];
+            sprintf(buffer, "%d", valores[idxValores++]);
+            
+            // Copia o número para a string final
+            for (int j = 0; buffer[j] != '\0'; j++) {
+                strFinal[idxStrFinal++] = buffer[j];
+            }
+        } else {
+            strFinal[idxStrFinal++] = str[i];
+        }
+    }
+    strFinal[idxStrFinal] = '\0';
+    
+    // Processa a string com os valores substituídos
+    strFinal = unicodeASCII(strFinal);
+    
+    // CÓDIGO ORIGINAL DO SEU PARSER AQUI (copiado da sua função desenharTexto)
+    EstadoTexto estado = { BRANCO, false, false, false, false, false, 1, 1 };
+    Vector2 cursor = { x, y };
 
-	EstadoTexto estado = { BRANCO, false, false, false, false, false, 1, 1 };
-	Vector2 cursor = { x, y };
+    for (int i = 0; strFinal[i] != '\0'; i++)
+    {
+        if (strFinal[i] == '\\')
+        {
+            i++;
 
-	for (int i = 0; str[i] != '\0'; i++)
-	{
-		if (str[i] == '\\')
-		{
-			i++;
+            if (strFinal[i] == '\0')
+                break;
+        }
 
-			if (str[i] == '\0')
-				break;
-		}
+        else if (strFinal[i] == '\n')
+        {
+            cursor.x = x;
+            cursor.y += 8 * estado.escalaY;
+            continue;
+        }
 
-		else if (str[i] == '\n')
-		{
-			cursor.x = x;
-			cursor.y += 8 * estado.escalaY;
-			continue;
-		}
+        else if (strFinal[i] == '[')
+        {
+            if (strFinal[i + 1] == '/')
+            {
+                estado.cor = BRANCO;
 
-		else if (str[i] == '[')
-		{
-			if (str[i + 1] == '/')
-			{
-				estado.cor = BRANCO;
+                while (strFinal[i] != ']')
+                    i++;
 
-				while (str[i] != ']')
-					i++;
+                continue;
+            }
 
-				continue;
-			}
+            switch (strFinal[i + 1])
+            {
+                case 'A':
+                case 'a':
+                    estado.cor = PRETO;
+                    break;
 
-			switch (str[i + 1])
-			{
-				// Mudar em vez de "[A]" ..., ser "[PRETO]" ...
-				case 'A':
-				case 'a':
-					estado.cor = PRETO;
-					break;
+                case 'B':
+                case 'b':
+                    estado.cor = ROXO;
+                    break;
 
-				case 'B':
-				case 'b':
-					estado.cor = ROXO;
-					break;
+                case 'C':
+                case 'c':
+                    estado.cor = VERMELHO;
+                    break;
 
-				case 'C':
-				case 'c':
-					estado.cor = VERMELHO;
-					break;
+                case 'D':
+                case 'd':
+                    estado.cor = LARANJA;
+                    break;
 
-				case 'D':
-				case 'd':
-					estado.cor = LARANJA;
-					break;
+                case 'E':
+                case 'e':
+                    estado.cor = AMARELO;
+                    break;
 
-				case 'E':
-				case 'e':
-					estado.cor = AMARELO;
-					break;
+                case 'F':
+                case 'f':
+                    estado.cor = VERDECLARO;
+                    break;
 
-				case 'F':
-				case 'f':
-					estado.cor = VERDECLARO;
-					break;
+                case 'G':
+                case 'g':
+                    estado.cor = VERDE;
+                    break;
 
-				case 'G':
-				case 'g':
-					estado.cor = VERDE;
-					break;
+                case 'H':
+                case 'h':
+                    estado.cor = VERDEESCURO;
+                    break;
 
-				case 'H':
-				case 'h':
-					estado.cor = VERDEESCURO;
-					break;
+                case 'I':
+                case 'i':
+                    estado.cor = AZULESCURO;
+                    break;
 
-				case 'I':
-				case 'i':
-					estado.cor = AZULESCURO;
-					break;
+                case 'J':
+                case 'j':
+                    estado.cor = AZUL;
+                    break;
 
-				case 'J':
-				case 'j':
-					estado.cor = AZUL;
-					break;
+                case 'K':
+                case 'k':
+                    estado.cor = AZULCLARO;
+                    break;
 
-				case 'K':
-				case 'k':
-					estado.cor = AZULCLARO;
-					break;
+                case 'L':
+                case 'l':
+                    estado.cor = CIANO;
+                    break;
 
-				case 'L':
-				case 'l':
-					estado.cor = CIANO;
-					break;
+                case 'M':
+                case 'm':
+                    estado.cor = BRANCO;
+                    break;
 
-				case 'M':
-				case 'm':
-					estado.cor = BRANCO;
-					break;
+                case 'N':
+                case 'n':
+                    estado.cor = CINZACLARO;
+                    break;
 
-				case 'N':
-				case 'n':
-					estado.cor = CINZACLARO;
-					break;
+                case 'O':
+                case 'o':
+                    estado.cor = CINZA;
+                    break;
 
-				case 'O':
-				case 'o':
-					estado.cor = CINZA;
-					break;
+                case 'P':
+                case 'p':
+                    estado.cor = CINZAESCURO;
+                    break;
 
-				case 'P':
-				case 'p':
-					estado.cor = CINZAESCURO;
-					break;
+                default:
+                    estado.cor = PINK;
+            }
 
-				default:
-					estado.cor = PINK; // TODO: Temporário para testes.
-			}
+            while (strFinal[i] != ']')
+                i++;
 
-			while (str[i] != ']')
-				i++;
+            continue;
+        }
 
-			continue;
-		}
+        else if (strFinal[i] == '{')
+        {
+            bool desligar = false;
 
-		else if (str[i] == '{')
-		{
-			bool desligar = false;
+            if (strFinal[i + 1] == '/')
+            {
+                desligar = true;
+                i++;
+            }
 
-			if (str[i + 1] == '/')
-			{
-				desligar = true;
-				i++;
-			}
+            switch (strFinal[i + 1])
+            {
+                case 'b':
+                case 'B':
+                    estado.negrito = !desligar;
+                    break;
 
-			switch (str[i + 1])
-			{
-				case 'b':
-				case 'B':
-					estado.negrito = !desligar;
-					break;
+                case 'i':
+                case 'I':
+                    estado.italico = !desligar;
+                    break;
 
-				case 'i':
-				case 'I':
-					estado.italico = !desligar;
-					break;
+                case 'o':
+                case 'O':
+                    estado.onda = !desligar;
+                    break;
 
-				case 'o':
-				case 'O':
-					estado.onda = !desligar;
-					break;
+                case 't':
+                case 'T':
+                    estado.tremida = !desligar;
+                    break;
 
-				case 't':
-				case 'T':
-					estado.tremida = !desligar;
-					break;
+                case 'c':
+                case 'C':
+                    estado.contorno = !desligar;
+                    break;
 
-				case 'c':
-				case 'C':
-					estado.contorno = !desligar;
-					break;
+                case 'x':
+                case 'X':
+                    if (desligar)
+                        estado.escalaX = 1;
+                    else
+                    {
+                        int j;
+                        int escala = 0;
+                        
+                        for (j = i + 2; strFinal[j] >= '0' && strFinal[j] <= '9'; j++)
+                        {
+                            escala *= 10;
+                            escala += strFinal[j] - '0';
+                        }
+                    
+                        if (escala > 0)
+                            estado.escalaX = escala;
+                    }
+                    break;
 
-				case 'x':
-				case 'X':
-					if (desligar)
-						estado.escalaX = 1;
-					else
-					{
-						int j;
-						int escala = 0;
-						
-						for (j = i + 2; str[j] >= '0' && str[j] <= '9'; j++)
-						{
-							escala *= 10;
-							escala += str[j] - '0';
-						}
-					
-						if (escala > 0)
-							estado.escalaX = escala;
-					}
-					break;
+                case 'y':
+                case 'Y':
+                    if (desligar)
+                        estado.escalaY = 1;
+                    else
+                    {
+                        int j;
+                        int escala = 0;
+                        
+                        for (j = i + 2; strFinal[j] >= '0' && strFinal[j] <= '9'; j++)
+                        {
+                            escala *= 10;
+                            escala += strFinal[j] - '0';
+                        }
+                        
+                        if (escala > 0)
+                            estado.escalaY = escala;
+                    }
+                    break;
 
-				case 'y':
-				case 'Y':
-					if (desligar)
-						estado.escalaY = 1;
-					else
-					{
-						int j;
-						int escala = 0;
-						
-						for (j = i + 2; str[j] >= '0' && str[j] <= '9'; j++)
-						{
-							escala *= 10;
-							escala += str[j] - '0';
-						}
-						
-						if (escala > 0)
-							estado.escalaY = escala;
-					}
-					break;
+                case 's':
+                case 'S':
+                    if (desligar)
+                    {
+                        estado.escalaX = 1;
+                        estado.escalaY = 1;
+                    }
+                    else
+                    {
+                        int j;
 
-				case 's':
-				case 'S':
-					if (desligar)
-					{
-						estado.escalaX = 1;
-						estado.escalaY = 1;
-					}
-					else
-					{
-						int j;
+                        int escalaX = 0;
+                        int escalaY = 0;
 
-						int escalaX = 0;
-						int escalaY = 0;
+                        for (j = i +2; strFinal[j] >= '0' && strFinal[j] <= '9'; j++)
+                        {
+                            escalaX *= 10;
+                            escalaX += strFinal[j] - '0';
+                        }
 
-						for (j = i +2; str[j] >= '0' && str[j] <= '9'; j++)
-						{
-							escalaX *= 10;
-							escalaX += str[j] - '0';
-						}
+                        if (strFinal[j] == 'x' || strFinal[j] == 'X')
+                        {
+                            j++;
 
-						if (str[j] == 'x' || str[j] == 'X')
-						{
-							j++;
+                            while (strFinal[j] >= '0' && strFinal[j] <= '9')
+                            {
+                                escalaY *= 10;
+                                escalaY += strFinal[j] - '0';
+                                j++;
+                            }
 
-							while (str[j] >= '0' && str[j] <= '9')
-							{
-								escalaY *= 10;
-								escalaY += str[j] - '0';
-								j++;
-							}
+                            if (escalaX > 0)
+                                estado.escalaX = escalaX;
 
-							if (escalaX > 0)
-								estado.escalaX = escalaX;
+                            if (escalaY > 0)
+                                estado.escalaY = escalaY;
+                        }
+                    }
 
-							if (escalaY > 0)
-								estado.escalaY = escalaY;
-						}
-					}
+            }
 
-			}
+            while (strFinal[i] != '}')
+                i++;
 
-			while (str[i] != '}')
-				i++;
+            continue;
+        }
 
-			continue;
-		}
+        int tremidaX = 0;
+        int tremidaY = 0;
 
-		int tremidaX = 0;
-		int tremidaY = 0;
+        if (estado.tremida)
+        {
+            tremidaX = efeitoTremer(2);
+            tremidaY = efeitoTremer(2);
+        }
 
-		if (estado.tremida)
-		{
-			tremidaX = efeitoTremer(2);
-			tremidaY = efeitoTremer(2);
-		}
+        int onda = 0;
 
-		int onda = 0;
+        if (estado.onda)
+        {
+            onda = efeitoOnda(3, i);
+        }
 
-		if (estado.onda)
-		{
-			onda = efeitoOnda(3, i);
-		}
+        unsigned char c = strFinal[i];
 
-		unsigned char c = str[i];
+        if (c < ' ')
+            continue;
 
-		if (c < ' ')
-			continue;
+        c -= ' ';
 
-		c -= ' ';
+        Rectangle source = { (c % 16) * 8, (c / 16) * 8, fonte_tam.width, fonte_tam.height };
 
-		// Se for mudar o tamanho do texto, mudar o 8
-		Rectangle source = { (c % 16) * 8, (c / 16) * 8, fonte_tam.width, fonte_tam.height };
+        Rectangle draw =
+        {
+            cursor.x + tremidaX,
+            cursor.y + tremidaY + onda,
 
-		Rectangle draw =
-		{
-			cursor.x + tremidaX,
-			cursor.y + tremidaY + onda,
+            8 * estado.escalaX,
+            8 * estado.escalaY
+        };
 
-			8 * estado.escalaX,
-			8 * estado.escalaY
-		};
+        DrawTexturePro(
+                estado.italico ? (estado.contorno ? rm.texturaFonteItalicoContorno : rm.texturaFonteItalico) : (estado.contorno ? rm.texturaFonteContorno : rm.texturaFonte),
 
-		DrawTexturePro(
-				estado.italico ? (estado.contorno ? rm.texturaFonteItalicoContorno : rm.texturaFonteItalico) : (estado.contorno ? rm.texturaFonteContorno : rm.texturaFonte),
+                source,
+                draw,
 
-				source,
-				draw,
+                (Vector2){0,0},
+                0,
+                estado.cor
+                );
 
-				(Vector2){0,0},
-				0,
-				estado.cor
-				);
+        if (estado.negrito)
+        {
+            draw.x++;
 
-		if (estado.negrito)
-		{
-			draw.x++;
+            DrawTexturePro(
+                    estado.italico ?
+                    rm.texturaFonteItalico :
+                    rm.texturaFonte,
 
-			DrawTexturePro(
-					estado.italico ?
-					rm.texturaFonteItalico :
-					rm.texturaFonte,
+                    source,
+                    draw,
 
-					source,
-					draw,
+                    (Vector2){0,0},
+                    0,
+                    estado.cor
+                    );
+        }
 
-					(Vector2){0,0},
-					0,
-					estado.cor
-					);
-		}
-
-		cursor.x += 8 * estado.escalaX;
-	}
+        cursor.x += 8 * estado.escalaX;
+    }
+    
+    // Libera a memória alocada
+    free(strFinal);
+    free(valores);
 }
+
+// void desenharTexto(char *str, int x, int y)
+// {
+// 	str = unicodeASCII(str);
+//
+// 	EstadoTexto estado = { BRANCO, false, false, false, false, false, 1, 1 };
+// 	Vector2 cursor = { x, y };
+//
+// 	for (int i = 0; str[i] != '\0'; i++)
+// 	{
+// 		if (str[i] == '\\')
+// 		{
+// 			i++;
+//
+// 			if (str[i] == '\0')
+// 				break;
+// 		}
+//
+// 		else if (str[i] == '\n')
+// 		{
+// 			cursor.x = x;
+// 			cursor.y += 8 * estado.escalaY;
+// 			continue;
+// 		}
+//
+// 		else if (str[i] == '[')
+// 		{
+// 			if (str[i + 1] == '/')
+// 			{
+// 				estado.cor = BRANCO;
+//
+// 				while (str[i] != ']')
+// 					i++;
+//
+// 				continue;
+// 			}
+//
+// 			switch (str[i + 1])
+// 			{
+// 				// Mudar em vez de "[A]" ..., ser "[PRETO]" ...
+// 				case 'A':
+// 				case 'a':
+// 					estado.cor = PRETO;
+// 					break;
+//
+// 				case 'B':
+// 				case 'b':
+// 					estado.cor = ROXO;
+// 					break;
+//
+// 				case 'C':
+// 				case 'c':
+// 					estado.cor = VERMELHO;
+// 					break;
+//
+// 				case 'D':
+// 				case 'd':
+// 					estado.cor = LARANJA;
+// 					break;
+//
+// 				case 'E':
+// 				case 'e':
+// 					estado.cor = AMARELO;
+// 					break;
+//
+// 				case 'F':
+// 				case 'f':
+// 					estado.cor = VERDECLARO;
+// 					break;
+//
+// 				case 'G':
+// 				case 'g':
+// 					estado.cor = VERDE;
+// 					break;
+//
+// 				case 'H':
+// 				case 'h':
+// 					estado.cor = VERDEESCURO;
+// 					break;
+//
+// 				case 'I':
+// 				case 'i':
+// 					estado.cor = AZULESCURO;
+// 					break;
+//
+// 				case 'J':
+// 				case 'j':
+// 					estado.cor = AZUL;
+// 					break;
+//
+// 				case 'K':
+// 				case 'k':
+// 					estado.cor = AZULCLARO;
+// 					break;
+//
+// 				case 'L':
+// 				case 'l':
+// 					estado.cor = CIANO;
+// 					break;
+//
+// 				case 'M':
+// 				case 'm':
+// 					estado.cor = BRANCO;
+// 					break;
+//
+// 				case 'N':
+// 				case 'n':
+// 					estado.cor = CINZACLARO;
+// 					break;
+//
+// 				case 'O':
+// 				case 'o':
+// 					estado.cor = CINZA;
+// 					break;
+//
+// 				case 'P':
+// 				case 'p':
+// 					estado.cor = CINZAESCURO;
+// 					break;
+//
+// 				default:
+// 					estado.cor = PINK; // TODO: Temporário para testes.
+// 			}
+//
+// 			while (str[i] != ']')
+// 				i++;
+//
+// 			continue;
+// 		}
+//
+// 		else if (str[i] == '{')
+// 		{
+// 			bool desligar = false;
+//
+// 			if (str[i + 1] == '/')
+// 			{
+// 				desligar = true;
+// 				i++;
+// 			}
+//
+// 			switch (str[i + 1])
+// 			{
+// 				case 'b':
+// 				case 'B':
+// 					estado.negrito = !desligar;
+// 					break;
+//
+// 				case 'i':
+// 				case 'I':
+// 					estado.italico = !desligar;
+// 					break;
+//
+// 				case 'o':
+// 				case 'O':
+// 					estado.onda = !desligar;
+// 					break;
+//
+// 				case 't':
+// 				case 'T':
+// 					estado.tremida = !desligar;
+// 					break;
+//
+// 				case 'c':
+// 				case 'C':
+// 					estado.contorno = !desligar;
+// 					break;
+//
+// 				case 'x':
+// 				case 'X':
+// 					if (desligar)
+// 						estado.escalaX = 1;
+// 					else
+// 					{
+// 						int j;
+// 						int escala = 0;
+//
+// 						for (j = i + 2; str[j] >= '0' && str[j] <= '9'; j++)
+// 						{
+// 							escala *= 10;
+// 							escala += str[j] - '0';
+// 						}
+//
+// 						if (escala > 0)
+// 							estado.escalaX = escala;
+// 					}
+// 					break;
+//
+// 				case 'y':
+// 				case 'Y':
+// 					if (desligar)
+// 						estado.escalaY = 1;
+// 					else
+// 					{
+// 						int j;
+// 						int escala = 0;
+//
+// 						for (j = i + 2; str[j] >= '0' && str[j] <= '9'; j++)
+// 						{
+// 							escala *= 10;
+// 							escala += str[j] - '0';
+// 						}
+//
+// 						if (escala > 0)
+// 							estado.escalaY = escala;
+// 					}
+// 					break;
+//
+// 				case 's':
+// 				case 'S':
+// 					if (desligar)
+// 					{
+// 						estado.escalaX = 1;
+// 						estado.escalaY = 1;
+// 					}
+// 					else
+// 					{
+// 						int j;
+//
+// 						int escalaX = 0;
+// 						int escalaY = 0;
+//
+// 						for (j = i +2; str[j] >= '0' && str[j] <= '9'; j++)
+// 						{
+// 							escalaX *= 10;
+// 							escalaX += str[j] - '0';
+// 						}
+//
+// 						if (str[j] == 'x' || str[j] == 'X')
+// 						{
+// 							j++;
+//
+// 							while (str[j] >= '0' && str[j] <= '9')
+// 							{
+// 								escalaY *= 10;
+// 								escalaY += str[j] - '0';
+// 								j++;
+// 							}
+//
+// 							if (escalaX > 0)
+// 								estado.escalaX = escalaX;
+//
+// 							if (escalaY > 0)
+// 								estado.escalaY = escalaY;
+// 						}
+// 					}
+//
+// 			}
+//
+// 			while (str[i] != '}')
+// 				i++;
+//
+// 			continue;
+// 		}
+//
+// 		int tremidaX = 0;
+// 		int tremidaY = 0;
+//
+// 		if (estado.tremida)
+// 		{
+// 			tremidaX = efeitoTremer(2);
+// 			tremidaY = efeitoTremer(2);
+// 		}
+//
+// 		int onda = 0;
+//
+// 		if (estado.onda)
+// 		{
+// 			onda = efeitoOnda(3, i);
+// 		}
+//
+// 		unsigned char c = str[i];
+//
+// 		if (c < ' ')
+// 			continue;
+//
+// 		c -= ' ';
+//
+// 		// Se for mudar o tamanho do texto, mudar o 8
+// 		Rectangle source = { (c % 16) * 8, (c / 16) * 8, fonte_tam.width, fonte_tam.height };
+//
+// 		Rectangle draw =
+// 		{
+// 			cursor.x + tremidaX,
+// 			cursor.y + tremidaY + onda,
+//
+// 			8 * estado.escalaX,
+// 			8 * estado.escalaY
+// 		};
+//
+// 		DrawTexturePro(
+// 				estado.italico ? (estado.contorno ? rm.texturaFonteItalicoContorno : rm.texturaFonteItalico) : (estado.contorno ? rm.texturaFonteContorno : rm.texturaFonte),
+//
+// 				source,
+// 				draw,
+//
+// 				(Vector2){0,0},
+// 				0,
+// 				estado.cor
+// 				);
+//
+// 		if (estado.negrito)
+// 		{
+// 			draw.x++;
+//
+// 			DrawTexturePro(
+// 					estado.italico ?
+// 					rm.texturaFonteItalico :
+// 					rm.texturaFonte,
+//
+// 					source,
+// 					draw,
+//
+// 					(Vector2){0,0},
+// 					0,
+// 					estado.cor
+// 					);
+// 		}
+//
+// 		cursor.x += 8 * estado.escalaX;
+// 	}
+// }
 
 void testeTexto()
 {

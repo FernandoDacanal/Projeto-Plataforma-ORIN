@@ -10,9 +10,9 @@ No momento apenas possui um nível, 2 tipos de itens e 2 tipos de inimigos, por�
 
 # TODOs
 ## Obrigatório
-- [ ] Mais 1 fase
-- [ ] Mais 2 itens
-- [ ] Mais 2 inimigos
+- [x] Mais 1 fase
+- [x] Mais 2 itens
+- [x] Mais 2 inimigos
 
 # Implementar
 - [x] Sprites novos dos inimigos
@@ -22,6 +22,8 @@ No momento apenas possui um nível, 2 tipos de itens e 2 tipos de inimigos, por�
 - [x] Resolver "pulo no ar"
 - [x] _Coyote Time_ Implementado
 - [ ] Segurar espaço faz pular mais alto
+- [ ] Aumentar a velocidade da música quando "Acelerado!!!"
+- [ ] Consertar valor do anel vermelhor e dar valor para anel amarelo
 
 ## Ideias
 ### Opções de Movimentação/Combate

@@ -16,7 +16,9 @@ Texture2D carregarTexturaAlterandoCores( const char *caminhoArquivo, Color *core
 
 void TextoFormatado(char* texto, int posx, int posy, int escala);
 char *unicodeASCII(char *string);
-void numeroParaString(int numero, char *string);
+
+char* mitoa(int num, char* str, int base);
+int mitoa2(int num, char* str, int base);
 
 #define PRETO       (Color){  35,  35,  35, 255}
 #define ROXO        (Color){  93,  39,  93, 255}

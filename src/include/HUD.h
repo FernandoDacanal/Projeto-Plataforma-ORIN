@@ -24,7 +24,6 @@ enum {
  * @param source Posicao e tamanho da fonte.
  * @param rec Posição e tamanho do texto na tela.
  */
-void desenharTextoTemp(char *string, Rectangle source, Rectangle rec);
 void desenharHUD(GameWorld *gw);
 
 void desenharScore(GameWorld *gw);

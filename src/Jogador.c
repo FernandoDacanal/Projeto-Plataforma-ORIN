@@ -223,6 +223,7 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
 	novoJogador->noChao = false;
 	novoJogador->Coyote = 0.f;
 	novoJogador->CoyoteMax = 0.15f;
+	// novoJogador->CoyoteMax = 0.5f;
 	novoJogador->acelerado = 0;
 	/*--------------------*/
 

@@ -152,15 +152,15 @@ void drawGameWorld( GameWorld *gw ) {
 	// DrawText(TextFormat("y: %f", gw->jogador->ret.y), 50, 30, 20, ORANGE);
 
 	if (gw->jogador->acelerado)
-		desenharTexto("[c]{t}ACELERADO!!!{/t}[/]", 10, 10);
+		desenharTexto("[c]{t}{c}ACELERADO!!!{/c}{/t}[/]", 10, 10);
 
 	//testeTexto();
 	
-	desenharTexto("{c}{t}contorno{/t}{/c}", 50, 50);
+	// desenharTexto("{c}{t}contorno{/t}{/c}", 50, 50);
 	//desenharTexto("{x4}xy{/x}{y3}y3{/y}", 56, 50);
 }
 
-//TODO: No momento não está sendo utilizado. Remover se não for usar.
+// TODO: No momento não está sendo utilizado. Remover se não for usar.
 // A gente vai usar depois, só tenho que fazer um fundo novo primeiro
 static void desenharFundo( GameWorld *gw ) {
 
