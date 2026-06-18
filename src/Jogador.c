@@ -346,7 +346,8 @@ void entradaJogador( Jogador *j, float delta ) {
         j->estado = ESTADO_JOGADOR_CORRENDO;
     }
 
-    if (IsKeyPressed( KEY_SPACE ) && (j->noChao && j->quantidadePulos < j->quantidadeMaxPulos || j->Coyote > 0.f))
+    // if (IsKeyPressed( KEY_SPACE ) && (j->noChao && j->quantidadePulos < j->quantidadeMaxPulos || j->Coyote > 0.f))
+    if (IsKeyDown( KEY_SPACE ) && (j->noChao && j->quantidadePulos < j->quantidadeMaxPulos || j->Coyote > 0.f))
 	{
         j->vel.y = j->velPulo;
         j->quantidadePulos++;
