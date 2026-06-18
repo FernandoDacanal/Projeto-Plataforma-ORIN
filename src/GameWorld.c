@@ -7,6 +7,7 @@
  */
 #include <math.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "include/GameWorld.h"
 #include "include/GameWindow.h"
@@ -65,7 +66,7 @@ void destroyGameWorld( GameWorld *gw ) {
  * @brief Lê a entrada do usuário e atualiza o estado do jogo.
  */
 void updateGameWorld( GameWorld *gw, float delta ) {
-	if (IsKeyPressed(KEY_M))
+    if (IsKeyPressed(KEY_M))
 		musica_ativa = !musica_ativa;
 
 	// HACK: Temporário de carregar novo mapa

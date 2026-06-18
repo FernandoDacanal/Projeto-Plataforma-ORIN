@@ -10,6 +10,7 @@
 #include <math.h>
 
 #include "include/raylib/raylib.h"
+#include "include/PersonagemPlaca.h"
 
 #include "include/Animacao.h"
 #include "include/InimigoMotobug.h"
@@ -217,6 +218,7 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
     novoJogador->animacoes[ESTADO_JOGADOR_PULANDO] = &novoJogador->animacaoPulando; quantidadeAnimacoes++;
     novoJogador->animacoes[ESTADO_JOGADOR_PULANDO_RAPIDO] = &novoJogador->animacaoPulandoRapido; quantidadeAnimacoes++;
     novoJogador->animacoes[ESTADO_JOGADOR_PULANDO_CORRENDO] = &novoJogador->animacaoPulandoCorrendo; quantidadeAnimacoes++;
+    novoJogador->animacoes[ESTADO_JOGADOR_FALANDO] = &novoJogador->animacaoParado; quantidadeAnimacoes++;
     novoJogador->quantidadeAnimacoes = quantidadeAnimacoes;
 
 	/*--------------------*/
@@ -332,6 +334,12 @@ void entradaJogador( Jogador *j, float delta ) {
 		j->Coyote = 0;
         PlaySound( rm.somPulo );
     }
+    /*
+    if (IsKeyPressed( KEY_W ) || IsKeyPressed( KEY_UP ))
+	{
+        j->estado = ESTADO_JOGADOR_FALANDO;
+    }
+        */
 
     // sincronização de animações andando e andando rápido
     if ( estadoAnterior == ESTADO_JOGADOR_ANDANDO && j->estado == ESTADO_JOGADOR_ANDANDO_RAPIDO ) {
@@ -854,7 +862,7 @@ static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
             };
 
             if ( CheckCollisionRecs( retColCalculado, retColInimigoCalculado ) ) {
-
+                peixe->estado = ESTADO_INIMIGO_PEIXE_MORRENDO;
                 if ( j->estado >= ESTADO_JOGADOR_PULANDO && j->estado <= ESTADO_JOGADOR_PULANDO_CORRENDO ) {
                     j->vel.y = j->velPulo;
                     peixe->estado = ESTADO_INIMIGO_PEIXE_MORRENDO;
@@ -869,6 +877,46 @@ static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
                         PlaySound( rm.somMorte );
                     }
                     j->invulneravel = true;
+                }
+
+                return; // um inimigo de cada vez!
+            }
+
+        }
+        else if ( inimigo->tipo == TIPO_PERSONAGEM_PLACA ) {
+            PersonagemPlaca *placa = (PersonagemPlaca*) inimigo->objeto;
+            if ( !placa->ativo ) {
+                el = el->proximo;
+                continue;
+            }
+
+            qaInimigo = getQuadroAnimacaoAtualPersonagemPlaca( placa );
+            olhandoParaDireita = &placa->olhandoParaDireita;
+            ret = &placa->ret;
+
+            float deslocamentoX = *olhandoParaDireita
+                ? ret->width - qaInimigo->retColisao.x - qaInimigo->retColisao.width
+                : qaInimigo->retColisao.x;
+            float deslocamentoY = qaInimigo->retColisao.y;
+
+            Rectangle retColInimigoCalculado = {
+                ret->x + deslocamentoX,
+                ret->y + deslocamentoY,
+                qaInimigo->retColisao.width,
+                qaInimigo->retColisao.height
+            };
+            placa->estado = ESTADO_PERSONAGEM_PLACA_PARADO;
+
+            if ( CheckCollisionRecs( retColCalculado, retColInimigoCalculado ) ) {
+                placa->estado = ESTADO_PERSONAGEM_PLACA_INTERAGIVEL;
+                /*
+                if(j->estado == ESTADO_JOGADOR_FALANDO){
+                    placa->estado = ESTADO_PERSONAGEM_PLACA_FALANDO;
+                }
+                */
+                if(IsKeyPressed( KEY_W ) || IsKeyPressed( KEY_UP) && placa->estado == ESTADO_PERSONAGEM_PLACA_INTERAGIVEL){
+                    placa->estado = ESTADO_PERSONAGEM_PLACA_FALANDO;
+                    j->estado = ESTADO_JOGADOR_FALANDO;
                 }
 
                 return; // um inimigo de cada vez!

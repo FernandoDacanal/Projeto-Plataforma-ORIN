@@ -38,8 +38,8 @@ void loadResourcesResourceManager( void ) {
         3
     );
 
-    rm.texturaItens = carregarTexturaAlterandoCores( 
-        "resources/imagens/itens/itens.png",
+    rm.texturaNPC = carregarTexturaAlterandoCores( 
+        "resources/imagens/sprites/npc.png",
         FUNDO,
         (Color[]) {
             BLANK,
@@ -49,8 +49,8 @@ void loadResourcesResourceManager( void ) {
         3
     );
 
-    rm.texturaHUD = carregarTexturaAlterandoCores(
-        "resources/imagens/hud/hud-final.png",
+    rm.texturaItens = carregarTexturaAlterandoCores( 
+        "resources/imagens/itens/itens.png",
         FUNDO,
         (Color[]) {
             BLANK,

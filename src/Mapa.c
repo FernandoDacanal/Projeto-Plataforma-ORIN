@@ -13,6 +13,7 @@
 #include "include/InimigoVoador.h"
 #include "include/InimigoPeixe.h"
 #include "include/ItemVelocidade.h"
+#include "include/PersonagemPlaca.h"
 #include "include/raylib/raylib.h"
 
 #include "include/Macros.h"
@@ -244,6 +245,24 @@ Mapa *carregarMapa( const char *caminhoArquivo ) {
                                     .y = novoMapa->dimensaoPadraoElementos * linhaAtual - 16, 
                                     .width = 16, 
                                     .height = 16
+                                },
+                                YELLOW
+                            );
+
+                            el->objeto = inimigo;
+                            el->tipo = TIPO_ELEMENTO_MAPA_INIMIGO;
+
+                            break;
+                        case '4':
+
+                            inimigo = criarInimigo( TIPO_PERSONAGEM_PLACA);
+
+                            inimigo->objeto = criarPersonagemPlaca( 
+                                (Rectangle) { 
+                                    .x = novoMapa->dimensaoPadraoElementos * colunaAtual, 
+                                    .y = novoMapa->dimensaoPadraoElementos * linhaAtual - 16, 
+                                    .width = 16, 
+                                    .height = 32
                                 },
                                 YELLOW
                             );

@@ -22,6 +22,7 @@ typedef enum EstadoJogador {
     ESTADO_JOGADOR_PULANDO,
     ESTADO_JOGADOR_PULANDO_RAPIDO,
     ESTADO_JOGADOR_PULANDO_CORRENDO,
+    ESTADO_JOGADOR_FALANDO
 } EstadoJogador;
 
 /**
@@ -49,6 +50,12 @@ typedef enum EstadoInimigoPeixe {
     ESTADO_INIMIGO_PEIXE_MORRENDO,
 } EstadoInimigoPeixe;
 
+typedef enum EstadoPersonagemPlaca {
+    ESTADO_PERSONAGEM_PLACA_PARADO,
+    ESTADO_PERSONAGEM_PLACA_INTERAGIVEL,
+    ESTADO_PERSONAGEM_PLACA_FALANDO,
+} EstadoPersonagemPlaca;
+
 /**
  * @brief Representa o tipo de um inimigo.
  */
@@ -56,7 +63,8 @@ typedef enum TipoInimigo {
     TIPO_INIMIGO_MOTOBUG,
     TIPO_INIMIGO_SPIKES,
     TIPO_INIMIGO_VOADOR,
-    TIPO_INIMIGO_PEIXE
+    TIPO_INIMIGO_PEIXE,
+    TIPO_PERSONAGEM_PLACA
 } TipoInimigo;
 
 /**
@@ -271,6 +279,29 @@ typedef struct InimigoPeixe {
 
 } InimigoPeixe;
 
+typedef struct PersonagemPlaca {
+
+    Rectangle ret;
+    Vector2 vel;
+    Color cor;
+
+    float velAndando;
+    float velMaxQueda;
+
+    EstadoPersonagemPlaca estado;
+    bool ativo;
+    bool olhandoParaDireita;     // *cuidado! a reflexão dos inimigos é ao contrário
+                                 // do jogador! eles começam olhando para a esquerda
+                                 // e as sprites são orientadas para a esquerda inicialmente
+    Animacao *animacoes[3];
+    int quantidadeAnimacoes;
+
+    Animacao animacaoParado;
+    Animacao animacaoInteragivel;
+    Animacao animacaoFalando;
+
+} PersonagemPlaca;
+
 /**
  * @brief Representa um inimigo.
  * O inimigo de fato é endereçado via membro "objeto".
@@ -375,6 +406,9 @@ typedef struct Mapa {
 
     ElementoMapa *inimigos;   // marca o fim da lista
     int quantidadeInimigos;
+
+    ElementoMapa *personagens;   // marca o fim da lista
+    int quantidadePersonagens;
 
     float dimensaoPadraoElementos;
     int linhas;
