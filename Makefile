@@ -303,11 +303,11 @@ INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 # -----------------------------------------------------------------------------
 CFLAGS   := $(INC_FLAGS) -MMD -MP -O1 -Wall -Wextra \
              -Wno-unused-parameter -pedantic-errors \
-             -std=c99 -Wno-missing-braces -g
+             -std=c99 -Wno-missing-braces
 
 CPPFLAGS := $(INC_FLAGS) -MMD -MP -O1 -Wall -Wextra \
              -Wno-unused-parameter -pedantic-errors \
-             -std=c++20 -Wno-missing-braces -g
+             -std=c++20 -Wno-missing-braces
 
 
 # -----------------------------------------------------------------------------
