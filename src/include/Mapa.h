@@ -38,3 +38,5 @@ int calcularLarguraMapa( Mapa *m );
  * @brief Calcula a altura do mapa.
  */
 int calcularAlturaMapa( Mapa *m );
+
+void MudarFase(GameWorld* gw, unsigned char mapa);

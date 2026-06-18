@@ -371,7 +371,7 @@ void desenharTexto(char *str, int x, int y, ...)
 
         if (estado.onda)
         {
-            onda = efeitoOnda(3, i);
+            onda = efeitoOnda(2, i);
         }
 
         unsigned char c = strFinal[i];

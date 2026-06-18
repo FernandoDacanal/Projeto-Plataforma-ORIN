@@ -28,7 +28,6 @@
 #include "texto/texto.h"
 #include "include/nivel.h"
 
-
 unsigned char mapaAtual = MAPA1;
 
 static void desenharFundo( GameWorld *gw );
@@ -40,9 +39,6 @@ static void reiniciar( GameWorld *gw );
 RenderTexture2D alvoRenderizacao;
 
 bool musica_ativa = true;	// Eu sei que não é legal ficar fazendo variável global ... :)
-Color cor_fundo;
-
-
 
 /**
  * @brief Cria uma instância alocada dinamicamente da struct GameWorld.
@@ -68,65 +64,59 @@ void destroyGameWorld( GameWorld *gw ) {
  * @brief Lê a entrada do usuário e atualiza o estado do jogo.
  */
 void updateGameWorld( GameWorld *gw, float delta ) {
-    if (IsKeyPressed(KEY_M))
-		musica_ativa = !musica_ativa;
+    switch(gw->estadoJogo){
+        case jogando:
+            if (IsKeyPressed(KEY_M))
+                musica_ativa = !musica_ativa;
 
-	// HACK: Temporário de carregar novo mapa
-	if (mod_desenvolvedor)
-	{
-		if (IsKeyPressed(KEY_ONE))
-		{
-			cor_fundo = AZULCLARO;
-			destruirMapa(gw->mapa);
-			gw->mapa = carregarMapa("resources/mapas/mapa01.txt");
-			UnloadTexture(rm.texturaTerreno);
-			rm.texturaTerreno = LoadTexture("resources/imagens/tiles/terreno1.png");
-			UnloadMusicStream(rm.musicaFase01);
-			rm.musicaFase01 = LoadMusicStream( "resources/sons/musicas/green-hill-zone.mp3" );
-			gw->jogador = criarJogador(310, 208, 32, 32);
-			mapaAtual = MAPA1;
-		}
-		else if (IsKeyPressed(KEY_TWO))
-		{
-			cor_fundo = AMARELO;
-			destruirMapa(gw->mapa);
-			gw->mapa = carregarMapa("resources/mapas/mapa02.txt");
-			UnloadTexture(rm.texturaTerreno);
-			rm.texturaTerreno = carregarTexturaAlterandoCores("resources/imagens/tiles/terreno2.png", FUNDO, (Color[]) {BLANK}, 3);
-			UnloadMusicStream(rm.musicaFase01);
-			rm.musicaFase01 = LoadMusicStream( "resources/sons/musicas/desert-hill.mp3" );
-			gw->jogador = criarJogador(22, 208, 32, 32);
-			mapaAtual = MAPA2;
-		}
-	}
+            // HACK: Temporário de carregar novo mapa
+            if (mod_desenvolvedor)
+            {
+                if (IsKeyPressed(KEY_ONE))
+                {
+                    MudarFase(gw, MAPA1);
+                }
+                else if (IsKeyPressed(KEY_TWO))
+                {
+                    MudarFase(gw, MAPA2);
+                }
+            }
+            if (musica_ativa)
+            {
+                if ( !IsMusicStreamPlaying( rm.musicaFase01 ) ) {
+                    PlayMusicStream( rm.musicaFase01 );
+                } else {
+                    UpdateMusicStream( rm.musicaFase01 );
+                }
+            }
 
-	if (musica_ativa)
-	{
-		if ( !IsMusicStreamPlaying( rm.musicaFase01 ) ) {
-			PlayMusicStream( rm.musicaFase01 );
-		} else {
-			UpdateMusicStream( rm.musicaFase01 );
-		}
-	}
-
-    if (IsKeyPressed( KEY_R ))
-	{
-        reiniciar( gw );
-        return;
+            if (IsKeyPressed( KEY_R ))
+            {
+                reiniciar( gw );
+                return;
+            }
+            atualizarMapa( gw->mapa, gw, delta );
+            Jogador *j = gw->jogador;
+            entradaJogador( j, delta );
+            atualizarJogador( j, gw, delta );
+            atualizarCamera( gw );
+            if(gw->jogador->estado == ESTADO_JOGADOR_FALANDO){
+                gw->estadoJogo = dialogo;
+            }
+        break;
+        case dialogo:
+            if(IsKeyPressed(KEY_SPACE)){
+                gw->estadoJogo = jogando;
+                MudarFase(gw, MAPA2);
+            }
+        break;
     }
-
-    Jogador *j = gw->jogador;
-    atualizarMapa( gw->mapa, gw, delta );
-    entradaJogador( j, delta );
-    atualizarJogador( j, gw, delta );
-    atualizarCamera( gw );
 }
-
 /**
  * @brief Desenha o estado do jogo.
  */
 void drawGameWorld( GameWorld *gw ) {
-	ClearBackground(cor_fundo);
+	ClearBackground(gw->cor_fundo);
 
     //elementos alterados pela camera
 	BeginMode2D( gw->camera );
@@ -137,6 +127,12 @@ void drawGameWorld( GameWorld *gw ) {
 
 	desenharHUD(gw);
     
+    if(gw->estadoJogo == dialogo){
+        DrawRectangle(2, 2, LARGURA_VIRTUAL - 2, 32, PRETO);
+        DrawRectangleLines(2, 2, LARGURA_VIRTUAL - 2, 32, BRANCO);
+        desenharTexto("{o}\nFASE COMPLETA!{/o}\nAPRTE ESPAÇO PARA IR AO PŔOXIMO NÍVEL...", 34, 2);
+        DrawTexture(LoadTexture("resources/imagens/sprites/placa.png"), 2, 2, WHITE);
+    }
 	//DEBUG
 	if (mod_desenvolvedor)
 	{
@@ -152,8 +148,7 @@ void drawGameWorld( GameWorld *gw ) {
 
 	//testeTexto();
 	
-	//desenharTexto("{c}{t}contorno{/t}{/c}", 50, 50);
-	//desenharTexto("{x4}xy{/x}{y3}y3{/y}", 56, 50);
+
 }
 
 // TODO: No momento não está sendo utilizado. Remover se não for usar.
@@ -207,7 +202,8 @@ static void inicializar( GameWorld *gw ) {
 	if (mod_desenvolvedor)
 		musica_ativa = false;
 
-	cor_fundo = AZULCLARO;
+	gw->cor_fundo = AZULCLARO;
+    gw->estadoJogo = jogando;
 
     gw->mapa = carregarMapa( "resources/mapas/mapa01.txt" );
     // gw->jogador = criarJogador( (float)GetScreenWidth() / 2 + 144, calcularAlturaMapa( gw->mapa ) - 196, 32, 32 );

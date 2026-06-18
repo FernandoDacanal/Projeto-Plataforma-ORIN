@@ -12,7 +12,7 @@ C            J   aJ                                                             
 A               aJ                                                                          A
 C               J                   2    2     2       bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbC
 A                                                      bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbA
-C   1     J     4      J   0    0          333         bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbC
+C   1     J            J   0    0          333         bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb4bbbbC
 AEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEA
 CFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFIFC
 ADGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDGDA

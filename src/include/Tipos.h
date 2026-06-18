@@ -441,6 +441,7 @@ typedef struct GameWorld {
     Camera2D camera;
 
     float gravidade;
+	Color cor_fundo;
 
     ESTADOJOGO estadoJogo;
 

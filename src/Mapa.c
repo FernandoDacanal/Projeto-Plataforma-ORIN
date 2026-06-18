@@ -26,6 +26,9 @@
 #include "include/Tipos.h"
 #include "include/ResourceManager.h"
 
+#include "include/nivel.h"
+#include "include/Utils.h"
+
 static void inserirObstaculo( Mapa *mapa, ElementoMapa *obstaculo );
 static void inserirItem( Mapa *mapa, ElementoMapa *item );
 static void inserirInimigo( Mapa *mapa, ElementoMapa *inimigo );
@@ -439,4 +442,38 @@ static void inserirInimigo( Mapa *mapa, ElementoMapa *inimigo ) {
         mapa->inimigos = inimigo;
     }
     mapa->quantidadeInimigos++;
+}
+
+// `mapa` é o enum em nivel.h
+// Uso: MudarFase(gw, MAPAx);
+void MudarFase(GameWorld* gw, unsigned char mapa)
+{
+	switch (mapa)
+	{
+		case MAPA1:
+			gw->cor_fundo = AZULCLARO;
+			destruirMapa(gw->mapa);
+			gw->mapa = carregarMapa("resources/mapas/mapa01.txt");
+			UnloadTexture(rm.texturaTerreno);
+			rm.texturaTerreno = LoadTexture("resources/imagens/tiles/terreno1.png");
+			UnloadMusicStream(rm.musicaFase01);
+			rm.musicaFase01 = LoadMusicStream( "resources/sons/musicas/green-hill-zone.mp3" );
+			mapaAtual = MAPA1;
+			gw->jogador->ret.x = 310;
+			gw->jogador->ret.y = 208;
+			break;
+
+		case MAPA2:
+			gw->cor_fundo = AMARELO;
+			destruirMapa(gw->mapa);
+			gw->mapa = carregarMapa("resources/mapas/mapa02.txt");
+			UnloadTexture(rm.texturaTerreno);
+			rm.texturaTerreno = LoadTexture("resources/imagens/tiles/terreno2.png");
+			UnloadMusicStream(rm.musicaFase01);
+			rm.musicaFase01 = LoadMusicStream( "resources/sons/musicas/desert-hill.mp3" );
+			mapaAtual = MAPA1;
+			gw->jogador->ret.x = 22;
+			gw->jogador->ret.y = 208;
+			break;
+	}
 }
