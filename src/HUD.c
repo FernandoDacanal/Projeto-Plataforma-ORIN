@@ -83,7 +83,7 @@ void desenharTime(GameWorld *gw)
     int tremor2 = 0;
 	
 	Vector2 pos = { HUD.x + tremor1, HUD.y + TAMANHO_FONTE };
-	gw->jogador->quantidadeTempo += 2;
+	// gw->jogador->quantidadeTempo += 2;
 
 	// TODO: Fazer com que o tempo seja diferente para cada mapa.
 	if (gw->jogador->quantidadeTempo > 599)	// Temp 10 minutos (5:59)
@@ -100,7 +100,7 @@ void desenharTime(GameWorld *gw)
 		if ((int)gw->jogador->quantidadeTempo % 60 > 9)
 			desenharTexto("[e]{c}Tempo %:%{/c}[/]", pos.x, pos.y, (int)gw->jogador->quantidadeTempo / 60, (int)gw->jogador->quantidadeTempo % 60);
 		else
-			desenharTexto("[e]{c}Tempo %:0%{/c}[/]", pos.x, pos.y, (int)gw->jogador->quantidadeTempo / 60, (int)gw->jogador->quantidadeTempo % 60);
+			desenharTexto("[e]{c}Tempo %:0{/t}%[/]", pos.x, pos.y, (int)gw->jogador->quantidadeTempo / 60, (int)gw->jogador->quantidadeTempo % 60);
 }
 
 void desenharRings(GameWorld *gw)
