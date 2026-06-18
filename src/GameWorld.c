@@ -28,7 +28,6 @@
 #include "texto/texto.h"
 #include "include/nivel.h"
 
-
 unsigned char mapaAtual = MAPA1;
 
 static void desenharFundo( GameWorld *gw );
@@ -40,7 +39,6 @@ static void reiniciar( GameWorld *gw );
 RenderTexture2D alvoRenderizacao;
 
 bool musica_ativa = true;	// Eu sei que não é legal ficar fazendo variável global ... :)
-Color cor_fundo;
 
 
 
@@ -76,7 +74,7 @@ void updateGameWorld( GameWorld *gw, float delta ) {
 	{
 		if (IsKeyPressed(KEY_ONE))
 		{
-			cor_fundo = AZULCLARO;
+			gw->cor_fundo = AZULCLARO;
 			destruirMapa(gw->mapa);
 			gw->mapa = carregarMapa("resources/mapas/mapa01.txt");
 			UnloadTexture(rm.texturaTerreno);
@@ -88,7 +86,7 @@ void updateGameWorld( GameWorld *gw, float delta ) {
 		}
 		else if (IsKeyPressed(KEY_TWO))
 		{
-			cor_fundo = AMARELO;
+			gw->cor_fundo = AMARELO;
 			destruirMapa(gw->mapa);
 			gw->mapa = carregarMapa("resources/mapas/mapa02.txt");
 			UnloadTexture(rm.texturaTerreno);
@@ -97,6 +95,10 @@ void updateGameWorld( GameWorld *gw, float delta ) {
 			rm.musicaFase01 = LoadMusicStream( "resources/sons/musicas/desert-hill.mp3" );
 			gw->jogador = criarJogador(22, 208, 32, 32);
 			mapaAtual = MAPA2;
+		}
+		else if (IsKeyPressed(KEY_THREE))
+		{
+			MudarFase(gw, MAPA2);
 		}
 	}
 
@@ -126,7 +128,7 @@ void updateGameWorld( GameWorld *gw, float delta ) {
  * @brief Desenha o estado do jogo.
  */
 void drawGameWorld( GameWorld *gw ) {
-	ClearBackground(cor_fundo);
+	ClearBackground(gw->cor_fundo);
 
     //elementos alterados pela camera
 	BeginMode2D( gw->camera );
@@ -207,7 +209,7 @@ static void inicializar( GameWorld *gw ) {
 	if (mod_desenvolvedor)
 		musica_ativa = false;
 
-	cor_fundo = AZULCLARO;
+	gw->cor_fundo = AZULCLARO;
 
     gw->mapa = carregarMapa( "resources/mapas/mapa01.txt" );
     // gw->jogador = criarJogador( (float)GetScreenWidth() / 2 + 144, calcularAlturaMapa( gw->mapa ) - 196, 32, 32 );
