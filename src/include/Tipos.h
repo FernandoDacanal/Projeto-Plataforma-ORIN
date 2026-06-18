@@ -94,6 +94,7 @@ typedef enum TipoItem {
     TIPO_ITEM_VELOCIDADE,
 } TipoItem;
 
+
 /**
  * @brief Representa o tipo de um elemento do mapa
  */
@@ -181,6 +182,7 @@ typedef struct Jogador {
     Animacao animacaoPulando;
     Animacao animacaoPulandoRapido;
     Animacao animacaoPulandoCorrendo;
+    Animacao animacaoFalando;
 
 } Jogador;
 
@@ -278,15 +280,23 @@ typedef struct InimigoPeixe {
     Animacao animacaoAtirando;
 
 } InimigoPeixe;
+/*
+typedef struct Dialogo
+{
+    char *textoFormatado;
+
+    int caracteresPorLinha;
+    int linhasPorPagina;
+
+    int totalLinhas;
+    int totalPaginas;
+} Dialogo;
+ */
 
 typedef struct PersonagemPlaca {
-
     Rectangle ret;
     Vector2 vel;
     Color cor;
-
-    float velAndando;
-    float velMaxQueda;
 
     EstadoPersonagemPlaca estado;
     bool ativo;
@@ -306,11 +316,11 @@ typedef struct PersonagemPlaca {
  * @brief Representa um inimigo.
  * O inimigo de fato é endereçado via membro "objeto".
  */
+
 typedef struct Inimigo {
     void *objeto;
     TipoInimigo tipo;
 } Inimigo;
-
 /**
  * @brief Representa um item do tipo anel.
  */

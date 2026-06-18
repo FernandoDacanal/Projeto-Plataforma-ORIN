@@ -11,6 +11,7 @@
 
 #include "include/raylib/raylib.h"
 #include "include/PersonagemPlaca.h"
+#include "texto/texto.h"
 
 #include "include/Animacao.h"
 #include "include/InimigoMotobug.h"
@@ -210,6 +211,23 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
         false,           // de trás para frente
         (Rectangle) {10, 12, 12, 20}     // retângulo de colisão padrão para cada quadro
     );
+    novoJogador->animacaoFalando.quantidadeQuadros = 1;
+    novoJogador->animacaoFalando.quadroAtual = 0;
+    novoJogador->animacaoFalando.contadorTempoQuadro = 0.0f;
+    novoJogador->animacaoFalando.pararNoUltimoQuadro = false;
+    novoJogador->animacaoFalando.executarUmaVez = false;
+    novoJogador->animacaoFalando.finalizada = false;
+    criarQuadrosAnimacao( &novoJogador->animacaoFalando, novoJogador->animacaoParado.quantidadeQuadros );
+    inicializarQuadrosAnimacao( 
+        novoJogador->animacaoFalando.quadros,
+        novoJogador->animacaoFalando.quantidadeQuadros,
+        1000,            // duração padrão para todos os quadros
+        1, 1,         // início
+        32, 32,          // dimensões
+        1,               // separação
+        false,           // de trás para frente
+        (Rectangle) {10, 0, 12, 32}    // retângulo de colisão padrão para cada quadro
+    );
 
     novoJogador->animacoes[ESTADO_JOGADOR_PARADO] = &novoJogador->animacaoParado; quantidadeAnimacoes++;
     novoJogador->animacoes[ESTADO_JOGADOR_ANDANDO] = &novoJogador->animacaoAndando; quantidadeAnimacoes++;
@@ -218,7 +236,7 @@ Jogador *criarJogador( float x, float y, float w, float h ) {
     novoJogador->animacoes[ESTADO_JOGADOR_PULANDO] = &novoJogador->animacaoPulando; quantidadeAnimacoes++;
     novoJogador->animacoes[ESTADO_JOGADOR_PULANDO_RAPIDO] = &novoJogador->animacaoPulandoRapido; quantidadeAnimacoes++;
     novoJogador->animacoes[ESTADO_JOGADOR_PULANDO_CORRENDO] = &novoJogador->animacaoPulandoCorrendo; quantidadeAnimacoes++;
-    novoJogador->animacoes[ESTADO_JOGADOR_FALANDO] = &novoJogador->animacaoParado; quantidadeAnimacoes++;
+    novoJogador->animacoes[ESTADO_JOGADOR_FALANDO] = &novoJogador->animacaoFalando; quantidadeAnimacoes++;
     novoJogador->quantidadeAnimacoes = quantidadeAnimacoes;
 
 	/*--------------------*/
@@ -914,9 +932,20 @@ static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
                     placa->estado = ESTADO_PERSONAGEM_PLACA_FALANDO;
                 }
                 */
-                if(IsKeyPressed( KEY_W ) || IsKeyPressed( KEY_UP) && placa->estado == ESTADO_PERSONAGEM_PLACA_INTERAGIVEL){
+                if(IsKeyDown( KEY_W ) || IsKeyPressed( KEY_UP) && placa->estado == ESTADO_PERSONAGEM_PLACA_INTERAGIVEL){
+                    int paginaAtual = 0;
+                    char *texto = "Uau esse é um dialogo muito bom que deve ser reconhecido internacionalmente por quão bom ele é";
+                    int largura = 15;
+                    int altura = 2;
                     placa->estado = ESTADO_PERSONAGEM_PLACA_FALANDO;
                     j->estado = ESTADO_JOGADOR_FALANDO;
+                    int totalPaginas = obterTotalPaginas(texto, largura, altura);
+                    if(paginaAtual + 1 < totalPaginas){
+                        if(IsKeyPressed(KEY_SPACE)){
+                            paginaAtual++;
+                            desenharDialogo(texto, 400, 400, largura, altura, paginaAtual);
+                        }
+                    }
                 }
 
                 return; // um inimigo de cada vez!
@@ -927,3 +956,4 @@ static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
         el = el->proximo;
     }
 }
+

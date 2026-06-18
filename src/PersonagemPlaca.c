@@ -30,9 +30,6 @@ PersonagemPlaca *criarPersonagemPlaca( Rectangle ret, Color cor ) {
     novoPersonagem->vel = (Vector2) { 0 };
     novoPersonagem->cor = cor;
 
-    novoPersonagem->velAndando = 0;
-    novoPersonagem->velMaxQueda = 0;
-
     novoPersonagem->estado = ESTADO_PERSONAGEM_PLACA_PARADO;
     novoPersonagem->ativo = true;
     novoPersonagem->olhandoParaDireita = false;
