@@ -69,26 +69,47 @@ void updateGameWorld( GameWorld *gw, float delta ) {
             if (IsKeyPressed(KEY_M))
                 musica_ativa = !musica_ativa;
 
-            // HACK: Temporário de carregar novo mapa
-            if (mod_desenvolvedor)
-            {
-                if (IsKeyPressed(KEY_ONE))
-                {
-                    MudarFase(gw, MAPA1);
-                }
-                else if (IsKeyPressed(KEY_TWO))
-                {
-                    MudarFase(gw, MAPA2);
-                }
-            }
-            if (musica_ativa)
-            {
-                if ( !IsMusicStreamPlaying( rm.musicaFase01 ) ) {
-                    PlayMusicStream( rm.musicaFase01 );
-                } else {
-                    UpdateMusicStream( rm.musicaFase01 );
-                }
-            }
+	// HACK: Temporário de carregar novo mapa
+	if (mod_desenvolvedor)
+	{
+		if (IsKeyPressed(KEY_ONE))
+		{
+			gw->cor_fundo = AZULCLARO;
+			destruirMapa(gw->mapa);
+			gw->mapa = carregarMapa("resources/mapas/mapa01.txt");
+			UnloadTexture(rm.texturaTerreno);
+			rm.texturaTerreno = LoadTexture("resources/imagens/tiles/terreno1.png");
+			UnloadMusicStream(rm.musicaFase01);
+			rm.musicaFase01 = LoadMusicStream( "resources/sons/musicas/green-hill-zone.mp3" );
+			gw->jogador = criarJogador(310, 208, 32, 32);
+			mapaAtual = MAPA1;
+		}
+		else if (IsKeyPressed(KEY_TWO))
+		{
+			gw->cor_fundo = AMARELO;
+			destruirMapa(gw->mapa);
+			gw->mapa = carregarMapa("resources/mapas/mapa02.txt");
+			UnloadTexture(rm.texturaTerreno);
+			rm.texturaTerreno = carregarTexturaAlterandoCores("resources/imagens/tiles/terreno2.png", FUNDO, (Color[]) {BLANK}, 3);
+			UnloadMusicStream(rm.musicaFase01);
+			rm.musicaFase01 = LoadMusicStream( "resources/sons/musicas/desert-hill.mp3" );
+			gw->jogador = criarJogador(22, 208, 32, 32);
+			mapaAtual = MAPA2;
+		}
+		else if (IsKeyPressed(KEY_THREE))
+		{
+			MudarFase(gw, MAPA2);
+		}
+	}
+
+	if (musica_ativa)
+	{
+		if ( !IsMusicStreamPlaying( rm.musicaFase01 ) ) {
+			PlayMusicStream( rm.musicaFase01 );
+		} else {
+			UpdateMusicStream( rm.musicaFase01 );
+		}
+	}
 
             if (IsKeyPressed( KEY_R ))
             {

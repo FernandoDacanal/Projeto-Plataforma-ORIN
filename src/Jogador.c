@@ -273,9 +273,15 @@ void entradaJogador( Jogador *j, float delta ) {
     EstadoJogador estadoAnterior = j->estado;
 
 	if (j->acelerado)
+	{
 		j->velCorrendo = 1200;
+		SetMusicPitch(rm.musicaFase01, 1.1);
+	}
 	else
+	{
 		j->velCorrendo = 800;
+		SetMusicPitch(rm.musicaFase01, 1);	// Eu não gosto de setar de volta toda vez, mas vai ficar assim mesmo
+	}
 
     if ( IsKeyDown( KEY_RIGHT) || IsKeyDown(KEY_D) ) {
         if ( j->vel.x < 0 ) {
