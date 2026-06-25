@@ -1,205 +1,119 @@
-#include <stdio.h>
 #include <stdbool.h>
 
 #include "include/Tipos.h"
 #include "include/HUD.h"
-#include "include/ResourceManager.h"
 #include "include/Utils.h"
 #include "include/GameWindow.h"
 
-static Vector2 HUDSuperior = { TAMANHO_TILES * 2, TAMANHO_TILES };
-static Vector2 HUDInferior = { TAMANHO_TILES * 2, ALTURA_VIRTUAL - TAMANHO_TILES * 3 };
+#include "include/raylib/raylib.h"
+#include "texto/texto.h"	// Tremer e onda
 
-static bool piscar_time = false;
-static bool piscar_ring = false;
+static Vector2 HUD = { BORDA, BORDA + TAMANHO_FONTE + 1 };
+static Vector2 HUDInferior = { TAMANHO_FONTE * 2, ALTURA_VIRTUAL - TAMANHO_FONTE * 3 };
 
-static float piscar_timeTempo = 0;
-static float piscar_ringTempo = 0;
+// Desenha a borda quadriculada do jogo
+void desenharBorda(Color cor1, Color cor2)
+{
+    for(int i = 0; i < LARGURA_VIRTUAL; i++){
+        if(i % 2 == 0){
+            DrawPixel(i, 0, cor1);
+            DrawPixel(i, 1, cor2);
 
-void desenharHUD( GameWorld *gw ) {
+            DrawPixel(i, ALTURA_VIRTUAL - 2, cor1);
+            DrawPixel(i, ALTURA_VIRTUAL - 1, cor2);
+        } 
+        else{
+            DrawPixel(i, 0, cor2);
+            DrawPixel(i, 1, cor1);
 
-    piscarHUD( gw );
+            DrawPixel(i, ALTURA_VIRTUAL - 2, cor2);
+            DrawPixel(i, ALTURA_VIRTUAL - 1, cor1);
+        }
+    }
+    for(int i = 0; i < ALTURA_VIRTUAL; i++){
+        if(i % 2 == 0){
+            DrawPixel(0, i, cor1);
+            DrawPixel(1, i, cor2);
 
+            DrawPixel(LARGURA_VIRTUAL - 2,i,  cor1);
+            DrawPixel(LARGURA_VIRTUAL - 1,i,  cor2);
+        } 
+        else{
+            DrawPixel(0, i, cor2);
+            DrawPixel(1, i, cor1);
+
+            DrawPixel(LARGURA_VIRTUAL - 2,i,  cor2);
+            DrawPixel(LARGURA_VIRTUAL - 1,i,  cor1);
+        }  
+    }
+}
+
+void desenharRet(Color fundo, Color borda)
+{
+	DrawRectangle(2, 2, LARGURA_VIRTUAL - 4, 12, fundo);
+    DrawRectangleLines(2, 2, LARGURA_VIRTUAL - 4, 12, borda);
+}
+
+// Desenha os elementos da hud
+void desenharHUD(GameWorld *gw)
+{
+    desenharBorda(AZUL, AZULESCURO);
+	desenharRet(PRETO, BRANCO);
+	
     desenharScore( gw );
     desenharTime( gw );
     desenharRings( gw );
     desenharLives( gw );
-
 }
 
-void desenharScore( GameWorld *gw ) {
-    desenharSpriteHUD(
-        HUD_SCORE_SRC,
-        HUDSuperior
-    );
-    if(gw->jogador->quantidadePontos >= 99999){
+void desenharScore(GameWorld *gw) {
+    if(gw->jogador->quantidadePontos >= 99999)
         gw->jogador->quantidadePontos = 99999;
-    }
-    desenharNumero(
-        gw->jogador->quantidadePontos * 10,
-        (Vector2){
-            HUDSuperior.x + TAMANHO_TILES * 6, 
-            HUDSuperior.y
-        }
-    );
+	
+    desenharTexto("Score %", HUD.x + TAMANHO_FONTE * 24, HUD.y - 8, gw->jogador->quantidadePontos);
 }
-void desenharTime( GameWorld *gw ) {
+void desenharTime(GameWorld *gw)
+{
     int minutos = (int)gw->jogador->quantidadeTempo / 60;
 
     int dezenaSegundos = (int)gw->jogador->quantidadeTempo % 60 / 10;
     int unidadeSegundos = (int)gw->jogador->quantidadeTempo % 60 % 10;
 
-    desenharSpriteHUD(
-        piscar_time ? HUD_TIME_FLASH_SRC : HUD_TIME_SRC,
-        (Vector2){
-            HUDSuperior.x, 
-            HUDSuperior.y + TAMANHO_TILES * 2
-        }
-    );
-
-    desenharNumero(
-        minutos,
-        (Vector2){ 
-            HUDSuperior.x + TAMANHO_TILES * 5, 
-            HUDSuperior.y + TAMANHO_TILES * 2
-        }
-    );
-
-    desenharNumero(
-        dezenaSegundos,
-        (Vector2){
-            HUDSuperior.x + TAMANHO_TILES * 7,
-            HUDSuperior.y + TAMANHO_TILES * 2
-        }
-    );
-
-    desenharNumero(
-        unidadeSegundos,
-        (Vector2){
-            HUDSuperior.x + TAMANHO_TILES * 8,
-            HUDSuperior.y + TAMANHO_TILES * 2
-        }
-    );
-}
-
-void desenharRings( GameWorld *gw ) {
-
     int tremor1 = 0;
     int tremor2 = 0;
+	
+	Vector2 pos = { HUD.x + TAMANHO_FONTE * 48 + tremor1, HUD.y - 8};
+	// gw->jogador->quantidadeTempo += 2;
 
-    if ( gw->jogador->quantidadeAneis == 0 ) {
-        tremor1 = tremer( 2 );
-        tremor2 = tremer( 2 );
-    }
+	// TODO: Fazer com que o tempo seja diferente para cada mapa.
+	if (gw->jogador->quantidadeTempo > 599)	// Temp 10 minutos (5:59)
+	{
+		if (gw->jogador->quantidadeTempo > 599)
+			gw->jogador->quantidadeTempo = 599;
 
-    Vector2 pos = {
-        HUDSuperior.x + tremor1,
-        HUDSuperior.y + TAMANHO_TILES * 4 + tremor2
-    };
+		if ((int)gw->jogador->quantidadeTempo % 60 > 9)
+			desenharTexto("[e]{t}Tempo %:%{/t}[/]", pos.x, pos.y, (int)gw->jogador->quantidadeTempo / 60, (int)gw->jogador->quantidadeTempo % 60);
+		else
+			desenharTexto("[e]{t}Tempo %:0%{/t}[/]", pos.x, pos.y, (int)gw->jogador->quantidadeTempo / 60, (int)gw->jogador->quantidadeTempo % 60);
+	}
+	else
+		if ((int)gw->jogador->quantidadeTempo % 60 > 9)
+			desenharTexto("[e]Tempo %:%[/]", pos.x, pos.y, (int)gw->jogador->quantidadeTempo / 60, (int)gw->jogador->quantidadeTempo % 60);
+		else
+			desenharTexto("[e]Tempo %:0{/t}%[/]", pos.x, pos.y, (int)gw->jogador->quantidadeTempo / 60, (int)gw->jogador->quantidadeTempo % 60);
+}
 
+void desenharRings(GameWorld *gw)
+{
     if(gw->jogador->quantidadeAneis >= 999){
         gw->jogador->quantidadeAneis = 999;
     }
-
-    desenharSpriteHUD(
-        piscar_ring? HUD_RING_FLASH_SRC : HUD_RING_SRC,
-        pos
-    );
-
-    desenharNumero(
-        gw->jogador->quantidadeAneis,
-        (Vector2){
-            pos.x + TAMANHO_TILES * 6,
-            pos.y
-        }
-    );
-
+    if ( gw->jogador->quantidadeAneis != 0 )
+		desenharTexto("[e] Anel %[/]", HUD.x + TAMANHO_FONTE * 8, HUD.y - 8, gw->jogador->quantidadeAneis);
+    else
+		desenharTexto("[e]{t} Anel 0{/t}[/]", HUD.x + TAMANHO_FONTE * 8, HUD.y - 8, gw->jogador->quantidadeAneis);
 }
-
-// ============================================================================
-// LIVES
-// ============================================================================
-
-void desenharLives( GameWorld *gw ) {
-
-    desenharSpriteHUD(
-        HUD_LIVES_SRC,
-        HUDInferior
-    );
-
-    desenharNumero(
-        gw->jogador->quantidadeVidas,
-        (Vector2){
-            HUDInferior.x + TAMANHO_TILES * 4,
-            HUDInferior.y + TAMANHO_TILES
-        }
-    );
-}
-
-
-void piscarHUD( GameWorld *gw ) {
-
-    if ( gw->jogador->quantidadeTempo >= TEMPO_LIMITE && gw->jogador->quantidadeTempo - piscar_timeTempo > 0.5f ) {
-        piscar_timeTempo = gw->jogador->quantidadeTempo;
-        piscar_time = !piscar_time;
-
-    }
-
-    if ( gw->jogador->quantidadeAneis == 0 && gw->jogador->quantidadeTempo - piscar_ringTempo > 0.5f && gw->jogador->quantidadeTempo > 1 ) {
-        piscar_ringTempo = gw->jogador->quantidadeTempo;
-        piscar_ring = !piscar_ring;
-
-    } else if ( gw->jogador->quantidadeTempo - piscar_ringTempo > 0.5f && gw->jogador->quantidadeTempo > 1 ) {
-        piscar_ring = false;
-
-    }
-
-}
-
-void desenharSpriteHUD( Rectangle fonte, Vector2 pos ) {
-    DrawTexturePro(
-        rm.texturaHUD,
-        fonte,
-        (Rectangle){
-            pos.x,
-            pos.y,
-            fonte.width,
-            fonte.height
-        },
-        (Vector2){ 0, 0 },
-        0.0f,
-        WHITE
-    );
-}
-
-// ============================================================================
-// DESENHO DE NÚMEROS
-// ============================================================================
-
-void desenharNumero(int valor, Vector2 pos) {
-    int divisor = 1;
-    int offset = 0;
-
-    while ( valor / divisor >= 10 ) {
-        divisor *= 10;
-    }
-
-    while ( divisor > 0 ) {
-        int digito = ( valor / divisor ) % 10;
-        Rectangle source = {
-            digito * TAMANHO_TILES,
-            rm.texturaHUD.height - TAMANHO_TILES * 3,
-            TAMANHO_TILES,
-            TAMANHO_TILES * 2
-        };
-        desenharSpriteHUD(
-            source,
-            (Vector2){
-                pos.x + offset,
-                pos.y
-            }
-        );
-        offset += TAMANHO_TILES;
-        divisor /= 10;
-    }
+void desenharLives(GameWorld *gw)
+{
+	desenharTexto("[c] Vida %[/]", HUD.x, HUD.y - 8, gw->jogador->quantidadeVidas);
 }

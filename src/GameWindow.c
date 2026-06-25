@@ -92,8 +92,10 @@ void initGameWindow( GameWindow *gameWindow ) {
         if ( gameWindow->alwaysRun ) {
             SetConfigFlags( FLAG_WINDOW_ALWAYS_RUN );
         }
+        
 
         InitWindow( gameWindow->width, gameWindow->height, gameWindow->title );
+        SetWindowMonitor(0);
 
         gameWindow->renderTarget = LoadRenderTexture(
             LARGURA_VIRTUAL,
@@ -127,6 +129,7 @@ void initGameWindow( GameWindow *gameWindow ) {
             if ( delta > 1.0f / 30.0f ) {
                 delta = 1.0f / 30.0f;
             }
+            
 
             updateGameWorld( gameWindow->gw, delta );
 
@@ -136,7 +139,7 @@ void initGameWindow( GameWindow *gameWindow ) {
 
             BeginDrawing();
             ClearBackground( BLACK );
-            int escala = (int)fminf(
+            float escala = fminf(
                 (float)GetScreenWidth() / LARGURA_VIRTUAL,
                 (float)GetScreenHeight() / ALTURA_VIRTUAL
             );
@@ -157,8 +160,6 @@ void initGameWindow( GameWindow *gameWindow ) {
             if(IsKeyPressed(KEY_F11)){
                 ToggleFullscreen();
             }
-            
-
             EndDrawing();
         }
 
@@ -175,9 +176,7 @@ void initGameWindow( GameWindow *gameWindow ) {
         }
 
         CloseWindow();
-
     }
-
 }
 
 /**

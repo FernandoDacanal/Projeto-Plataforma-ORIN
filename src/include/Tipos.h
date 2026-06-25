@@ -22,6 +22,7 @@ typedef enum EstadoJogador {
     ESTADO_JOGADOR_PULANDO,
     ESTADO_JOGADOR_PULANDO_RAPIDO,
     ESTADO_JOGADOR_PULANDO_CORRENDO,
+    ESTADO_JOGADOR_FALANDO
 } EstadoJogador;
 
 /**
@@ -37,12 +38,33 @@ typedef enum EstadoInimigoSpikes {
     ESTADO_INIMIGO_SPIKES_MORRENDO,
 } EstadoInimigoSpikes;
 
+typedef enum EstadoInimigoVoador {
+    ESTADO_INIMIGO_VOADOR_ANDANDO,
+    ESTADO_INIMIGO_VOADOR_MORRENDO,
+    ESTADO_INIMIGO_VOADOR_MIRANDO,
+    ESTADO_INIMIGO_VOADOR_ATIRANDO,
+} EstadoInimigoVoador;
+
+typedef enum EstadoInimigoPeixe {
+    ESTADO_INIMIGO_PEIXE_ANDANDO,
+    ESTADO_INIMIGO_PEIXE_MORRENDO,
+} EstadoInimigoPeixe;
+
+typedef enum EstadoPersonagemPlaca {
+    ESTADO_PERSONAGEM_PLACA_PARADO,
+    ESTADO_PERSONAGEM_PLACA_INTERAGIVEL,
+    ESTADO_PERSONAGEM_PLACA_FALANDO,
+} EstadoPersonagemPlaca;
+
 /**
  * @brief Representa o tipo de um inimigo.
  */
 typedef enum TipoInimigo {
     TIPO_INIMIGO_MOTOBUG,
     TIPO_INIMIGO_SPIKES,
+    TIPO_INIMIGO_VOADOR,
+    TIPO_INIMIGO_PEIXE,
+    TIPO_PERSONAGEM_PLACA
 } TipoInimigo;
 
 /**
@@ -52,6 +74,11 @@ typedef enum EstadoItemAnel {
     ESTADO_ITEM_ANEL_PARADO,
     ESTADO_ITEM_ANEL_COLETADO,
 } EstadoItemAnel;
+
+typedef enum EstadoItemVelocidade {
+    ESTADO_ITEM_VELOCIDADE_PARADO,
+    ESTADO_ITEM_VELOCIDADE_COLETADO,
+} EstadoItemVelocidade;
 
 typedef enum EstadoItemAnelVerm {
     ESTADO_ITEM_ANELVERM_PARADO,
@@ -64,7 +91,9 @@ typedef enum EstadoItemAnelVerm {
 typedef enum TipoItem {
     TIPO_ITEM_ANEL,
     TIPO_ITEM_ANELVERM,
+    TIPO_ITEM_VELOCIDADE,
 } TipoItem;
+
 
 /**
  * @brief Representa o tipo de um elemento do mapa
@@ -129,6 +158,11 @@ typedef struct Jogador {
     float tempoInvulnerabilidade;
     float contadorTempoInvulnerabilidade;
 
+	bool noChao;
+	float Coyote, CoyoteMax;
+	float aceleradoTempo;
+	float acelerado;
+
     bool piscaPisca;
     float tempoPiscaPisca;
     float contadorTempoPiscaPisca;
@@ -148,6 +182,7 @@ typedef struct Jogador {
     Animacao animacaoPulando;
     Animacao animacaoPulandoRapido;
     Animacao animacaoPulandoCorrendo;
+    Animacao animacaoFalando;
 
 } Jogador;
 
@@ -198,15 +233,94 @@ typedef struct InimigoSpikes {
 
 } InimigoSpikes;
 
+typedef struct InimigoVoador {
+
+    Rectangle ret;
+    Vector2 vel;
+    Color cor;
+
+    float velAndando;
+    float velMaxQueda;
+
+    EstadoInimigoVoador estado;
+    bool ativo;
+    bool olhandoParaDireita;     // *cuidado! a reflexão dos inimigos é ao contrário
+                                 // do jogador! eles começam olhando para a esquerda
+                                 // e as sprites são orientadas para a esquerda inicialmente
+    Animacao *animacoes[2];
+    int quantidadeAnimacoes;
+
+    Animacao animacaoAndando;
+    Animacao animacaoMorrendo;
+    Animacao animacaoMirando;
+    Animacao animacaoAtirando;
+
+} InimigoVoador;
+
+typedef struct InimigoPeixe {
+
+    Rectangle ret;
+    Vector2 vel;
+    Color cor;
+
+    float velAndando;
+    float velMaxQueda;
+
+    EstadoInimigoPeixe estado;
+    bool ativo;
+    bool olhandoParaDireita;     // *cuidado! a reflexão dos inimigos é ao contrário
+                                 // do jogador! eles começam olhando para a esquerda
+                                 // e as sprites são orientadas para a esquerda inicialmente
+    Animacao *animacoes[2];
+    int quantidadeAnimacoes;
+
+    Animacao animacaoAndando;
+    Animacao animacaoMorrendo;
+    Animacao animacaoMirando;
+    Animacao animacaoAtirando;
+
+} InimigoPeixe;
+/*
+typedef struct Dialogo
+{
+    char *textoFormatado;
+
+    int caracteresPorLinha;
+    int linhasPorPagina;
+
+    int totalLinhas;
+    int totalPaginas;
+} Dialogo;
+ */
+
+typedef struct PersonagemPlaca {
+    Rectangle ret;
+    Vector2 vel;
+    Color cor;
+
+    EstadoPersonagemPlaca estado;
+    bool ativo;
+    bool olhandoParaDireita;     // *cuidado! a reflexão dos inimigos é ao contrário
+                                 // do jogador! eles começam olhando para a esquerda
+                                 // e as sprites são orientadas para a esquerda inicialmente
+    Animacao *animacoes[3];
+    int quantidadeAnimacoes;
+
+    Animacao animacaoParado;
+    Animacao animacaoInteragivel;
+    Animacao animacaoFalando;
+
+} PersonagemPlaca;
+
 /**
  * @brief Representa um inimigo.
  * O inimigo de fato é endereçado via membro "objeto".
  */
+
 typedef struct Inimigo {
     void *objeto;
     TipoInimigo tipo;
 } Inimigo;
-
 /**
  * @brief Representa um item do tipo anel.
  */
@@ -225,6 +339,22 @@ typedef struct ItemAnel {
     Animacao animacaoColetando;
 
 } ItemAnel;
+
+typedef struct ItemVelocidade {
+
+    Rectangle ret;
+    Color cor;
+
+    EstadoItemVelocidade estado;
+    bool ativo;
+
+    Animacao *animacoes[2];
+    int quantidadeAnimacoes;
+
+    Animacao animacaoParado;
+    Animacao animacaoColetando;
+
+} ItemVelocidade;
 
 typedef struct ItemAnelVerm {
 
@@ -287,6 +417,9 @@ typedef struct Mapa {
     ElementoMapa *inimigos;   // marca o fim da lista
     int quantidadeInimigos;
 
+    ElementoMapa *personagens;   // marca o fim da lista
+    int quantidadePersonagens;
+
     float dimensaoPadraoElementos;
     int linhas;
     int colunas;
@@ -296,6 +429,11 @@ typedef struct Mapa {
 /**
  * @brief Representa o mundo do jogo e seus elementos.
  */
+ typedef enum ESTADOJOGO{
+    jogando,
+    dialogo,
+    gameover
+} ESTADOJOGO;
 typedef struct GameWorld {
 
     Mapa *mapa;
@@ -304,5 +442,8 @@ typedef struct GameWorld {
     Camera2D camera;
 
     float gravidade;
+	Color cor_fundo;
+
+    ESTADOJOGO estadoJogo;
 
 } GameWorld;

@@ -9,8 +9,11 @@
 #include <stdlib.h>
 
 #include "include/InimigoSpikes.h"
-#include "include/InimigoSpikes.h"
 #include "include/ItemAnelVerm.h"
+#include "include/InimigoVoador.h"
+#include "include/InimigoPeixe.h"
+#include "include/ItemVelocidade.h"
+#include "include/PersonagemPlaca.h"
 #include "include/raylib/raylib.h"
 
 #include "include/Macros.h"
@@ -22,6 +25,9 @@
 #include "include/Obstaculo.h"
 #include "include/Tipos.h"
 #include "include/ResourceManager.h"
+
+#include "include/nivel.h"
+#include "include/Utils.h"
 
 static void inserirObstaculo( Mapa *mapa, ElementoMapa *obstaculo );
 static void inserirItem( Mapa *mapa, ElementoMapa *item );
@@ -148,6 +154,25 @@ Mapa *carregarMapa( const char *caminhoArquivo ) {
 
                             break;
 
+                        case 'c':
+
+                            item = criarItem( TIPO_ITEM_VELOCIDADE );
+
+                            item->objeto = criarItemVelocidade( 
+                                (Rectangle) { 
+                                    .x = novoMapa->dimensaoPadraoElementos * colunaAtual, 
+                                    .y = novoMapa->dimensaoPadraoElementos * linhaAtual, 
+                                    .width = 16, 
+                                    .height = 16
+                                },
+                                RED
+                            );
+
+                            el->objeto = item;
+                            el->tipo = TIPO_ELEMENTO_MAPA_ITEM;
+
+                            break;
+
                         default:
                             TraceLog( LOG_ERROR, "Tipo de item desconhecido." );
                             abort();
@@ -195,6 +220,60 @@ Mapa *carregarMapa( const char *caminhoArquivo ) {
                             el->objeto = inimigo;
                             el->tipo = TIPO_ELEMENTO_MAPA_INIMIGO;
                             break;
+                        case '2':
+
+                            inimigo = criarInimigo( TIPO_INIMIGO_VOADOR );
+
+                            inimigo->objeto = criarInimigoVoador( 
+                                (Rectangle) { 
+                                    .x = novoMapa->dimensaoPadraoElementos * colunaAtual, 
+                                    .y = novoMapa->dimensaoPadraoElementos * linhaAtual - 16, 
+                                    .width = 32, 
+                                    .height = 32
+                                },
+                                YELLOW
+                            );
+
+                            el->objeto = inimigo;
+                            el->tipo = TIPO_ELEMENTO_MAPA_INIMIGO;
+
+                            break;
+                        case '3':
+
+                            inimigo = criarInimigo( TIPO_INIMIGO_PEIXE);
+
+                            inimigo->objeto = criarInimigoPeixe( 
+                                (Rectangle) { 
+                                    .x = novoMapa->dimensaoPadraoElementos * colunaAtual, 
+                                    .y = novoMapa->dimensaoPadraoElementos * linhaAtual - 16, 
+                                    .width = 16, 
+                                    .height = 16
+                                },
+                                YELLOW
+                            );
+
+                            el->objeto = inimigo;
+                            el->tipo = TIPO_ELEMENTO_MAPA_INIMIGO;
+
+                            break;
+                        case '4':
+
+                            inimigo = criarInimigo( TIPO_PERSONAGEM_PLACA);
+
+                            inimigo->objeto = criarPersonagemPlaca( 
+                                (Rectangle) { 
+                                    .x = novoMapa->dimensaoPadraoElementos * colunaAtual, 
+                                    .y = novoMapa->dimensaoPadraoElementos * linhaAtual - 16, 
+                                    .width = 16, 
+                                    .height = 32
+                                },
+                                YELLOW
+                            );
+
+                            el->objeto = inimigo;
+                            el->tipo = TIPO_ELEMENTO_MAPA_INIMIGO;
+
+                            break;
                             
                         default:
                             TraceLog( LOG_ERROR, "Tipo de inimigo desconhecido." );
@@ -229,7 +308,6 @@ Mapa *carregarMapa( const char *caminhoArquivo ) {
     UnloadFileText( dadosMapa );
 
     return novoMapa;
-
 }
 
 /**
@@ -264,9 +342,7 @@ void destruirMapa( Mapa *m ) {
             el = el->proximo;
             free( t );
         }
-
     }
-
 }
 
 /**
@@ -287,7 +363,6 @@ void atualizarMapa( Mapa *m, GameWorld *gw, float delta ) {
         atualizarInimigo( (Inimigo*) el->objeto, gw, delta );
         el = el->proximo;
     }
-
 }
 
 /**
@@ -314,7 +389,6 @@ void desenharMapa( Mapa *m ) {
         desenharInimigo( (Inimigo*) el->objeto );
         el = el->proximo;
     }
-
 }
 
 /**
@@ -368,4 +442,55 @@ static void inserirInimigo( Mapa *mapa, ElementoMapa *inimigo ) {
         mapa->inimigos = inimigo;
     }
     mapa->quantidadeInimigos++;
+}
+
+// `mapa` é o enum em nivel.h
+// Uso: MudarFase(gw, MAPAx);
+void MudarFase(GameWorld* gw, unsigned char mapa)
+{
+	switch (mapa)
+	{
+        case MAPA0:
+			gw->cor_fundo = ROXO;
+			destruirMapa(gw->mapa);
+			gw->mapa = carregarMapa("resources/mapas/mapa00.txt");
+			UnloadTexture(rm.texturaTerreno);
+			rm.texturaTerreno = LoadTexture("resources/imagens/tiles/terreno1.png");
+			UnloadMusicStream(rm.musicaFase01);
+			rm.musicaFase01 = LoadMusicStream( "resources/sons/musicas/green-hill-zone.mp3" );
+			mapaAtual = MAPA1;
+			gw->jogador->ret.x = 428;
+			gw->jogador->ret.y = 32;
+            gw->estadoJogo = dialogo;
+			break;
+
+		case MAPA1:
+			gw->cor_fundo = AZULCLARO;
+			destruirMapa(gw->mapa);
+			gw->mapa = carregarMapa("resources/mapas/mapa01.txt");
+			UnloadTexture(rm.texturaTerreno);
+			rm.texturaTerreno = LoadTexture("resources/imagens/tiles/terreno1.png");
+			UnloadMusicStream(rm.musicaFase01);
+			rm.musicaFase01 = LoadMusicStream( "resources/sons/musicas/green-hill-zone.mp3" );
+			mapaAtual = MAPA1;
+			gw->jogador->ret.x = 310;
+			gw->jogador->ret.y = 208;
+			break;
+
+		case MAPA2:
+			gw->cor_fundo = AMARELO;
+			destruirMapa(gw->mapa);
+			gw->mapa = carregarMapa("resources/mapas/mapa02.txt");
+			UnloadTexture(rm.texturaTerreno);
+			rm.texturaTerreno = LoadTexture("resources/imagens/tiles/terreno2.png");
+			UnloadMusicStream(rm.musicaFase01);
+			rm.musicaFase01 = LoadMusicStream( "resources/sons/musicas/desert-hill.mp3" );
+			mapaAtual = MAPA2;
+			gw->jogador->ret.x = 22;
+			gw->jogador->ret.y = 208;
+			break;
+	}
+
+	gw->jogador->vel.x = 0;
+	gw->jogador->vel.y = 0;
 }

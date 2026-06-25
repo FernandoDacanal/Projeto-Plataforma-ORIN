@@ -5,8 +5,7 @@
  * 
  * @copyright Copyright (c) 2026
  */
-#include <stdio.h>
-#include <stdlib.h>
+
 
 #include "include/raylib/raylib.h"
 
@@ -19,11 +18,7 @@ void loadResourcesResourceManager( void ) {
 
     rm.texturaJogador = carregarTexturaAlterandoCores( 
         "resources/imagens/sprites/jogador.png",
-        (Color[]) {
-            { 255, 0, 0, 255 },
-            { 0, 255, 0, 255 },
-            { 0, 0, 255, 255 }
-        },
+        FUNDO,
         (Color[]) {
             BLANK,
             BLANK,
@@ -34,11 +29,18 @@ void loadResourcesResourceManager( void ) {
 
     rm.texturaBadniks = carregarTexturaAlterandoCores( 
         "resources/imagens/sprites/inimigos.png",
+        FUNDO,
         (Color[]) {
-            { 255, 0, 0, 255 },
-            { 0, 255, 0, 255 },
-            { 0, 0, 255, 255 },
+            BLANK,
+            BLANK,
+            BLANK
         },
+        3
+    );
+
+    rm.texturaNPC = carregarTexturaAlterandoCores( 
+        "resources/imagens/sprites/npc.png",
+        FUNDO,
         (Color[]) {
             BLANK,
             BLANK,
@@ -49,30 +51,45 @@ void loadResourcesResourceManager( void ) {
 
     rm.texturaItens = carregarTexturaAlterandoCores( 
         "resources/imagens/itens/itens.png",
-        (Color[]) {
-            { 16, 112, 132, 255 },
-        },
+        FUNDO,
         (Color[]) {
             BLANK,
-        },
-        1
-    );
-
-    rm.texturaHUD = carregarTexturaAlterandoCores(
-        "resources/imagens/hud/hud-final.png",
-        (Color[]){
-            {16, 112, 132, 255},
-        },
-        (Color[]){
             BLANK,
+            BLANK
         },
-        1
+        3
     );
 
-    rm.texturaFonte = LoadTexture( "resources/imagens/tiles/fonte.png" );
+    rm.texturaFonte = carregarTexturaAlterandoCores(
+        "resources/imagens/hud/fonte.png",
+        (Color[]) {0, 0, 0, 255},
+        (Color[]) {BLANK},
+        1
+    );
+    rm.texturaFonteItalico = carregarTexturaAlterandoCores(
+        "resources/imagens/hud/fonte-italico.png",
+        (Color[]) {0, 0, 0, 255},
+        (Color[]) {BLANK},
+        1
+    );
+    rm.texturaFonteContorno = carregarTexturaAlterandoCores(
+        "resources/imagens/hud/fonte-borda.png",
+        (Color[]) {0, 0, 0, 255},
+        (Color[]) {BLANK},
+        1
+    );
+	// TODO: QUANDO ADICIONAR ITALICO COM BORDA
+    //rm.texturaFonteContorno = carregarTexturaAlterandoCores(
+    //    "resources/imagens/hud/fonte-italico-borda.png",
+    //    (Color[]) {0, 0, 0, 255},
+    //    (Color[]) {BLANK},
+    //    1
+    //);
 
     rm.texturaTerreno = LoadTexture( "resources/imagens/tiles/terreno1.png" );
     rm.texturaFundo = LoadTexture( "resources/imagens/fundo/fundo.png" );
+
+    rm.texturaPortrait = LoadTexture("resources/imagens/sprites/placa.png");
 
     // Filtro de textura nearest-neighbor (ponto) para todas as texturas do jogo.
     // Evita interpolação bilinear nas bordas dos tiles e sprites, que causaria

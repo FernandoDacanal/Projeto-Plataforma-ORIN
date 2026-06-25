@@ -9,7 +9,10 @@
 #include <stdlib.h>
 
 #include "include/InimigoSpikes.h"
+#include "include/InimigoVoador.h"
+#include "include/InimigoPeixe.h"
 #include "include/raylib/raylib.h"
+#include "include/PersonagemPlaca.h"
 
 #include "include/Inimigo.h"
 #include "include/InimigoMotobug.h"
@@ -40,6 +43,15 @@ void destruirInimigo( Inimigo *inimigo ) {
             case TIPO_INIMIGO_SPIKES:
                 destruirInimigoSpikes( (InimigoSpikes*) inimigo->objeto );
                 break;
+            case TIPO_INIMIGO_VOADOR:
+                destruirInimigoVoador( (InimigoVoador*) inimigo->objeto );
+                break;
+            case TIPO_INIMIGO_PEIXE:
+                destruirInimigoPeixe( (InimigoPeixe*) inimigo->objeto );
+                break;
+            case TIPO_PERSONAGEM_PLACA:
+                destruirPersonagemPlaca( (PersonagemPlaca*) inimigo->objeto );
+                break;
             default:
                 break;
         }
@@ -59,6 +71,15 @@ void atualizarInimigo( Inimigo *inimigo, GameWorld *gw, float delta ) {
         case TIPO_INIMIGO_SPIKES:
             atualizarInimigoSpikes( (InimigoSpikes*) inimigo->objeto, gw, delta );
             break;
+        case TIPO_INIMIGO_VOADOR:
+            atualizarInimigoVoador( (InimigoVoador*) inimigo->objeto, gw, delta );
+            break;
+        case TIPO_INIMIGO_PEIXE:
+            atualizarInimigoPeixe( (InimigoPeixe*) inimigo->objeto, gw, delta );
+            break;
+        case TIPO_PERSONAGEM_PLACA:
+            atualizarPersonagemPlaca( (PersonagemPlaca*) inimigo->objeto, gw, delta );
+            break;
         default:
             return;
     }
@@ -77,10 +98,18 @@ void desenharInimigo( Inimigo *inimigo ) {
         case TIPO_INIMIGO_SPIKES:
             desenharInimigoSpikes( (InimigoSpikes*) inimigo->objeto );
             break;
+        case TIPO_INIMIGO_VOADOR:
+            desenharInimigoVoador( (InimigoVoador*) inimigo->objeto );
+            break;
+        case TIPO_INIMIGO_PEIXE:
+            desenharInimigoPeixe( (InimigoPeixe*) inimigo->objeto );
+            break;
+        case TIPO_PERSONAGEM_PLACA:
+            desenharPersonagemPlaca( (PersonagemPlaca*) inimigo->objeto );
+            break;
         default:
             return;
     }
-
 }
 
 /**
@@ -107,6 +136,21 @@ void resolverColisaoInimigoObstaculosMapaX( Inimigo *inimigo, Mapa *mapa ) {
             qa = getQuadroAnimacaoAtualInimigoSpikes( spikes );
             olhandoParaDireita = &spikes->olhandoParaDireita;
             ret = &spikes->ret;
+        }else if (inimigo->tipo == TIPO_INIMIGO_VOADOR){
+            InimigoVoador *voador = (InimigoVoador*) inimigo->objeto;
+            qa = getQuadroAnimacaoAtualInimigoVoador( voador );
+            olhandoParaDireita = &voador->olhandoParaDireita;
+            ret = &voador->ret;
+        }else if (inimigo->tipo == TIPO_INIMIGO_PEIXE){
+            InimigoPeixe *peixe = (InimigoPeixe*) inimigo->objeto;
+            qa = getQuadroAnimacaoAtualInimigoPeixe( peixe );
+            olhandoParaDireita = &peixe->olhandoParaDireita;
+            ret = &peixe->ret;
+        }else if (inimigo->tipo == TIPO_PERSONAGEM_PLACA){
+            PersonagemPlaca *placa = (PersonagemPlaca*) inimigo->objeto;
+            qa = getQuadroAnimacaoAtualPersonagemPlaca( placa );
+            olhandoParaDireita = &placa->olhandoParaDireita;
+            ret = &placa->ret;
         } else {
             el = el->proximo;
             continue;
@@ -170,6 +214,24 @@ void resolverColisaoInimigoObstaculosMapaY( Inimigo *inimigo, Mapa *mapa ) {
             olhandoParaDireita = &spikes->olhandoParaDireita;
             ret = &spikes->ret;
             vel = &spikes->vel;
+        } else if ( inimigo->tipo == TIPO_INIMIGO_VOADOR ) {
+            InimigoVoador *voador = (InimigoVoador*) inimigo->objeto;
+            qa = getQuadroAnimacaoAtualInimigoVoador( voador );
+            olhandoParaDireita = &voador->olhandoParaDireita;
+            ret = &voador->ret;
+            vel = &voador->vel;
+        } else if ( inimigo->tipo == TIPO_INIMIGO_PEIXE ) {
+            InimigoPeixe *peixe = (InimigoPeixe*) inimigo->objeto;
+            qa = getQuadroAnimacaoAtualInimigoPeixe( peixe );
+            olhandoParaDireita = &peixe->olhandoParaDireita;
+            ret = &peixe->ret;
+            vel = &peixe->vel;
+        } else if ( inimigo->tipo == TIPO_PERSONAGEM_PLACA ) {
+            PersonagemPlaca *placa = (PersonagemPlaca*) inimigo->objeto;
+            qa = getQuadroAnimacaoAtualPersonagemPlaca( placa );
+            olhandoParaDireita = &placa->olhandoParaDireita;
+            ret = &placa->ret;
+            vel = &placa->vel;
         }else {
             el = el->proximo;
             continue;

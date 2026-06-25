@@ -1,39 +1,41 @@
 /**
  * @file Item.c
  * @author Prof. Dr. David Buzatto
- * @brief Implementação do Item (Anel).
+ * @brief Implementação do Item (Velocidade).
  *
  * @copyright Copyright (c) 2026
  */
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "include/raylib/raylib.h"
 
 #include "include/Animacao.h"
-#include "include/ItemAnelVerm.h"
+#include "include/ItemVelocidade.h"
+#include "include/Macros.h"
 #include "include/ResourceManager.h"
 #include "include/Tipos.h"
 
-static void desenharQuadroAnimacaoItemAnelVerm( ItemAnelVerm *item, QuadroAnimacao *qa, Color tonalidade );
-static Animacao *getAnimacaoAtualItemAnelVerm( ItemAnelVerm *item );
+static void desenharQuadroAnimacaoItemVelocidade( ItemVelocidade *item, QuadroAnimacao *qa, Color tonalidade );
+static Animacao *getAnimacaoAtualItemVelocidade( ItemVelocidade *item );
 
 static const bool MOSTRAR_RETANGULOS = false;
 
 /**
- * @brief Cria um novo Item (anelverm).
+ * @brief Cria um novo Item (velocidade).
  */
-ItemAnelVerm *criarItemAnelVerm( Rectangle ret, Color cor ) {
+ItemVelocidade *criarItemVelocidade( Rectangle ret, Color cor ) {
 
-    ItemAnelVerm *novoItem = (ItemAnelVerm*) malloc( sizeof( ItemAnelVerm ) );
+    ItemVelocidade *novoItem = (ItemVelocidade*) malloc( sizeof( ItemVelocidade ) );
 
     novoItem->ret = ret;
     novoItem->cor = cor;
-    novoItem->estado = ESTADO_ITEM_ANELVERM_PARADO;
+    novoItem->estado = ESTADO_ITEM_VELOCIDADE_PARADO;
     novoItem->ativo = true;
 
     int quantidadeAnimacoes = 0;
 
-    novoItem->animacaoParado.quantidadeQuadros = 4;
+    novoItem->animacaoParado.quantidadeQuadros = 1;
     novoItem->animacaoParado.quadroAtual = 0;
     novoItem->animacaoParado.contadorTempoQuadro = 0.0f;
     novoItem->animacaoParado.pararNoUltimoQuadro = false;
@@ -44,7 +46,7 @@ ItemAnelVerm *criarItemAnelVerm( Rectangle ret, Color cor ) {
         novoItem->animacaoParado.quadros,
         novoItem->animacaoParado.quantidadeQuadros,
         100,             // duração padrão para todos os quadros
-        1, 35,            // início
+        35, 69,            // início
         16, 16,          // dimensões
         1,               // separação
         false,           // de trás para frente
@@ -53,7 +55,7 @@ ItemAnelVerm *criarItemAnelVerm( Rectangle ret, Color cor ) {
         }
     );
 
-    novoItem->animacaoColetando.quantidadeQuadros = 4;
+    novoItem->animacaoColetando.quantidadeQuadros = 3;
     novoItem->animacaoColetando.quadroAtual = 0;
     novoItem->animacaoColetando.contadorTempoQuadro = 0.0f;
     novoItem->animacaoColetando.pararNoUltimoQuadro = false;
@@ -64,15 +66,15 @@ ItemAnelVerm *criarItemAnelVerm( Rectangle ret, Color cor ) {
         novoItem->animacaoColetando.quadros,
         novoItem->animacaoColetando.quantidadeQuadros,
         80,               // duração padrão para todos os quadros
-        1, 52,            // início
+        1, 86,            // início
         16, 16,           // dimensões
         1,                // separação
         false,            // de trás para frente
         (Rectangle) { 0 } // retângulo de colisão padrão para cada quadro
     );
 
-    novoItem->animacoes[ESTADO_ITEM_ANELVERM_PARADO] = &novoItem->animacaoParado; quantidadeAnimacoes++;
-    novoItem->animacoes[ESTADO_ITEM_ANELVERM_COLETADO] = &novoItem->animacaoColetando; quantidadeAnimacoes++;
+    novoItem->animacoes[ESTADO_ITEM_VELOCIDADE_PARADO] = &novoItem->animacaoParado; quantidadeAnimacoes++;
+    novoItem->animacoes[ESTADO_ITEM_VELOCIDADE_COLETADO] = &novoItem->animacaoColetando; quantidadeAnimacoes++;
     novoItem->quantidadeAnimacoes = quantidadeAnimacoes;
 
     return novoItem;
@@ -80,9 +82,9 @@ ItemAnelVerm *criarItemAnelVerm( Rectangle ret, Color cor ) {
 }
 
 /**
- * @brief Destroi um item (anelverm).
+ * @brief Destroi um item (velocidade).
  */
-void destruirItemAnelVerm( ItemAnelVerm *item ) {
+void destruirItemVelocidade( ItemVelocidade *item ) {
     if ( item != NULL ) {
         for ( int i = 0; i < item->quantidadeAnimacoes; i++ ) {
             destruirQuadrosAnimacao( item->animacoes[i] );
@@ -92,25 +94,25 @@ void destruirItemAnelVerm( ItemAnelVerm *item ) {
 }
 
 /**
- * @brief Atualiza um item (anelverm).
+ * @brief Atualiza um item (velocidade).
  */
-void atualizarItemAnelVerm( ItemAnelVerm *item, float delta ) {
+void atualizarItemVelocidade( ItemVelocidade *item, float delta ) {
     if ( item->ativo ) {
-        Animacao *animacaoAtual = getAnimacaoAtualItemAnelVerm( item );
+        Animacao *animacaoAtual = getAnimacaoAtualItemVelocidade( item );
         atualizarAnimacao( animacaoAtual, delta );
-        if ( item->estado == ESTADO_ITEM_ANELVERM_COLETADO && animacaoAtual->finalizada ) {
+        if ( item->estado == ESTADO_ITEM_VELOCIDADE_COLETADO && animacaoAtual->finalizada ) {
             item->ativo = false;
         }
     }
 }
 
 /**
- * @brief Desenha um item (anelverm).
+ * @brief Desenha um item (velocidade).
  */
-void desenharItemAnelVerm( ItemAnelVerm *item ) {
+void desenharItemVelocidade( ItemVelocidade *item ) {
     if ( item->ativo ) {
-        QuadroAnimacao *qa = getQuadroAnimacaoAtualItemAnelVerm( item );
-        desenharQuadroAnimacaoItemAnelVerm( item, qa, WHITE );
+        QuadroAnimacao *qa = getQuadroAnimacaoAtualItemVelocidade( item );
+        desenharQuadroAnimacaoItemVelocidade( item, qa, WHITE );
         if ( MOSTRAR_RETANGULOS ) {
             DrawRectangleRec( item->ret, Fade( item->cor, 0.5f ) );
             DrawRectangleLines( item->ret.x, item->ret.y, item->ret.width, item->ret.height, BLACK );
@@ -119,13 +121,13 @@ void desenharItemAnelVerm( ItemAnelVerm *item ) {
 }
 
 /**
- * @brief Obtém o quadro de animação atual de um item (anelverm).
+ * @brief Obtém o quadro de animação atual de um item (velocidade).
  */
-QuadroAnimacao *getQuadroAnimacaoAtualItemAnelVerm( ItemAnelVerm *item ) {
-    return getQuadroAtualAnimacao( getAnimacaoAtualItemAnelVerm( item ) );
+QuadroAnimacao *getQuadroAnimacaoAtualItemVelocidade( ItemVelocidade *item ) {
+    return getQuadroAtualAnimacao( getAnimacaoAtualItemVelocidade( item ) );
 }
 
-static void desenharQuadroAnimacaoItemAnelVerm( ItemAnelVerm *item, QuadroAnimacao *qa, Color tonalidade ) {
+static void desenharQuadroAnimacaoItemVelocidade( ItemVelocidade *item, QuadroAnimacao *qa, Color tonalidade ) {
 
     if ( qa != NULL ) {
 
@@ -148,6 +150,6 @@ static void desenharQuadroAnimacaoItemAnelVerm( ItemAnelVerm *item, QuadroAnimac
 
 }
 
-static Animacao *getAnimacaoAtualItemAnelVerm( ItemAnelVerm *item ) {
+static Animacao *getAnimacaoAtualItemVelocidade( ItemVelocidade *item ) {
     return item->animacoes[item->estado];
 }
