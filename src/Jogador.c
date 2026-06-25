@@ -1013,7 +1013,6 @@ static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
             };
 
             if ( CheckCollisionRecs( retColCalculado, retColInimigoCalculado ) ) {
-                peixe->estado = ESTADO_INIMIGO_PEIXE_MORRENDO;
                 if ( j->estado >= ESTADO_JOGADOR_PULANDO && j->estado <= ESTADO_JOGADOR_PULANDO_CORRENDO ) {
                     j->vel.y = j->velPulo;
                     peixe->estado = ESTADO_INIMIGO_PEIXE_MORRENDO;

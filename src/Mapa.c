@@ -450,6 +450,20 @@ void MudarFase(GameWorld* gw, unsigned char mapa)
 {
 	switch (mapa)
 	{
+        case MAPA0:
+			gw->cor_fundo = ROXO;
+			destruirMapa(gw->mapa);
+			gw->mapa = carregarMapa("resources/mapas/mapa00.txt");
+			UnloadTexture(rm.texturaTerreno);
+			rm.texturaTerreno = LoadTexture("resources/imagens/tiles/terreno1.png");
+			UnloadMusicStream(rm.musicaFase01);
+			rm.musicaFase01 = LoadMusicStream( "resources/sons/musicas/green-hill-zone.mp3" );
+			mapaAtual = MAPA1;
+			gw->jogador->ret.x = 428;
+			gw->jogador->ret.y = 32;
+            gw->estadoJogo = dialogo;
+			break;
+
 		case MAPA1:
 			gw->cor_fundo = AZULCLARO;
 			destruirMapa(gw->mapa);

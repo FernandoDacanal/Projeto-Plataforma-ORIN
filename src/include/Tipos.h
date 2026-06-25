@@ -432,6 +432,7 @@ typedef struct Mapa {
  typedef enum ESTADOJOGO{
     jogando,
     dialogo,
+    gameover
 } ESTADOJOGO;
 typedef struct GameWorld {
 

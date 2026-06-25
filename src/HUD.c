@@ -8,7 +8,7 @@
 #include "include/raylib/raylib.h"
 #include "texto/texto.h"	// Tremer e onda
 
-static Vector2 HUD = { BORDA, ALTURA_VIRTUAL - TAMANHO_FONTE * 3 - BORDA - 1 };
+static Vector2 HUD = { BORDA, BORDA + TAMANHO_FONTE + 1 };
 static Vector2 HUDInferior = { TAMANHO_FONTE * 2, ALTURA_VIRTUAL - TAMANHO_FONTE * 3 };
 
 // Desenha a borda quadriculada do jogo
@@ -50,15 +50,15 @@ void desenharBorda(Color cor1, Color cor2)
 
 void desenharRet(Color fundo, Color borda)
 {
-	DrawRectangle(HUD.x - 1, HUD.y - 10, 91, 36, borda);
-	DrawRectangle(HUD.x, HUD.y - 9, 89, 34, fundo);
+	DrawRectangle(2, 2, LARGURA_VIRTUAL - 4, 12, fundo);
+    DrawRectangleLines(2, 2, LARGURA_VIRTUAL - 4, 12, borda);
 }
 
 // Desenha os elementos da hud
 void desenharHUD(GameWorld *gw)
 {
     desenharBorda(AZUL, AZULESCURO);
-	desenharRet(CINZA, CINZAESCURO);
+	desenharRet(PRETO, BRANCO);
 	
     desenharScore( gw );
     desenharTime( gw );
@@ -70,7 +70,7 @@ void desenharScore(GameWorld *gw) {
     if(gw->jogador->quantidadePontos >= 99999)
         gw->jogador->quantidadePontos = 99999;
 	
-    desenharTexto("{c}Score %{/c}", HUD.x, HUD.y, gw->jogador->quantidadePontos);
+    desenharTexto("Score %", HUD.x + TAMANHO_FONTE * 24, HUD.y - 8, gw->jogador->quantidadePontos);
 }
 void desenharTime(GameWorld *gw)
 {
@@ -82,7 +82,7 @@ void desenharTime(GameWorld *gw)
     int tremor1 = 0;
     int tremor2 = 0;
 	
-	Vector2 pos = { HUD.x + tremor1, HUD.y + TAMANHO_FONTE };
+	Vector2 pos = { HUD.x + TAMANHO_FONTE * 48 + tremor1, HUD.y - 8};
 	// gw->jogador->quantidadeTempo += 2;
 
 	// TODO: Fazer com que o tempo seja diferente para cada mapa.
@@ -92,15 +92,15 @@ void desenharTime(GameWorld *gw)
 			gw->jogador->quantidadeTempo = 599;
 
 		if ((int)gw->jogador->quantidadeTempo % 60 > 9)
-			desenharTexto("[e]{c}{t}Tempo %:%{/t}{/c}[/]", pos.x, pos.y, (int)gw->jogador->quantidadeTempo / 60, (int)gw->jogador->quantidadeTempo % 60);
+			desenharTexto("[e]{t}Tempo %:%{/t}[/]", pos.x, pos.y, (int)gw->jogador->quantidadeTempo / 60, (int)gw->jogador->quantidadeTempo % 60);
 		else
-			desenharTexto("[e]{c}{t}Tempo %:0%{/t}{/c}[/]", pos.x, pos.y, (int)gw->jogador->quantidadeTempo / 60, (int)gw->jogador->quantidadeTempo % 60);
+			desenharTexto("[e]{t}Tempo %:0%{/t}[/]", pos.x, pos.y, (int)gw->jogador->quantidadeTempo / 60, (int)gw->jogador->quantidadeTempo % 60);
 	}
 	else
 		if ((int)gw->jogador->quantidadeTempo % 60 > 9)
-			desenharTexto("[e]{c}Tempo %:%{/c}[/]", pos.x, pos.y, (int)gw->jogador->quantidadeTempo / 60, (int)gw->jogador->quantidadeTempo % 60);
+			desenharTexto("[e]Tempo %:%[/]", pos.x, pos.y, (int)gw->jogador->quantidadeTempo / 60, (int)gw->jogador->quantidadeTempo % 60);
 		else
-			desenharTexto("[e]{c}Tempo %:0{/t}%[/]", pos.x, pos.y, (int)gw->jogador->quantidadeTempo / 60, (int)gw->jogador->quantidadeTempo % 60);
+			desenharTexto("[e]Tempo %:0{/t}%[/]", pos.x, pos.y, (int)gw->jogador->quantidadeTempo / 60, (int)gw->jogador->quantidadeTempo % 60);
 }
 
 void desenharRings(GameWorld *gw)
@@ -109,11 +109,11 @@ void desenharRings(GameWorld *gw)
         gw->jogador->quantidadeAneis = 999;
     }
     if ( gw->jogador->quantidadeAneis != 0 )
-		desenharTexto("[e]{c}Anel %{/c}[/]", HUD.x, HUD.y + TAMANHO_FONTE * 2, gw->jogador->quantidadeAneis);
+		desenharTexto("[e] Anel %[/]", HUD.x + TAMANHO_FONTE * 8, HUD.y - 8, gw->jogador->quantidadeAneis);
     else
-		desenharTexto("[e]{t}{c}Anel 0{/c}{/t}[/]", HUD.x, HUD.y + TAMANHO_FONTE * 2, gw->jogador->quantidadeAneis);
+		desenharTexto("[e]{t} Anel 0{/t}[/]", HUD.x + TAMANHO_FONTE * 8, HUD.y - 8, gw->jogador->quantidadeAneis);
 }
 void desenharLives(GameWorld *gw)
 {
-	desenharTexto("[c]{c}Vida %{/c}[/]", HUD.x, HUD.y - 8, gw->jogador->quantidadeVidas);
+	desenharTexto("[c] Vida %[/]", HUD.x, HUD.y - 8, gw->jogador->quantidadeVidas);
 }

@@ -30,3 +30,4 @@ void desenharScore(GameWorld *gw);
 void desenharTime(GameWorld *gw);
 void desenharRings(GameWorld *gw);
 void desenharLives(GameWorld *gw);
+void desenharBorda(Color cor1, Color cor2);

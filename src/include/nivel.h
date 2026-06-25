@@ -1,5 +1,5 @@
 enum mapa_index {
-	MAPA1, MAPA2
+	MAPA0, MAPA1, MAPA2
 };
 
 extern unsigned char mapaAtual;
