@@ -8,9 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-//#include <stdio.h>
 #include <math.h>
-#include <string.h>
 #include <string.h>
 
 #include "include/GameWindow.h"
@@ -19,12 +17,11 @@
 #include "include/raylib/raylib.h"
 
 #include "extras/rede.h"
-
 #include "extras/multiplayer_include.h"
 
 #define PORTA 1337
 
-static void enviar_estado(int sock, Jogador *j) {
+static void enviar_estado(socket_t sock, Jogador *j) {
     char buf[128];
     snprintf(buf, sizeof(buf), "POS %.2f %.2f %d %d",
              j->ret.x, j->ret.y,
@@ -112,93 +109,48 @@ void initGameWindow( GameWindow *gameWindow ) {
         if ( gameWindow->alwaysRun ) {
             SetConfigFlags( FLAG_WINDOW_ALWAYS_RUN );
         }
-		
-		
-		static int servsock, cliente;
-		struct sockaddr_in info;
-		
-		if (multiplayer == 1)
-		{
-			info.sin_family = AF_INET;
-			info.sin_addr.s_addr = INADDR_ANY;
-			info.sin_port = htons(PORTA);
-			
-			
-			if ((servsock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
-				exit(1);
-			
-			{
-				int opt = 1;
-				setsockopt(servsock, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
-			}
 
-			if ((bind(servsock, (struct sockaddr*)&info, sizeof(info))) < 0)
-				exit(2);
+        static socket_t servsock = REDE_INVALIDO;
+        static socket_t cliente  = REDE_INVALIDO;
 
-			if (listen(servsock, 10) < 0)
-				exit(3);
-			
-ACEITAR:
-			if ((cliente = accept(servsock, 0, 0)) < 0)
-				goto ACEITAR;
-			
-			char buffer[256] = {0};
-			int n = recv(cliente, buffer, sizeof(buffer) - 1, 0);
-			if (n > 0) {
-				buffer[n] = '\0';
-				if (strncmp(buffer, "sim", 3) == 0)
-					send(cliente, "ok", 2, 0);
-			}
-			cliente_global = cliente;
-			
-			fcntl(cliente, F_SETFL, fcntl(cliente, F_GETFL, 0) | O_NONBLOCK);
-		}
-		else if (multiplayer == 2)
-		{
-			struct addrinfo dica, *resultado, *p;
-			char porta_str[16];
+        if (multiplayer == 1)
+        {
+            servsock = rede_criar_servidor(PORTA, 1);
+            if (servsock == REDE_INVALIDO)
+                exit(1);
 
-			snprintf(porta_str, sizeof(porta_str), "%d", PORTA);
+            cliente = rede_aceitar(servsock);
+            if (cliente == REDE_INVALIDO)
+                exit(2);
 
-			memset(&dica, 0, sizeof(dica));
-			dica.ai_family   = AF_INET;
-			dica.ai_socktype = SOCK_STREAM;
-			dica.ai_flags    = 0;
+            char buffer[256] = {0};
+            int n = rede_receber(cliente, buffer, sizeof(buffer) - 1);
+            if (n > 0) {
+                buffer[n] = '\0';
+                if (strncmp(buffer, "sim", 3) == 0)
+                    rede_enviar(cliente, "ok", 2);
+            }
+            cliente_global = cliente;
 
-			int r = getaddrinfo(ipServidor, porta_str, &dica, &resultado);
-			if (r != 0) {
-				exit(1);
-			}
+            rede_nonblock(cliente);
+        }
+        else if (multiplayer == 2)
+        {
+            cliente = rede_conectar(ipServidor, PORTA);
+            if (cliente == REDE_INVALIDO)
+                exit(1);
 
-			cliente = -1;
-			for (p = resultado; p != NULL; p = p->ai_next) {
-				cliente = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
-				if (cliente < 0)
-					continue;
+            rede_enviar(cliente, "sim", 3);
 
-				if (connect(cliente, p->ai_addr, p->ai_addrlen) == 0)
-					break;
+            char buffer[256] = {0};
+            int n = rede_receber(cliente, buffer, sizeof(buffer) - 1);
+            if (n <= 0 || strncmp(buffer, "ok", 2) != 0)
+                exit(2);
 
-				close(cliente);
-				cliente = -1;
-			}
+            cliente_global = cliente;
 
-			freeaddrinfo(resultado);
-
-			if (cliente < 0)
-				exit(2);
-
-			send(cliente, "sim", 3, 0);
-
-			char buffer[256] = {0};
-			int n = recv(cliente, buffer, sizeof(buffer) - 1, 0);
-			if (n <= 0 || strncmp(buffer, "ok", 2) != 0)
-				exit(3);
-			
-			cliente_global = cliente;
-			
-			fcntl(cliente, F_SETFL, fcntl(cliente, F_GETFL, 0) | O_NONBLOCK);
-		}
+            rede_nonblock(cliente);
+        }
 
         InitWindow( gameWindow->width, gameWindow->height, gameWindow->title );
         SetWindowMonitor(0);
@@ -224,19 +176,14 @@ ACEITAR:
         }
 
         gameWindow->gw = createGameWorld();
-		gw_global = gameWindow->gw;
+        gw_global = gameWindow->gw;
 
         // game loop
         while ( !WindowShouldClose() ) {
-            // O delta time é limitado a 1/30s para evitar que frames muito
-            // longos (ex.: lentidão na inicialização) causem deslocamentos
-            // grandes demais, fazendo personagens atravessarem obstáculos
-            // (tunneling).
             float delta = GetFrameTime();
             if ( delta > 1.0f / 30.0f ) {
                 delta = 1.0f / 30.0f;
             }
-            
 
             updateGameWorld( gameWindow->gw, delta );
 
@@ -268,26 +215,25 @@ ACEITAR:
                 ToggleFullscreen();
             }
             EndDrawing();
-			
-			// a cada N frames, manda o estado
-			static int contador_rede = 0;
-			if (multiplayer != 0 && cliente >= 0) {
-				if (mp_receber(cliente) < 0) {
-					// outro lado caiu
-					close(cliente);
-					cliente = -1;
-					multiplayer = 0;
-				}
 
-				if (++contador_rede >= 3) {          // ~20 Hz a 60 FPS
-					enviar_estado(cliente, gameWindow->gw->jogador);
-					contador_rede = 0;
-				}
-			}
-		}
+            // a cada N frames, manda o estado
+            static int contador_rede = 0;
+            if (multiplayer != 0 && cliente != REDE_INVALIDO) {
+                if (mp_receber(cliente) < 0) {
+                    rede_fechar(cliente);
+                    cliente = REDE_INVALIDO;
+                    multiplayer = 0;
+                }
 
-		if (servsock >= 0) close(servsock);
-		if (cliente  >= 0) close(cliente);
+                if (++contador_rede >= 3) {
+                    enviar_estado(cliente, gameWindow->gw->jogador);
+                    contador_rede = 0;
+                }
+            }
+        }
+
+        if (servsock != REDE_INVALIDO) rede_fechar(servsock);
+        if (cliente  != REDE_INVALIDO) rede_fechar(cliente);
 
         if ( gameWindow->loadResources ) {
             unloadResourcesResourceManager();

@@ -1,22 +1,16 @@
-extern int multiplayer;
-extern char ipServidor[256];
+#ifndef MULTIPLAYER_INCLUDE_H
+#define MULTIPLAYER_INCLUDE_H
 
-#define porta 1337
+#include "rede.h"
 
-/**
- * envia uma mensagem com prefixo de 4 bytes indicando o tamanho.
- * retorna o número de bytes enviados (4 + len), ou -1 em erro.
- */
-int mp_enviar(int sock, const char *msg);
+extern int      multiplayer;
+extern char     ipServidor[256];
+extern socket_t cliente_global;
 
-/**
- * tenta ler do socket e processar todas as mensagens completas
- * disponíveis. deve ser chamada a cada frame, com socket non-blocking.
- *
- * retorna o número de mensagens processadas.
- */
-int mp_receber(int sock);
+#define PORTA 1337
 
-extern int cliente_global;
-
+int  mp_enviar(socket_t sock, const char *msg);
+int  mp_receber(socket_t sock);
 void mp_notificar_inimigo_morto(int id);
+
+#endif

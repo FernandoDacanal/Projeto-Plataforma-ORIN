@@ -1,5 +1,5 @@
 #pragma once
-#include "../include/raylib.h"
+#include <raylib.h>
 #include "../include/ResourceManager.h"
 #include "../include/Tipos.h"
 

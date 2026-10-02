@@ -12,6 +12,7 @@
 #include <string.h>
 #include <stdbool.h>
 
+#include "extras/rede.h"
 #include "include/GameWindow.h"
 
 extern bool mod_desenvolvedor;
@@ -20,6 +21,7 @@ extern char ipServidor[256];
 
 int main (int argc, char* argv[])
 {
+	rede_iniciar();
 	for (int i = 1; i < argc; i++)
 	{
 		switch (argv[i][0])
@@ -73,5 +75,7 @@ int main (int argc, char* argv[])
 
     initGameWindow( gameWindow );
 
+	rede_finalizar();
+	
     return 0;
 }

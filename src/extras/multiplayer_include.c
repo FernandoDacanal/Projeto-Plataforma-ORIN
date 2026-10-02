@@ -2,23 +2,19 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
-#include <errno.h>
 
-#include "rede.h"
-
-int  multiplayer    = 0;
-char ipServidor[256];
-int  cliente_global = -1;
+int      multiplayer    = 0;
+char     ipServidor[256];
+socket_t cliente_global = REDE_INVALIDO;
 
 static unsigned char rx_buffer[8192];
 static int           rx_tamanho = 0;
 
 // ---------- Envio ----------
 
-int mp_enviar(int sock, const char *msg) {
+int mp_enviar(socket_t sock, const char *msg) {
     int tam_msg = (int) strlen(msg);
-    unsigned int tam_rede = htonl((unsigned int) tam_msg);
+    unsigned int tam_rede = rede_htonl((unsigned int) tam_msg);
 
     unsigned char pacote[4 + 1024];
     if (tam_msg > (int) sizeof(pacote) - 4) {
@@ -31,9 +27,9 @@ int mp_enviar(int sock, const char *msg) {
     int total = 4 + tam_msg;
     int enviado = 0;
     while (enviado < total) {
-        int n = send(sock, pacote + enviado, total - enviado, 0);
+        int n = rede_enviar(sock, pacote + enviado, total - enviado);
         if (n < 0) {
-            if (errno == EINTR) continue;
+            if (rede_ultimo_erro() == rede_err_intr()) continue;
             return -1;
         }
         enviado += n;
@@ -48,7 +44,7 @@ static int extrair_mensagem(char *saida, int tam_saida) {
 
     unsigned int tam_rede;
     memcpy(&tam_rede, rx_buffer, 4);
-    unsigned int tam_msg = ntohl(tam_rede);
+    unsigned int tam_msg = rede_ntohl(tam_rede);
 
     if (tam_msg == 0 || tam_msg >= sizeof(rx_buffer)) {
         return -1;
@@ -70,15 +66,15 @@ static int extrair_mensagem(char *saida, int tam_saida) {
 
 extern void mp_processar_mensagem(const char *msg);
 
-int mp_receber(int sock) {
+int mp_receber(socket_t sock) {
     while (1) {
         if (rx_tamanho >= (int) sizeof(rx_buffer)) {
             rx_tamanho = 0;
             return -1;
         }
 
-        int n = recv(sock, rx_buffer + rx_tamanho,
-                     sizeof(rx_buffer) - rx_tamanho, 0);
+        int n = rede_receber(sock, rx_buffer + rx_tamanho,
+                             sizeof(rx_buffer) - rx_tamanho);
 
         if (n > 0) {
             rx_tamanho += n;
@@ -87,8 +83,8 @@ int mp_receber(int sock) {
         if (n == 0) {
             return -1;
         }
-        if (errno == EINTR) continue;
-        if (errno == EAGAIN || errno == EWOULDBLOCK) break;
+        if (rede_ultimo_erro() == rede_err_intr()) continue;
+        if (rede_ultimo_erro() == rede_err_wouldblock()) break;
         return -1;
     }
 
@@ -107,7 +103,7 @@ int mp_receber(int sock) {
 }
 
 void mp_notificar_inimigo_morto(int id) {
-    if (multiplayer == 0 || cliente_global < 0) return;
+    if (multiplayer == 0 || cliente_global == REDE_INVALIDO) return;
     char buf[64];
     snprintf(buf, sizeof(buf), "INIMIGO_MORTO %d", id);
     mp_enviar(cliente_global, buf);

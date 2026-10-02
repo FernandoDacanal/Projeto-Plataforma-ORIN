@@ -1,24 +1,22 @@
 # =============================================================================
 # cross-platform makefile for c/c++ projects with raylib
+# based on:
+#   https://makefiletutorial.com/
+#   https://spin.atomicobject.com/2016/08/26/makefile-c-projects/
+#
+# usage:
+#   make               - compile and run the project
+#   make compile       - compile the project only
+#   make run           - run the compiled binary only
+#   make clean         - remove build artifacts
+#   make cleanandcompile - clean and recompile from scratch
+#
+# author: prof. dr. david buzatto
 # =============================================================================
 
-# -----------------------------------------------------------------------------
-# operating system detection
-# -----------------------------------------------------------------------------
-uname_s := $(shell uname -s 2>/dev/null)
-
-ifeq ($(uname_s), linux)
-    detected_os := linux
-else ifeq ($(uname_s), darwin)
-    detected_os := macos
-else ifneq ($(filter mingw% msys% cygwin%, $(uname_s)),)
-    detected_os := windows
-else
-    detected_os := windows
-endif
 
 # -----------------------------------------------------------------------------
-# compilers
+# compiler
 # -----------------------------------------------------------------------------
 CC  := gcc
 CXX := g++
@@ -30,6 +28,7 @@ empty :=
 space := $(empty) $(empty)
 
 __escaped_path := $(subst $(space),__sp__,$(subst \,/,$(CURDIR)))
+
 target_name := $(subst __sp__,_,$(notdir $(__escaped_path)))
 
 target_name := $(subst á,a,$(target_name))
@@ -57,15 +56,11 @@ target_name := $(subst ü,u,$(target_name))
 target_name := $(subst ç,c,$(target_name))
 target_name := $(subst ñ,n,$(target_name))
 
-ifeq ($(detected_os), windows)
-    target_exec := $(target_name).exe
-else
-    target_exec := $(target_name)
-endif
+target_exec := $(target_name)
 
 
 # -----------------------------------------------------------------------------
-# directories
+# main directories
 # -----------------------------------------------------------------------------
 build_dir := build
 src_dirs  := src
@@ -79,15 +74,20 @@ rwildcard = $(foreach d,$(wildcard $(1:=/*)),\
 
 
 # -----------------------------------------------------------------------------
-# sources, objects, deps
+# source files
 # -----------------------------------------------------------------------------
 srcs := $(call rwildcard,$(src_dirs),*.c *.cpp *.s)
+
+
+# -----------------------------------------------------------------------------
+# object and dependency files
+# -----------------------------------------------------------------------------
 objs := $(srcs:%=$(build_dir)/%.o)
 deps := $(objs:.o=.d)
 
 
 # -----------------------------------------------------------------------------
-# include flags
+# include directories
 # -----------------------------------------------------------------------------
 inc_dirs  := $(sort $(dir $(call rwildcard,$(src_dirs),*)))
 inc_flags := $(addprefix -I,$(inc_dirs))
@@ -106,17 +106,9 @@ cppflags := $(inc_flags) -MMD -MP -O1 -Wall -Wextra \
 
 
 # -----------------------------------------------------------------------------
-# linker flags (platform-dependent)
+# linker flags
 # -----------------------------------------------------------------------------
-ifeq ($(detected_os), linux)
-    ldflags := -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
-else ifeq ($(detected_os), macos)
-    ldflags := -lraylib -framework OpenGL -framework Cocoa \
-               -framework IOKit -framework CoreVideo -lm
-else
-    # windows (msys2 / mingw)
-    ldflags := -Llib/ -lraylib -lopengl32 -lgdi32 -lwinmm -lws2_32 -lm
-endif
+ldflags := -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
 
 # =============================================================================
@@ -132,7 +124,7 @@ cleanandcompile: clean compile
 
 
 # -----------------------------------------------------------------------------
-# final link
+# final link rule
 # -----------------------------------------------------------------------------
 $(build_dir)/$(target_exec): $(objs)
 	@mkdir -p $(build_dir)
@@ -140,7 +132,7 @@ $(build_dir)/$(target_exec): $(objs)
 
 
 # -----------------------------------------------------------------------------
-# compile .c
+# compilation rule for c files
 # -----------------------------------------------------------------------------
 $(build_dir)/%.c.o: %.c
 	@mkdir -p $(@D)
@@ -148,7 +140,7 @@ $(build_dir)/%.c.o: %.c
 
 
 # -----------------------------------------------------------------------------
-# compile .cpp
+# compilation rule for c++ files
 # -----------------------------------------------------------------------------
 $(build_dir)/%.cpp.o: %.cpp
 	@mkdir -p $(@D)
@@ -156,20 +148,20 @@ $(build_dir)/%.cpp.o: %.cpp
 
 
 # -----------------------------------------------------------------------------
-# clean
+# clean target
 # -----------------------------------------------------------------------------
 clean:
 	@rm -rf $(build_dir)
 
 
 # -----------------------------------------------------------------------------
-# run
+# run target
 # -----------------------------------------------------------------------------
 run:
 	./$(build_dir)/$(target_exec) $(args)
 
 
 # -----------------------------------------------------------------------------
-# deps
+# dependency file inclusion
 # -----------------------------------------------------------------------------
 -include $(deps)
