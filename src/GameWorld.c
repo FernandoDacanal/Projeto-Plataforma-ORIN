@@ -164,8 +164,12 @@ void drawGameWorld( GameWorld *gw ) {
 	//desenharFundo( gw );
 	desenharMapa( gw->mapa );
 	desenharJogador( gw->jogador );
+		desenharTexto("{o}[j]P1[/]", gw->jogador->ret.x + 9,
+				gw->jogador->ret.y - 10);
 	
 	if (gw->remoto.ativo) {
+		desenharTexto("{o}[c]P2[/]", gw->jogadorRemoto->ret.x + 9,
+				gw->jogadorRemoto->ret.y - 10);
 		desenharJogador( gw->jogadorRemoto );
 	}
 
