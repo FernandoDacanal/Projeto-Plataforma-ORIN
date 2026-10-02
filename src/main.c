@@ -8,51 +8,23 @@
  */
 //#include <stdio.h>
 //#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 #include <stdbool.h>
 
 #include "include/GameWindow.h"
 
 extern bool mod_desenvolvedor;
-extern int multiplayer;
-extern char ipServidor[256];
 
 int main (int argc, char* argv[])
 {
-	for (int i = 1; i < argc; i++)
+	//for (int i = 1; i < argc; i++)
+	//{
+	//	// Ai teria que iterar por que pode ser argumento string
+	//}
+	if (argc > 1)
 	{
-		switch (argv[i][0])
-		{
-			case 'd':
-				mod_desenvolvedor = true;
-				break;
-
-			case 'm':
-				// "m s" → servidor (não precisa de IP)
-				if (i + 1 < argc && argv[i + 1][0] == 's')
-				{
-					multiplayer = 1;
-					i += 1;
-				}
-				// "m <ip>" → cliente
-				else
-				{
-					if (i + 1 >= argc) {
-						fprintf(stderr, "Erro: 'm' requer um IP\n");
-						return 1;
-					}
-					multiplayer = 2;
-					memset(ipServidor, 0, sizeof(ipServidor));
-					strncpy(ipServidor, argv[i + 1], sizeof(ipServidor) - 1);
-					i += 1;   // consome o IP
-				}
-				break;
-
-			default:
-				fprintf(stderr, "Argumento desconhecido: %s\n", argv[i]);
-				return 1;
-		}
+		// Eu to com preguiça de fazer passar por todos
+		// os argumentos, pelo menos por enquanto.
+		mod_desenvolvedor = true;
 	}
 
     GameWindow *gameWindow = createGameWindow(

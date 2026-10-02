@@ -320,7 +320,6 @@ typedef struct PersonagemPlaca {
 typedef struct Inimigo {
     void *objeto;
     TipoInimigo tipo;
-	int id;
 } Inimigo;
 /**
  * @brief Representa um item do tipo anel.
@@ -435,19 +434,10 @@ typedef struct Mapa {
     dialogo,
     gameover
 } ESTADOJOGO;
-
-
-typedef struct EstadoRemoto {
-    bool          ativo;    // já recebeu algum pacote?
-    float         x, y;
-    int           direcao;  // +1 direita, -1 esquerda
-    EstadoJogador estado;
-} EstadoRemoto;
 typedef struct GameWorld {
 
     Mapa *mapa;
     Jogador *jogador;
-	Jogador *jogadorRemoto;
 
     Camera2D camera;
 
@@ -455,6 +445,5 @@ typedef struct GameWorld {
 	Color cor_fundo;
 
     ESTADOJOGO estadoJogo;
-	
-	EstadoRemoto remoto;
+
 } GameWorld;

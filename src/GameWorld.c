@@ -10,7 +10,6 @@
 #include <stdio.h>
 
 #include "include/GameWorld.h"
-#include "include/Animacao.h"
 #include "include/GameWindow.h"
 #include "include/Jogador.h"
 #include "include/Mapa.h"
@@ -18,8 +17,6 @@
 #include "include/ResourceManager.h"
 #include "include/HUD.h"
 #include "include/Utils.h"
-
-#include "extras/multiplayer_include.h"
 
 #include "include/raylib/raylib.h"
 //#include "raylib/raymath.h"
@@ -60,7 +57,6 @@ void destroyGameWorld( GameWorld *gw ) {
     if ( gw != NULL ) {
         destruirMapa( gw->mapa );
         destruirJogador( gw->jogador );
-        destruirJogador( gw->jogadorRemoto );   // <-- novo
         free( gw );
     }
 }
@@ -113,10 +109,6 @@ void updateGameWorld( GameWorld *gw, float delta ) {
             Jogador *j = gw->jogador;
             entradaJogador( j, delta );
             atualizarJogador( j, gw, delta );
-			if (gw->remoto.ativo) {
-				Animacao *animRemota = gw->jogadorRemoto->animacoes[gw->jogadorRemoto->estado];
-				atualizarAnimacao(animRemota, delta);
-			}
             if(gw->jogador->estado == ESTADO_JOGADOR_FALANDO){
                 gw->estadoJogo = dialogo;
             }
@@ -164,18 +156,11 @@ void drawGameWorld( GameWorld *gw ) {
 	//desenharFundo( gw );
 	desenharMapa( gw->mapa );
 	desenharJogador( gw->jogador );
-	
-	if (gw->remoto.ativo) {
-		desenharJogador( gw->jogadorRemoto );
-	}
-
 	EndMode2D();
 
     if(gw->estadoJogo == jogando){
         desenharHUD(gw);
     }
-	if (multiplayer == 1)
-		desenharTexto("Servidor.", 10, 15);
     
     
     if(gw->estadoJogo == dialogo){
@@ -281,8 +266,6 @@ static void inicializar( GameWorld *gw ) {
     // gw->jogador = criarJogador( (float)GetScreenWidth() / 2 + 144, calcularAlturaMapa( gw->mapa ) - 196, 32, 32 );
     gw->jogador = criarJogador( 313, 208, 32, 32 );
     gw->jogador->quantidadeVidas = 0;
-	
-	gw->jogadorRemoto = criarJogador( 313, 208, 32, 32 );
 
     gw->camera = (Camera2D) {
         .offset = { 0 },    // deslocamento relativo da câmera em relação ao alvo
@@ -298,7 +281,6 @@ static void reiniciar( GameWorld *gw ) {
 
     destruirMapa( gw->mapa );
     destruirJogador( gw->jogador );
-	destruirJogador( gw->jogadorRemoto );
 
     if ( IsMusicStreamPlaying( rm.musicaFase01 ) ) {
         StopMusicStream( rm.musicaFase01 );

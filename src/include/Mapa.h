@@ -40,5 +40,3 @@ int calcularLarguraMapa( Mapa *m );
 int calcularAlturaMapa( Mapa *m );
 
 void MudarFase(GameWorld* gw, unsigned char mapa);
-
-void matarInimigoPorId( Mapa *mapa, int id );

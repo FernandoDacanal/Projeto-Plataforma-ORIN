@@ -5,6 +5,7 @@
  *
  * @copyright Copyright (c) 2026
  */
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "include/InimigoSpikes.h"
@@ -15,6 +16,7 @@
 #include "include/PersonagemPlaca.h"
 #include "include/raylib/raylib.h"
 
+#include "include/Macros.h"
 #include "include/Mapa.h"
 #include "include/Inimigo.h"
 #include "include/InimigoMotobug.h"
@@ -52,8 +54,6 @@ Mapa *carregarMapa( const char *caminhoArquivo ) {
     
     novoMapa->linhas = 0;
     novoMapa->colunas = 0;
-	
-	int proximoIdInimigo = 0;
     
     // carrega dados do arquivo de texto
     char *dadosMapa = LoadFileText( caminhoArquivo );
@@ -280,7 +280,7 @@ Mapa *carregarMapa( const char *caminhoArquivo ) {
                             abort();
                             break;
                     }
-					inimigo->id = proximoIdInimigo++;
+
                     inserirInimigo( novoMapa, el );
 
                 } else {
@@ -493,40 +493,4 @@ void MudarFase(GameWorld* gw, unsigned char mapa)
 
 	gw->jogador->vel.x = 0;
 	gw->jogador->vel.y = 0;
-}
-
-void matarInimigoPorId( Mapa *mapa, int id ) {
-    ElementoMapa *el = mapa->inimigos;
-    while ( el != NULL ) {
-        Inimigo *inimigo = (Inimigo*) el->objeto;
-        if ( inimigo->id == id ) {
-            switch ( inimigo->tipo ) {
-                case TIPO_INIMIGO_MOTOBUG: {
-                    InimigoMotobug *m = (InimigoMotobug*) inimigo->objeto;
-                    m->estado = ESTADO_INIMIGO_MOTOBUG_MORRENDO;
-                    break;
-                }
-                case TIPO_INIMIGO_SPIKES: {
-                    InimigoSpikes *s = (InimigoSpikes*) inimigo->objeto;
-                    s->estado = ESTADO_INIMIGO_SPIKES_MORRENDO;
-                    break;
-                }
-                case TIPO_INIMIGO_VOADOR: {
-                    InimigoVoador *v = (InimigoVoador*) inimigo->objeto;
-                    v->estado = ESTADO_INIMIGO_VOADOR_MORRENDO;
-                    break;
-                }
-                case TIPO_INIMIGO_PEIXE: {
-                    InimigoPeixe *p = (InimigoPeixe*) inimigo->objeto;
-                    p->estado = ESTADO_INIMIGO_PEIXE_MORRENDO;
-                    break;
-                }
-                case TIPO_PERSONAGEM_PLACA:
-                    // placa não morre
-                    break;
-            }
-            return;
-        }
-        el = el->proximo;
-    }
 }
