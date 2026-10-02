@@ -12,6 +12,8 @@
 #include "include/PersonagemPlaca.h"
 // #include "texto/texto.h"
 
+#include "extras/multiplayer_include.h"
+
 #include "include/Animacao.h"
 #include "include/InimigoMotobug.h"
 #include "include/InimigoSpikes.h"
@@ -748,6 +750,7 @@ static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
 				if ( j->estado >= ESTADO_JOGADOR_PULANDO && j->estado <= ESTADO_JOGADOR_PULANDO_CORRENDO ) {
 					j->vel.y = j->velPulo;
 					motobug->estado = ESTADO_INIMIGO_MOTOBUG_MORRENDO;
+					mp_notificar_inimigo_morto( inimigo->id );
 					j->quantidadePontos += 10;
 					PlaySound( rm.somHitInimigo );
 				}
@@ -840,6 +843,7 @@ static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
 				if ( j->estado >= ESTADO_JOGADOR_PULANDO && j->estado <= ESTADO_JOGADOR_PULANDO_CORRENDO ) {
 					j->vel.y = j->velPulo;
 					spikes->estado = ESTADO_INIMIGO_SPIKES_MORRENDO;
+					mp_notificar_inimigo_morto( inimigo->id );
 					j->quantidadePontos += 10;
 					PlaySound( rm.somHitInimigo );
 				} else if ( !j->invulneravel ) {
@@ -927,6 +931,7 @@ static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
 				if ( j->estado >= ESTADO_JOGADOR_PULANDO && j->estado <= ESTADO_JOGADOR_PULANDO_CORRENDO ) {
 					j->vel.y = j->velPulo;
 					voador->estado = ESTADO_INIMIGO_VOADOR_MORRENDO;
+					mp_notificar_inimigo_morto( inimigo->id );
 					j->quantidadePontos += 10;
 					PlaySound( rm.somHitInimigo );
 				} else if ( !j->invulneravel ) {
@@ -1015,6 +1020,7 @@ static void resolverColisaoJogadorInimigosMapa( Jogador *j, Mapa *mapa ) {
 				if ( j->estado >= ESTADO_JOGADOR_PULANDO && j->estado <= ESTADO_JOGADOR_PULANDO_CORRENDO ) {
 					j->vel.y = j->velPulo;
 					peixe->estado = ESTADO_INIMIGO_PEIXE_MORRENDO;
+					mp_notificar_inimigo_morto( inimigo->id );
 					j->quantidadePontos += 10;
 					PlaySound( rm.somHitInimigo );
 				} else if ( !j->invulneravel ) {

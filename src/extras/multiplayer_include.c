@@ -1,10 +1,15 @@
-int multiplayer = 0;
-char ipServidor[256];
+#include "multiplayer_include.h"
 
+#include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
-#include <arpa/inet.h>   // htonl, ntohl
+
+#include "rede.h"
+
+int  multiplayer    = 0;
+char ipServidor[256];
+int  cliente_global = -1;
 
 static unsigned char rx_buffer[8192];
 static int           rx_tamanho = 0;
@@ -99,4 +104,11 @@ int mp_receber(int sock) {
         processadas++;
     }
     return processadas;
+}
+
+void mp_notificar_inimigo_morto(int id) {
+    if (multiplayer == 0 || cliente_global < 0) return;
+    char buf[64];
+    snprintf(buf, sizeof(buf), "INIMIGO_MORTO %d", id);
+    mp_enviar(cliente_global, buf);
 }

@@ -320,6 +320,7 @@ typedef struct PersonagemPlaca {
 typedef struct Inimigo {
     void *objeto;
     TipoInimigo tipo;
+	int id;
 } Inimigo;
 /**
  * @brief Representa um item do tipo anel.
@@ -446,6 +447,7 @@ typedef struct GameWorld {
 
     Mapa *mapa;
     Jogador *jogador;
+	Jogador *jogadorRemoto;
 
     Camera2D camera;
 

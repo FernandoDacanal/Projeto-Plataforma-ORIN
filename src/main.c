@@ -8,6 +8,7 @@
  */
 //#include <stdio.h>
 //#include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
 
@@ -28,29 +29,29 @@ int main (int argc, char* argv[])
 				break;
 
 			case 'm':
-				// "m s <ip>" → servidor
+				// "m s" → servidor (não precisa de IP)
 				if (i + 1 < argc && argv[i + 1][0] == 's')
 				{
-					if (i + 2 >= argc) {
-						return 1;
-					}
 					multiplayer = 1;
-					memset(ipServidor, 0, sizeof(ipServidor));
-					strncpy(ipServidor, argv[i + 2], sizeof(ipServidor) - 1);
-					i += 2;
+					i += 1;
 				}
 				// "m <ip>" → cliente
 				else
 				{
 					if (i + 1 >= argc) {
+						fprintf(stderr, "Erro: 'm' requer um IP\n");
 						return 1;
 					}
 					multiplayer = 2;
 					memset(ipServidor, 0, sizeof(ipServidor));
 					strncpy(ipServidor, argv[i + 1], sizeof(ipServidor) - 1);
-					i += 1;
+					i += 1;   // consome o IP
 				}
 				break;
+
+			default:
+				fprintf(stderr, "Argumento desconhecido: %s\n", argv[i]);
+				return 1;
 		}
 	}
 

@@ -10,21 +10,19 @@
 #include <stdbool.h>
 //#include <stdio.h>
 #include <math.h>
+#include <string.h>
+#include <string.h>
 
 #include "include/GameWindow.h"
 #include "include/GameWorld.h"
 #include "include/ResourceManager.h"
 #include "include/raylib/raylib.h"
 
-#include <netdb.h>
-#include <fcntl.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
+#include "extras/rede.h"
 
 #include "extras/multiplayer_include.h"
+
+#define PORTA 1337
 
 static void enviar_estado(int sock, Jogador *j) {
     char buf[128];
@@ -151,6 +149,7 @@ ACEITAR:
 				if (strncmp(buffer, "sim", 3) == 0)
 					send(cliente, "ok", 2, 0);
 			}
+			cliente_global = cliente;
 			
 			fcntl(cliente, F_SETFL, fcntl(cliente, F_GETFL, 0) | O_NONBLOCK);
 		}
@@ -196,6 +195,8 @@ ACEITAR:
 			if (n <= 0 || strncmp(buffer, "ok", 2) != 0)
 				exit(3);
 			
+			cliente_global = cliente;
+			
 			fcntl(cliente, F_SETFL, fcntl(cliente, F_GETFL, 0) | O_NONBLOCK);
 		}
 
@@ -223,6 +224,7 @@ ACEITAR:
         }
 
         gameWindow->gw = createGameWorld();
+		gw_global = gameWindow->gw;
 
         // game loop
         while ( !WindowShouldClose() ) {
