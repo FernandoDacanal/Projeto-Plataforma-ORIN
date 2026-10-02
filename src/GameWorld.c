@@ -104,7 +104,7 @@ void updateGameWorld( GameWorld *gw, float delta ) {
         case jogando:
             if (IsKeyPressed(KEY_M))
                 musica_ativa = !musica_ativa;
-            if (IsKeyPressed( KEY_R ))
+            if (IsKeyDown( KEY_R ) && IsKeyDown( KEY_J ))
             {
                 reiniciar( gw );
                 return;
