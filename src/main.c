@@ -8,23 +8,50 @@
  */
 //#include <stdio.h>
 //#include <stdlib.h>
+#include <string.h>
 #include <stdbool.h>
 
 #include "include/GameWindow.h"
 
 extern bool mod_desenvolvedor;
+extern int multiplayer;
+extern char ipServidor[256];
 
 int main (int argc, char* argv[])
 {
-	//for (int i = 1; i < argc; i++)
-	//{
-	//	// Ai teria que iterar por que pode ser argumento string
-	//}
-	if (argc > 1)
+	for (int i = 1; i < argc; i++)
 	{
-		// Eu to com preguiça de fazer passar por todos
-		// os argumentos, pelo menos por enquanto.
-		mod_desenvolvedor = true;
+		switch (argv[i][0])
+		{
+			case 'd':
+				mod_desenvolvedor = true;
+				break;
+
+			case 'm':
+				// "m s <ip>" → servidor
+				if (i + 1 < argc && argv[i + 1][0] == 's')
+				{
+					if (i + 2 >= argc) {
+						return 1;
+					}
+					multiplayer = 1;
+					memset(ipServidor, 0, sizeof(ipServidor));
+					strncpy(ipServidor, argv[i + 2], sizeof(ipServidor) - 1);
+					i += 2;
+				}
+				// "m <ip>" → cliente
+				else
+				{
+					if (i + 1 >= argc) {
+						return 1;
+					}
+					multiplayer = 2;
+					memset(ipServidor, 0, sizeof(ipServidor));
+					strncpy(ipServidor, argv[i + 1], sizeof(ipServidor) - 1);
+					i += 1;
+				}
+				break;
+		}
 	}
 
     GameWindow *gameWindow = createGameWindow(

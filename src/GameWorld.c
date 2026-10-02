@@ -156,6 +156,18 @@ void drawGameWorld( GameWorld *gw ) {
 	//desenharFundo( gw );
 	desenharMapa( gw->mapa );
 	desenharJogador( gw->jogador );
+	
+
+	if (gw->remoto.ativo) {
+		// Desenha o jogador remoto com os mesmos recursos visuais.
+		// Como o remoto tem apenas (x, y, direcao, estado), o mais simples
+		// é desenhar um retângulo colorido no lugar. Se quiser sprite,
+		// precisaria replicar a lógica de animação.
+		DrawRectangle((int) gw->remoto.x, (int) gw->remoto.y,
+				32, 32, BLUE);          // ajuste o tamanho conforme seu sprite
+										// Ou, se quiser reaproveitar a função, crie um Jogador "fake"
+	}
+
 	EndMode2D();
 
     if(gw->estadoJogo == jogando){
