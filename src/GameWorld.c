@@ -21,7 +21,7 @@
 
 #include "extras/multiplayer_include.h"
 
-#include "include/raylib/raylib.h"
+#include <raylib.h>
 //#include "raylib/raymath.h"
 //#define RAYGUI_IMPLEMENTATION    // to use raygui, comment these three lines.
 //#include "raylib/raygui.h"       // other compilation units must only include
