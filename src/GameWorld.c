@@ -109,6 +109,62 @@ void updateGameWorld( GameWorld *gw, float delta ) {
                 reiniciar( gw );
                 return;
             }
+			
+			// --- Chat ---
+			Chat *c = &gw->chat;
+
+			// Atualiza tempo das mensagens
+			for (int i = 0; i < c->quantidade; ) {
+				c->mensagens[i].tempoRestante -= delta;
+				if (c->mensagens[i].tempoRestante <= 0) {
+					for (int j = i + 1; j < c->quantidade; j++)
+						c->mensagens[j - 1] = c->mensagens[j];
+					c->quantidade--;
+				} else {
+					i++;
+				}
+			}
+
+			// Input
+			if (!c->aberto) {
+				if (IsKeyPressed(KEY_T)) {
+					c->aberto = true;
+					c->tamBuffer = 0;
+					c->buffer[0] = '\0';
+				}
+			} else {
+				// Coleta caracteres digitados
+				int ch;
+				while ((ch = GetCharPressed()) > 0) {
+					if (ch >= 32 && ch <= 126 && c->tamBuffer < CHAT_MAX_TAM - 1) {
+						c->buffer[c->tamBuffer++] = (char) ch;
+						c->buffer[c->tamBuffer]   = '\0';
+					}
+				}
+				if (IsKeyPressed(KEY_BACKSPACE) && c->tamBuffer > 0) {
+					c->buffer[--c->tamBuffer] = '\0';
+				}
+				if (IsKeyPressed(KEY_ENTER) && c->tamBuffer > 0) {
+					// Envia para o outro lado
+					char pacote[CHAT_MAX_TAM + 8];
+					snprintf(pacote, sizeof(pacote), "CHAT %s", c->buffer);
+					if (multiplayer != 0 && cliente_global >= 0)
+						mp_enviar(cliente_global, pacote);
+
+					// Mostra localmente
+					chat_adicionar(gw, c->buffer);
+
+					c->tamBuffer = 0;
+					c->buffer[0] = '\0';
+					c->aberto    = false;
+				}
+				if (IsKeyPressed(KEY_ESCAPE)) {
+					c->tamBuffer = 0;
+					c->buffer[0] = '\0';
+					c->aberto    = false;
+				}
+				// --- Fim chat ---
+}
             atualizarMapa( gw->mapa, gw, delta );
             Jogador *j = gw->jogador;
             entradaJogador( j, delta );
@@ -174,6 +230,35 @@ void drawGameWorld( GameWorld *gw ) {
 	}
 
 	EndMode2D();
+	// --- Chat ---
+	Chat *c = &gw->chat;
+
+	// Histórico (canto inferior esquerdo)
+	int baseY = ALTURA_VIRTUAL - 40;
+	for (int i = c->quantidade - 1; i >= 0; i--) {
+		// fade conforme o tempo acaba
+		float alpha = c->mensagens[i].tempoRestante / CHAT_TEMPO_MSG;
+		if (alpha > 1.0f) alpha = 1.0f;
+
+		// Sombra + texto (se seu parser suportar cor, use [a] ou algo assim)
+		// Aqui uso desenharTexto direto:
+		desenharTexto(c->mensagens[i].texto, 10, baseY);
+
+		baseY -= 12;
+		if (baseY < 10) break;
+	}
+
+	// Barra de input quando o chat está aberto
+	if (c->aberto) {
+		DrawRectangle(0, ALTURA_VIRTUAL - 20, LARGURA_VIRTUAL, 20, Fade(BLACK, 0.7f));
+
+		char linha[CHAT_MAX_TAM + 4];
+		snprintf(linha, sizeof(linha), "> %s_", c->buffer);
+
+		DrawText(linha, 4, ALTURA_VIRTUAL - 14, 10, WHITE);   // <-- DrawText, não desenharTexto
+	}
+	// --- Fim chat ---
+
 
     if(gw->estadoJogo == jogando){
         desenharHUD(gw);
@@ -277,6 +362,11 @@ static void atualizarCamera( GameWorld *gw ) {
 static void inicializar( GameWorld *gw ) {
 	if (mod_desenvolvedor)
 		musica_ativa = false;
+	
+	gw->chat.aberto    = false;
+	gw->chat.quantidade = 0;
+	gw->chat.tamBuffer  = 0;
+	gw->chat.buffer[0]  = '\0';
 
 	gw->cor_fundo = AZULCLARO;
     gw->estadoJogo = jogando;

@@ -4,6 +4,8 @@
 
 #include "../include/Mapa.h"
 
+#include "../include/GameWorld.h"
+
 extern GameWorld *gw_global;   // ou passe de outra forma
 
 void mp_processar_mensagem(const char *msg) {
@@ -27,6 +29,9 @@ void mp_processar_mensagem(const char *msg) {
 				gw->remoto.ativo = true;
 			}
 		}
+	}
+	else if (strncmp(msg, "CHAT ", 5) == 0) {
+		chat_adicionar(gw, msg + 5);
 	}
 	else if (strncmp(msg, "MAPA ", 5) == 0) {
 		int n;

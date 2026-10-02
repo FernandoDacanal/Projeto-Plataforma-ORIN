@@ -443,6 +443,24 @@ typedef struct EstadoRemoto {
     int           direcao;  // +1 direita, -1 esquerda
     EstadoJogador estado;
 } EstadoRemoto;
+
+#define CHAT_MAX_MSGS     8
+#define CHAT_MAX_TAM      128
+#define CHAT_TEMPO_MSG    6.0f   
+
+typedef struct MensagemChat {
+    char  texto[CHAT_MAX_TAM];
+    float tempoRestante;
+} MensagemChat;
+
+typedef struct Chat {
+    MensagemChat mensagens[CHAT_MAX_MSGS];
+    int          quantidade;
+    bool         aberto;
+    char         buffer[CHAT_MAX_TAM];
+    int          tamBuffer;
+} Chat;
+
 typedef struct GameWorld {
 
     Mapa *mapa;
@@ -457,4 +475,5 @@ typedef struct GameWorld {
     ESTADOJOGO estadoJogo;
 	
 	EstadoRemoto remoto;
+	Chat chat;
 } GameWorld;

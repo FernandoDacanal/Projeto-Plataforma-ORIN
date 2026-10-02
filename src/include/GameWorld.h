@@ -28,3 +28,5 @@ void updateGameWorld( GameWorld *gw, float delta );
  * @brief Desenha o estado do jogo.
  */
 void drawGameWorld( GameWorld *gw );
+
+void chat_adicionar(GameWorld *gw, const char *texto);
